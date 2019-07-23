@@ -33,6 +33,9 @@ assuming each element of \code{text}.}
 
 \item{lexicon}{Name of a lexicon of stopwords, borrowed from \link[tidytext]{stop_words}.}
 }
+\value{
+A named \code{list} of documents where the names are the documents \code{id}.
+}
 \description{
 Simple text preprocessor for, namely for example purposes.
 }

@@ -11,6 +11,8 @@
 #' @param lexicon Name of a lexicon of stopwords, borrowed from \link[tidytext]{stop_words}.
 #' @param ... Any other parameters.
 #' 
+#' @return A named \code{list} of documents where the names are the documents \code{id}.
+#' 
 #' @details Simply tokenises each document, removes punctuation, stop words, digits,
 #' and keeps only terms that appear more than \code{min_freq} \emph{across documents.} 
 #' 
@@ -36,6 +38,8 @@ preprocess.data.frame <- function(data, text, doc_id = NULL, min_freq = 1,
       id = !!id_enquo
     ) 
 
+  cat(crayon::yellow(cli::symbol$arrow_right), "Preprocessing", nrow(tokens), "documents\n")
+
   if(!"id" %in% names(tokens))
     tokens <- dplyr::mutate(tokens, id = 1:dplyr::n())
 
@@ -47,6 +51,8 @@ preprocess.data.frame <- function(data, text, doc_id = NULL, min_freq = 1,
 #' @export
 preprocess.character <- function(data, doc_id = NULL, min_freq = 1, 
   lexicon = c("SMART", "snowball", "onix"), ...){
+
+  cat(crayon::yellow(cli::symbol$arrow_right), "Preprocessing", length(data), "documents\n")
 
   if(is.null(id))
     id <- 1:length(data)
@@ -81,10 +87,16 @@ preprocess.factor <- preprocess.character
   filtered <- tokens %>% 
     dplyr::inner_join(token_count, by = "word") %>% 
     dplyr::group_by(id) %>% 
-    dplyr::summarise(text = paste(word, collapse = " ")) %>% 
-    dplyr::pull(text)
+    dplyr::summarise(text = paste(word, collapse = " "))
+  
+  ids <- dplyr::pull(filtered, id) %>% unique()
 
-  cat(crayon::green(cli::symbol$tick), length(filtered), "documents preprocessed\n")
+  filtered <- filtered %>% 
+    dplyr::pull(text) %>% 
+    lapply(as.list)
+    purrr::set_names(ids)
+
+  cat(crayon::yellow(cli::symbol$arrow_left), length(filtered), "documents preprocessed\n")
 
   invisible(filtered)
 }

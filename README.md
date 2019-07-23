@@ -50,6 +50,14 @@ Preprocess.
 ``` r
 library(gensimr)
 
-preprocess(webhoser, text)
-#> ✔ 272 documents preprocessed
+text <- preprocess(webhoser, text)
+#> → Preprocessing 272 documents
+#> ← 272 documents preprocessed
+dictionary <- corpora_dictionary(text)
+
+#' save dictionary
+# dictionary$save("webhoser.dict")
+
+dictionary$token2id
+#> Dict (266 items)
 ```

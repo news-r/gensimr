@@ -62,5 +62,11 @@ Preprocess.
 ```{r}
 library(gensimr)
 
-preprocess(webhoser, text)
+text <- preprocess(webhoser, text)
+dictionary <- corpora_dictionary(text)
+
+#' save dictionary
+# dictionary$save("webhoser.dict")
+
+dictionary$token2id
 ```
