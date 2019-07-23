@@ -1,0 +1,9 @@
+globalVariables(
+  c(
+    "word",
+    "text",
+    "n",
+    "id",
+    "tokens"
+  )
+)

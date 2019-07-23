@@ -1,0 +1,24 @@
+Package: gensimr
+Title: Topic Modelling
+Version: 0.0.1
+Authors@R: 
+    c(person(given = "John",
+           family = "Coene",
+           role = c("aut", "cre"),
+           email = "jcoenep@gmail.com",
+           comment = c(ORCID = "0000-0002-6637-4107")),
+       person(family = "news-r", role = "cph"))
+Description: Topic modelling with 'gensim'.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+    cli,
+    dplyr,
+    tibble,
+    crayon,
+    magrittr,
+    tidytext,
+    reticulate,
+    assertthat
+RoxygenNote: 6.1.1
