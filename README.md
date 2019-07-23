@@ -1,25 +1,12 @@
----
-output: 
-  github_document:
-    html_preview: false
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-
-reticulate::use_virtualenv("./env")
-```
-
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build status](https://travis-ci.org/news-r/gensimr.svg?branch=master)](https://travis-ci.org/news-r/gensimr)
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build
+status](https://travis-ci.org/news-r/gensimr.svg?branch=master)](https://travis-ci.org/news-r/gensimr)
 <!-- badges: end -->
 
 # gensimr
@@ -30,19 +17,20 @@ Brings [gensim](https://radimrehurek.com/gensim) to R.
 
 Install the package.
 
-```r
+``` r
 install.packages("gensimr")
 ```
 
-Install the python dependency. 
+Install the python dependency.
 
-```r
+``` r
 gensimr::install_gensim()
 ```
 
-Ideally one should use a virtual environment and pass it to `install_gensim`.
+Ideally one should use a virtual environment and pass it to
+`install_gensim`.
 
-```r
+``` r
 system2("python3", "-m venv ./env") # create environment
 reticulate::use_virtualenv("./env") # force reticulate to use env
 gensimr::install_gensim("./env") # install gensim in environment
@@ -52,15 +40,16 @@ gensimr::install_gensim("./env") # install gensim in environment
 
 Use data from another [news-r](https://news-r.org) package.
 
-```{r}
+``` r
 # remotes::install_github("news-r/nethoser")
 data("webhoser", package = "nethoser")
 ```
 
 Preprocess.
 
-```{r}
+``` r
 library(gensimr)
 
 preprocess(webhoser, text)
+#> ✔ 272 documents preprocessed
 ```
