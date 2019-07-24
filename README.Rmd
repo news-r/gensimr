@@ -106,7 +106,7 @@ corpus_transformed <- corpora_transform(model, corpus)
 Finally, we build the model, the number of topics defautls to 2.
 
 ```{r}
-lsi <- model_lsi(corpus_transformed, dictionary)
+lsi <- model_lsi(corpus_transformed, id2word = dictionary)
 lsi$print_topics()
 ```
 

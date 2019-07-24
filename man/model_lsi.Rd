@@ -5,17 +5,19 @@
 \alias{model_lsi.transformed_corpus}
 \title{Latent Semantic Indexing Model}
 \usage{
-model_lsi(corpus, dictionary = NULL, num_topics = 2)
+model_lsi(corpus, num_topics = 2, distributed = FALSE, ...)
 
-\method{model_lsi}{transformed_corpus}(corpus, dictionary = NULL,
-  num_topics = 2)
+\method{model_lsi}{transformed_corpus}(corpus, num_topics = 2,
+  distributed = FALSE, ...)
 }
 \arguments{
 \item{corpus}{Model as returned by \code{\link{corpora_transform}}. A tf-idf/bag-of-words transformation is recommended for LSI.}
 
-\item{dictionary}{Dictionary as returned by \code{\link{corpora_dictionary}}.}
+\item{num_topics}{Number of requested factors (latent dimensions).}
 
-\item{num_topics}{Number of topics (dimensions).}
+\item{distributed}{If \code{TRUE} - distributed mode (parallel execution on several machines) will be used.}
+
+\item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/lsimodel.html}{official documentation}.}
 }
 \description{
 Transform into a latent n dimensional space via Latent Semantic Indexing.

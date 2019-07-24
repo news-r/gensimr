@@ -91,22 +91,23 @@ model_tfidf.gensim.corpora.mmcorpus.MmCorpus <- function(mm, normalize = FALSE, 
 #' Transform into a latent n dimensional space via Latent Semantic Indexing.
 #' 
 #' @param corpus Model as returned by \code{\link{corpora_transform}}. A tf-idf/bag-of-words transformation is recommended for LSI.
-#' @param dictionary Dictionary as returned by \code{\link{corpora_dictionary}}.
-#' @param num_topics Number of topics (dimensions).
+#' @param num_topics Number of requested factors (latent dimensions).
+#' @param distributed If \code{TRUE} - distributed mode (parallel execution on several machines) will be used.
+#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/lsimodel.html}{official documentation}.
 #' 
 #' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
 #' 
 #' @name model_lsi
 #' 
 #' @export
-model_lsi <- function(corpus, dictionary = NULL, num_topics = 2) UseMethod("model_lsi")
+model_lsi <- function(corpus, num_topics = 2, distributed = FALSE, ...) UseMethod("model_lsi")
 
 #' @rdname model_lsi
 #' @method model_lsi transformed_corpus
 #' @export
-model_lsi.transformed_corpus <- function(corpus, dictionary = NULL, num_topics = 2){
+model_lsi.transformed_corpus <- function(corpus, num_topics = 2, distributed = FALSE, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
-  gensim$models$LsiModel(corpus, id2word = dictionary, num_topics = num_topics)
+  gensim$models$LsiModel(corpus, num_topics = num_topics, distributed = distributed, ...)
 }
 
 #' Transform Model
