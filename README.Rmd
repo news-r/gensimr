@@ -88,13 +88,13 @@ corpus <- doc2bow(dictionary, docs)
 Then convert to matrix market format and serialise, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created.
 
 ```{r}
-(mm_corpus <- mmcorpus_serialize(corpus))
+(corpus_mm <- mmcorpus_serialize(corpus))
 ```
 
 Then initialise a model, we're going to use a Latent Similarity Indexing method later on (`model_lsi`) which requires td-idf.
 
 ```{r}
-model <- model_tfidf(mm_corpus)
+model <- model_tfidf(corpus_mm)
 ```
 
 We can then use the model to transform our original corpus.
@@ -103,7 +103,11 @@ We can then use the model to transform our original corpus.
 corpus_transformed <- corpora_transform(model, corpus)
 ```
 
-Finally, we build the model, the number of topics defautls to 2.
+Finally, we can build models, the number of topics of `model_*` functions defautls to 2, which is too low for what we generally would do with gensimr but works for the low number of documents we have.
+
+### Latent Similarity Index
+
+Note that we use the transformed corpus.
 
 ```{r}
 lsi <- model_lsi(corpus_transformed, id2word = dictionary)
@@ -116,4 +120,22 @@ We can then wrap the model around the corpus to extract further information, bel
 wrapped_corpus <- wrap_corpus(lsi, corpus_transformed)
 (wrapped_corpus_docs <- wrap_corpus_docs(wrapped_corpus))
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
+```
+
+### Random Projections
+
+Note that we use the transformed corpus.
+
+```{r}
+rp <- model_rp(corpus_transformed, id2word = dictionary)
+rp$print_topics()
+```
+
+### Latent Dirichlet Allocation
+
+Note that we use the original, non-transformed corpus.
+
+```{r}
+lsi <- model_lda(corpus_mm, id2word = dictionary)
+lsi$print_topics()
 ```

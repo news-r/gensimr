@@ -107,7 +107,35 @@ model_lsi <- function(corpus, num_topics = 2, distributed = FALSE, ...) UseMetho
 #' @export
 model_lsi.transformed_corpus <- function(corpus, num_topics = 2, distributed = FALSE, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
+  if(num_topics < 200)
+    cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
   gensim$models$LsiModel(corpus, num_topics = num_topics, distributed = distributed, ...)
+}
+
+#' Random Projections Model
+#' 
+#' Reduce vector space dimensionality. This is a very efficient (both memory- and CPU-friendly) 
+#' approach to approximating TfIdf distances between documents, by throwing in a little randomness.
+#' 
+#' @param corpus Model as returned by \code{\link{corpora_transform}}. A tf-idf/bag-of-words transformation is recommended for LSI.
+#' @param num_topics Number of requested factors (latent dimensions).
+#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/rpmodel.html}{official documentation}.
+#' 
+#' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
+#' 
+#' @name model_rp
+#' 
+#' @export
+model_rp <- function(corpus, num_topics = 2, ...) UseMethod("model_lsi")
+
+#' @rdname model_rp
+#' @method model_rp transformed_corpus
+#' @export
+model_rp.transformed_corpus <- function(corpus, num_topics = 2, ...){
+  assert_that(!missing(corpus), msg = "Missing `corpus`")
+  if(num_topics < 200)
+    cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
+  gensim$models$RpModel(corpus, num_topics = num_topics, ...)
 }
 
 #' Transform Model
