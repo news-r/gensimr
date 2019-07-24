@@ -15,7 +15,7 @@ as_serialized_mmcorpus(file)
 \item{file}{Path to a \code{.mm} file (recommended), if \code{NULL} it is saved to a temp file.}
 }
 \value{
-An object of class \code{mm} which holds the path to the \code{file} and metadata.
+An object of class \code{mm_file} which holds the path to the \code{file} and metadata.
 }
 \description{
 Wrap a term-document matrix on disk.

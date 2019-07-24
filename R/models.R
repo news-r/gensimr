@@ -50,10 +50,10 @@
 model_tfidf <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...) UseMethod("model_tfidf")
 
 #' @rdname model_tfidf
-#' @method model_tfidf mm
+#' @method model_tfidf mm_file
 #' @export
-model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...){
-  assert_that(!missing(mm), msg = "Missing `mm`")
+model_tfidf.mm_file <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...){
+  assert_that(!missing(mm), msg = "Missing `mm_file`")
   corpus <- gensim$corpora$MmCorpus(mm$file)
   model <- gensim$models$TfidfModel(
     corpus, 
@@ -71,9 +71,9 @@ model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, s
 }
 
 #' @rdname model_tfidf
-#' @method model_tfidf gensim.corpora.mmcorpus.MmCorpus
+#' @method model_tfidf mm
 #' @export
-model_tfidf.gensim.corpora.mmcorpus.MmCorpus <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...){
+model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...){
   assert_that(!missing(mm), msg = "Missing `mm`")
   model <- gensim$models$TfidfModel(
     mm, 
@@ -100,13 +100,15 @@ model_tfidf.gensim.corpora.mmcorpus.MmCorpus <- function(mm, normalize = FALSE, 
 #' @name model_lsi
 #' 
 #' @export
-model_lsi <- function(corpus, num_topics = 2, distributed = FALSE, ...) UseMethod("model_lsi")
+model_lsi <- function(corpus, num_topics = 2L, distributed = FALSE, ...) UseMethod("model_lsi")
 
 #' @rdname model_lsi
 #' @method model_lsi transformed_corpus
 #' @export
-model_lsi.transformed_corpus <- function(corpus, num_topics = 2, distributed = FALSE, ...){
+model_lsi.transformed_corpus <- function(corpus, num_topics = 2L, distributed = FALSE, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
+  num_topics <- as.integer(num_topics) # enforce integer
+
   if(num_topics < 200)
     cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
   gensim$models$LsiModel(corpus, num_topics = num_topics, distributed = distributed, ...)
@@ -126,16 +128,71 @@ model_lsi.transformed_corpus <- function(corpus, num_topics = 2, distributed = F
 #' @name model_rp
 #' 
 #' @export
-model_rp <- function(corpus, num_topics = 2, ...) UseMethod("model_lsi")
+model_rp <- function(corpus, num_topics = 2L, ...) UseMethod("model_rp")
 
 #' @rdname model_rp
 #' @method model_rp transformed_corpus
 #' @export
-model_rp.transformed_corpus <- function(corpus, num_topics = 2, ...){
+model_rp.transformed_corpus <- function(corpus, num_topics = 2L, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
+  num_topics <- as.integer(num_topics) # enforce integer
+
   if(num_topics < 200)
     cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
   gensim$models$RpModel(corpus, num_topics = num_topics, ...)
+}
+
+#' Latent Dirichlet Allocation Model
+#' 
+#' Transformation from bag-of-words counts into a topic space of lower dimensionality. 
+#' LDA is a probabilistic extension of LSA (also called multinomial PCA), so LDA’s topics 
+#' can be interpreted as probability distributions over words. These distributions are, 
+#' just like with LSA, inferred automatically from a training corpus. Documents are in turn 
+#' interpreted as a (soft) mixture of these topics (again, just like with LSA).
+#' 
+#' @param corpus Model as returned by \code{\link{mmcorpus_serialize}}.
+#' @param num_topics Number of requested factors (latent dimensions).
+#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/rpmodel.html}{official documentation}.
+#' 
+#' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
+#' 
+#' @name model_lda
+#' 
+#' @export
+model_lda <- function(corpus, num_topics = 2L, ...) UseMethod("model_lda")
+
+#' @rdname model_lda
+#' @method model_lda mm_file
+#' @export
+model_lda.mm_file <- function(corpus, num_topics = 2L, ...){
+  assert_that(!missing(corpus), msg = "Missing `corpus`")
+  num_topics <- as.integer(num_topics) # enforce integer
+  
+  if(num_topics < 200)
+    cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
+  
+  corpus_read <- gensim$corpora$MmCorpus(corpus$file)
+  model <- gensim$models$LdaModel(corpus_read, num_topics = num_topics, ...)
+
+  # unlink temp
+  if(corpus$temp) unlink(corpus$file)
+  
+  invisible(model)
+}
+
+#' @rdname model_lda
+#' @method model_lda mm
+#' @export
+model_lda.mm <- function(corpus, num_topics = 2L, ...){
+  assert_that(!missing(corpus), msg = "Missing `corpus`")
+  num_topics <- as.integer(num_topics) # enforce integer
+  
+  if(num_topics < 200)
+    cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
+  
+  model <- gensim$models$RpModel(corpus, num_topics = num_topics, ...)
+  
+  invisible(model)
 }
 
 #' Transform Model

@@ -104,35 +104,40 @@ dictionary$doc2bow(docs[[1]])
 #> [(0, 1), (1, 1), (2, 1)]
 
 # apply to all documents
-corpus <- doc2bow(dictionary, docs)
+corpus_bow <- doc2bow(dictionary, docs)
 ```
 
 Then convert to matrix market format and serialise, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created.
 
 ``` r
-(mm_corpus <- mmcorpus_serialize(corpus))
-#> ℹ Path: /tmp/Rtmpg3xX7g/file2813411f993d.mm 
+(corpus_mm <- mmcorpus_serialize(corpus_bow))
+#> ℹ Path: /tmp/RtmpZL0HP3/file1b9f439b5c9e.mm 
 #>  ✔ Temp file
 ```
 
 Then initialise a model, we're going to use a Latent Similarity Indexing method later on (`model_lsi`) which requires td-idf.
 
 ``` r
-model <- model_tfidf(mm_corpus)
+tfidf <- model_tfidf(corpus_mm)
 ```
 
 We can then use the model to transform our original corpus.
 
 ``` r
-corpus_transformed <- corpora_transform(model, corpus)
+corpus_transformed <- corpora_transform(tfidf, corpus_bow)
 ```
 
-Finally, we build the model, the number of topics defautls to 2.
+Finally, we can build models, the number of topics of `model_*` functions defautls to 2, which is too low for what we generally would do with gensimr but works for the low number of documents we have.
+
+### Latent Similarity Index
+
+Note that we use the transformed corpus.
 
 ``` r
 lsi <- model_lsi(corpus_transformed, id2word = dictionary)
+#> ⚠ Low number of topics
 lsi$print_topics()
-#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '0.460*"system" + 0.373*"user" + 0.332*"eps" + 0.328*"interface" + 0.320*"time" + 0.320*"response" + 0.293*"computer" + 0.280*"human" + 0.171*"survey" + -0.161*"trees"')]
+#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
 ```
 
 We can then wrap the model around the corpus to extract further information, below we extract how each document contribute to each dimension (topic).
@@ -143,16 +148,55 @@ wrapped_corpus <- wrap_corpus(lsi, corpus_transformed)
 #> # A tibble: 9 x 4
 #>   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1             0        0.0660             1        0.520 
-#> 2             0        0.197              1        0.761 
-#> 3             0        0.0899             1        0.724 
-#> 4             0        0.0759             1        0.632 
-#> 5             0        0.102              1        0.574 
-#> 6             0        0.703              1       -0.161 
-#> 7             0        0.877              1       -0.168 
-#> 8             0        0.910              1       -0.141 
-#> 9             0        0.617              1        0.0539
+#> 1             0        0.0660             1       -0.520 
+#> 2             0        0.197              1       -0.761 
+#> 3             0        0.0899             1       -0.724 
+#> 4             0        0.0759             1       -0.632 
+#> 5             0        0.102              1       -0.574 
+#> 6             0        0.703              1        0.161 
+#> 7             0        0.877              1        0.168 
+#> 8             0        0.910              1        0.141 
+#> 9             0        0.617              1       -0.0539
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
 <img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+
+### Random Projections
+
+Note that we use the transformed corpus.
+
+``` r
+rp <- model_rp(corpus_transformed, id2word = dictionary)
+#> ⚠ Low number of topics
+
+wrapped_corpus <- wrap_corpus(rp, corpus_transformed)
+(wrapped_corpus_docs <- wrap_corpus_docs(wrapped_corpus))
+#> # A tibble: 9 x 4
+#>   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
+#>           <dbl>         <dbl>         <dbl>         <dbl>
+#> 1             0        -0.408             1         0.408
+#> 2             0         1.09              1         1.09 
+#> 3             0        -0.218             1         0.590
+#> 4             0        -0.188             1        -0.188
+#> 5             0         1.21              1         1.21 
+#> 6             0         0.707             1        -0.707
+#> 7             1        -1                NA        NA    
+#> 8             0        -0.492             1        -1.21 
+#> 9             0        -1.21              1        -1.21
+```
+
+### Latent Dirichlet Allocation
+
+Note that we use the original, non-transformed corpus.
+
+``` r
+corpus_mm <- mmcorpus_serialize(corpus_bow)
+lda <- model_lda(corpus_mm, id2word = dictionary)
+#> ⚠ Low number of topics
+lda$get_topics()
+#> [[0.05014224 0.06651548 0.07887903 0.05799899 0.08775716 0.16206779
+#>   0.04663812 0.07614656 0.09794857 0.0804041  0.09779173 0.09771022]
+#>  [0.09247578 0.07874997 0.0683854  0.08588932 0.0609428  0.08832102
+#>   0.09541334 0.11551291 0.05239927 0.11194375 0.09736755 0.05259901]]
+```

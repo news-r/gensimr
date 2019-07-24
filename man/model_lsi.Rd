@@ -5,9 +5,9 @@
 \alias{model_lsi.transformed_corpus}
 \title{Latent Semantic Indexing Model}
 \usage{
-model_lsi(corpus, num_topics = 2, distributed = FALSE, ...)
+model_lsi(corpus, num_topics = 2L, distributed = FALSE, ...)
 
-\method{model_lsi}{transformed_corpus}(corpus, num_topics = 2,
+\method{model_lsi}{transformed_corpus}(corpus, num_topics = 2L,
   distributed = FALSE, ...)
 }
 \arguments{

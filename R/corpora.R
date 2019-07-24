@@ -47,7 +47,7 @@ doc2bow <- function(dictionary, docs){
 #' @param corpus A corpus as returned by \code{\link{doc2bow}}.
 #' @param file Path to a \code{.mm} file (recommended), if \code{NULL} it is saved to a temp file.
 #' 
-#' @return An object of class \code{mm} which holds the path to the \code{file} and metadata.
+#' @return An object of class \code{mm_file} which holds the path to the \code{file} and metadata.
 #' 
 #' @name mmcorpus_serialize
 #' 
@@ -63,22 +63,26 @@ mmcorpus_serialize <- function(corpus, file = NULL){
 
   gensim$corpora$MmCorpus$serialize(file, corpus)
 
-  .as_mm(file, temp = temp)
+  .as_mm_file(file, temp = temp)
 }
 
 #' @rdname mmcorpus_serialize
 #' @export
 as_serialized_mmcorpus <- function(file){
-  .as_mm(file, temp = FALSE)
+  .as_mm_file(file, temp = FALSE)
 }
 
-.as_mm <- function(file, temp = FALSE){
+.as_mm_file <- function(file, temp = FALSE){
   obj <- list(file = file, temp = temp)
-  structure(obj, class = c(class(obj), "mm"))
+  structure(obj, class = c(class(obj), "mm_file"))
+}
+
+.as_mm <- function(mm, temp = FALSE){
+  structure(mm, class = c(class(mm), "mm"))
 }
 
 #' @export
-print.mm <- function(x, ...){
+print.mm_file <- function(x, ...){
   tick_cross <- ifelse(x$temp, crayon::green(cli::symbol$tick), crayon::red(cli::symbol$cross))
   cat(
     crayon::blue(cli::symbol$info), "Path:", x$file, "\n",
@@ -101,7 +105,8 @@ read_serialized_mmcorpus <- function(file) UseMethod("read_serialized_mmcorpus")
 #' @export
 read_serialized_mmcorpus.mm <- function(file){
   assert_that(!missing(file), msg = "Missing `file`")
-  gensim$corpora$MmCorpus(file$file)
+  mm <- .as_mm(gensim$corpora$MmCorpus(file$file))
+  invisible(mm)
 }
 
 #' @rdname read_serialized_mmcorpus
@@ -109,7 +114,8 @@ read_serialized_mmcorpus.mm <- function(file){
 #' @export
 read_serialized_mmcorpus.character <- function(file){
   assert_that(!missing(file), msg = "Missing `file`")
-  gensim$corpora$MmCorpus(file)
+  mm <- .as_mm(gensim$corpora$MmCorpus(file))
+  invisible(mm)
 }
 
 #' Transform Corpora

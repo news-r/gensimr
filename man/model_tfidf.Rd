@@ -2,19 +2,18 @@
 % Please edit documentation in R/models.R
 \name{model_tfidf}
 \alias{model_tfidf}
+\alias{model_tfidf.mm_file}
 \alias{model_tfidf.mm}
-\alias{model_tfidf.gensim.corpora.mmcorpus.MmCorpus}
 \title{Tf-idf Model}
 \usage{
 model_tfidf(mm, normalize = FALSE, smart = "nfc", pivot = NULL,
   slope = 0.25, ...)
 
-\method{model_tfidf}{mm}(mm, normalize = FALSE, smart = "nfc",
+\method{model_tfidf}{mm_file}(mm, normalize = FALSE, smart = "nfc",
   pivot = NULL, slope = 0.25, ...)
 
-\method{model_tfidf}{gensim.corpora.mmcorpus.MmCorpus}(mm,
-  normalize = FALSE, smart = "nfc", pivot = NULL, slope = 0.25,
-  ...)
+\method{model_tfidf}{mm}(mm, normalize = FALSE, smart = "nfc",
+  pivot = NULL, slope = 0.25, ...)
 }
 \arguments{
 \item{mm}{A matrix market as returned by \code{\link{mmcorpus_serialize}}.}
