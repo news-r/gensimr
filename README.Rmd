@@ -24,14 +24,15 @@ reticulate::use_virtualenv("./env")
 
 # gensimr
 
-Brings [gensim](https://radimrehurek.com/gensim) to R.
+Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale topic modeling.
 
 ## Installation
 
 Install the package.
 
 ```r
-install.packages("gensimr")
+# install.packages("remotes")
+remotes::install_github("news-r/gensimr")
 ```
 
 Install the python dependency. 
@@ -40,22 +41,24 @@ Install the python dependency.
 gensimr::install_gensim()
 ```
 
-Ideally one should use a virtual environment and pass it to `install_gensim`.
+Ideally one should use a virtual environment and pass it to `install_gensim`, only do this once.
 
 ```r
-system2("python3", "-m venv ./env") # create environment
-reticulate::use_virtualenv("./env") # force reticulate to use env
-gensimr::install_gensim("./env") # install gensim in environment
+my_env <- "./env"
+args <- paste("-m venv", env)
+system2("python3", args) # create environment
+reticulate::use_virtualenv(my_env) # force reticulate to use env
+gensimr::install_gensim(my_env) # install gensim in environment
 ```
 
 ## Example
 
-Use data from another [news-r](https://news-r.org) package.
-
-Firdt we preprocess the corpus.
+First we preprocess the corpus using example data, a tiny corpus of 9 documents.
 
 ```{r}
 library(gensimr)
+
+data(corpus, package = "gensimr")
 
 docs <- preprocess(corpus)
 ```
@@ -72,36 +75,44 @@ A dictionary essentially assigns an integer to each term.
 reticulate::py_to_r(dictionary$token2id)
 ```
 
-`doc2bow` simply maps the `method of the same name to every documents; it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector. 
+`doc2bow` simply applies the method of the same name to every documents (see example below); it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector. 
 
 ```{r}
-# native method
+# native method to a single document
 dictionary$doc2bow(docs[[1]])
 
 # apply to all documents
 corpus <- doc2bow(dictionary, docs)
 ```
 
-Then convert to matrix market format and serialise, the function returns the path to the file.
+Then convert to matrix market format and serialise, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created.
 
-```r
+```{r}
 (mm_corpus <- mmcorpus_serialize(corpus))
 ```
 
-Then initialise a model.
+Then initialise a model, we're going to use a Latent Similarity Indexing method later on (`model_lsi`) which requires td-idf.
 
-```r
+```{r}
 model <- model_tfidf(mm_corpus)
 ```
 
-```r
+We can then use the model to transform our original corpus.
+
+```{r}
 corpus_transformed <- corpora_transform(model, corpus)
 ```
 
-```r
+Finally, we build the model, the number of topics defautls to 2.
+
+```{r}
 lsi <- model_lsi(corpus_transformed, dictionary)
 lsi$print_topics()
+```
 
+We can then wrap the model around the corpus to extract further information, below we extract how each document contribute to each dimension (topic).
+
+```{r}
 wrapped_corpus <- wrap_corpus(lsi, corpus_transformed)
-wrapped_corpus_docs <- wrap_corpus_docs(wrapped_corpus)
+(wrapped_corpus_docs <- wrap_corpus_docs(wrapped_corpus))
 ```

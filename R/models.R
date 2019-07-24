@@ -3,20 +3,66 @@
 #' Initialise a model based on the document frequencies of all its features.
 #' 
 #' @param mm A matrix market as returned by \code{\link{mmcorpus_serialize}}.
-#' @param normalize Whether to normalize the resulting vectors to (Euclidean) unit length.
+#' @param normalize ormalize document vectors to unit euclidean length? You can also inject your own function into normalize.
+#' @param smart SMART (System for the Mechanical Analysis and Retrieval of Text) 
+#' Information Retrieval System, a mnemonic scheme for denoting tf-idf weighting variants in 
+#' the vector space model. The mnemonic for representing a combination of weights takes the form XYZ, 
+#' for example \code{nfc}, \code{bpn} and so on, where the letters represents the term weighting of the document vector.
+#' See SMART section.
+#' @param pivot You can either set the pivot by hand, or you can let Gensim figure it out automatically with the following two steps: 
+#' 1) Set either the u or b document normalization in the smartirs parameter.
+#' 2) Set either the corpus or dictionary parameter. The pivot will be automatically determined from the properties of the corpus or dictionary.
+#' If pivot is \code{NULL} and you don’t follow steps 1 and 2, then pivoted document length normalization will be disabled.
+#' @param slope Setting the slope to 0.0 uses only the pivot as the norm, and setting the slope to 1.0 effectively disables pivoted 
+#' document length normalization. Singhal [2] suggests setting the slope between 0.2 and 0.3 for best results.
+#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/tfidfmodel.html}{official documentation}.
+#' 
+#' @section SMART:
+#' Term frequency weighing:
+#' \itemize{
+#'   \item{\code{b} - binary}  
+#'   \item{\code{t} or \code{n} - raw}  
+#'   \item{\code{a} - augmented}  
+#'   \item{\code{l} - logarithm}  
+#'   \item{\code{d} - double logarithm}  
+#'   \item{\code{L} - Log average}  
+#' }
+#' 
+#' Document frequency weighting:
+#' \itemize{
+#'   \item{\code{x} or \code{n} - none}  
+#'   \item{\code{f} - idf}  
+#'   \item{\code{t} - zero-corrected idf}  
+#'   \item{\code{p} - probabilistic idf}  
+#' }
+#' 
+#' Document normalization:
+#' \itemize{
+#'   \item{\code{x} or \code{n} - none}  
+#'   \item{\code{c} - cosine}  
+#'   \item{\code{u} - pivoted unique}  
+#'   \item{\code{b} - pivoted character length}  
+#' }
 #' 
 #' @name model_tfidf
 #' 
 #' @export
-model_tfidf <- function(mm, normalize = FALSE) UseMethod("model_tfidf")
+model_tfidf <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...) UseMethod("model_tfidf")
 
 #' @rdname model_tfidf
 #' @method model_tfidf mm
 #' @export
-model_tfidf.mm <- function(mm, normalize = FALSE){
+model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...){
   assert_that(!missing(mm), msg = "Missing `mm`")
   corpus <- gensim$corpora$MmCorpus(mm$file)
-  model <- gensim$models$TfidfModel(corpus, normalize = normalize)
+  model <- gensim$models$TfidfModel(
+    corpus, 
+    pivot = pivot,
+    slope = slope,
+    smartirs = smart,
+    normalize = normalize,
+    ...
+  )
 
   # unlink temp
   if(mm$temp) unlink(mm$file)
@@ -27,13 +73,20 @@ model_tfidf.mm <- function(mm, normalize = FALSE){
 #' @rdname model_tfidf
 #' @method model_tfidf gensim.corpora.mmcorpus.MmCorpus
 #' @export
-model_tfidf.gensim.corpora.mmcorpus.MmCorpus <- function(mm, normalize = FALSE){
+model_tfidf.gensim.corpora.mmcorpus.MmCorpus <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...){
   assert_that(!missing(mm), msg = "Missing `mm`")
-  model <- gensim$models$TfidfModel(mm, normalize = normalize)
+  model <- gensim$models$TfidfModel(
+    mm, 
+    pivot = pivot,
+    slope = slope,
+    smartirs = smart,
+    normalize = normalize,
+    ...
+  )
   invisible(model)
 }
 
-#' Latent Semantic Indexing
+#' Latent Semantic Indexing Model
 #' 
 #' Transform into a latent n dimensional space via Latent Semantic Indexing.
 #' 
@@ -46,24 +99,14 @@ model_tfidf.gensim.corpora.mmcorpus.MmCorpus <- function(mm, normalize = FALSE){
 #' @name model_lsi
 #' 
 #' @export
-model_lsi <- function(corpus, dictionary, num_topics = 2) UseMethod("model_lsi")
+model_lsi <- function(corpus, dictionary = NULL, num_topics = 2) UseMethod("model_lsi")
 
 #' @rdname model_lsi
-#' @method model_lsi gensim.interfaces.TransformedCorpus
-model_lsi.gensim.interfaces.TransformedCorpus <- function(corpus, dictionary, num_topics = 2){
-  assert_that(!missing(corpus), msg = "Missing `corpus`")
-  assert_that(!missing(dictionary), msg = "Missing `dictionary`")
-  gensim$models$LsiModel(corpus, id2word = dictionary, num_topics = num_topics)
-}
-
-#' @rdname model_lsi
-#' @method model_lsi mm
+#' @method model_lsi transformed_corpus
 #' @export
-model_lsi.mm <- function(corpus, dictionary, num_topics = 2){
+model_lsi.transformed_corpus <- function(corpus, dictionary = NULL, num_topics = 2){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
-  assert_that(!missing(dictionary), msg = "Missing `dictionary`")
-  corpus_tfidf <- model_tfidf(corpus)
-  gensim$models$LsiModel(corpus_tfidf, id2word = dictionary, num_topics = num_topics)
+  gensim$models$LsiModel(corpus, id2word = dictionary, num_topics = num_topics)
 }
 
 #' Transform Model

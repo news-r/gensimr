@@ -6,18 +6,66 @@
 \alias{model_tfidf.gensim.corpora.mmcorpus.MmCorpus}
 \title{Tf-idf Model}
 \usage{
-model_tfidf(mm, normalize = FALSE)
+model_tfidf(mm, normalize = FALSE, smart = "nfc", pivot = NULL,
+  slope = 0.25, ...)
 
-\method{model_tfidf}{mm}(mm, normalize = FALSE)
+\method{model_tfidf}{mm}(mm, normalize = FALSE, smart = "nfc",
+  pivot = NULL, slope = 0.25, ...)
 
 \method{model_tfidf}{gensim.corpora.mmcorpus.MmCorpus}(mm,
-  normalize = FALSE)
+  normalize = FALSE, smart = "nfc", pivot = NULL, slope = 0.25,
+  ...)
 }
 \arguments{
 \item{mm}{A matrix market as returned by \code{\link{mmcorpus_serialize}}.}
 
-\item{normalize}{Whether to normalize the resulting vectors to (Euclidean) unit length.}
+\item{normalize}{ormalize document vectors to unit euclidean length? You can also inject your own function into normalize.}
+
+\item{smart}{SMART (System for the Mechanical Analysis and Retrieval of Text) 
+Information Retrieval System, a mnemonic scheme for denoting tf-idf weighting variants in 
+the vector space model. The mnemonic for representing a combination of weights takes the form XYZ, 
+for example \code{nfc}, \code{bpn} and so on, where the letters represents the term weighting of the document vector.
+See SMART section.}
+
+\item{pivot}{You can either set the pivot by hand, or you can let Gensim figure it out automatically with the following two steps: 
+1) Set either the u or b document normalization in the smartirs parameter.
+2) Set either the corpus or dictionary parameter. The pivot will be automatically determined from the properties of the corpus or dictionary.
+If pivot is \code{NULL} and you don’t follow steps 1 and 2, then pivoted document length normalization will be disabled.}
+
+\item{slope}{Setting the slope to 0.0 uses only the pivot as the norm, and setting the slope to 1.0 effectively disables pivoted 
+document length normalization. Singhal [2] suggests setting the slope between 0.2 and 0.3 for best results.}
+
+\item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/tfidfmodel.html}{official documentation}.}
 }
 \description{
 Initialise a model based on the document frequencies of all its features.
 }
+\section{SMART}{
+
+Term frequency weighing:
+\itemize{
+  \item{\code{b} - binary}  
+  \item{\code{t} or \code{n} - raw}  
+  \item{\code{a} - augmented}  
+  \item{\code{l} - logarithm}  
+  \item{\code{d} - double logarithm}  
+  \item{\code{L} - Log average}  
+}
+
+Document frequency weighting:
+\itemize{
+  \item{\code{x} or \code{n} - none}  
+  \item{\code{f} - idf}  
+  \item{\code{t} - zero-corrected idf}  
+  \item{\code{p} - probabilistic idf}  
+}
+
+Document normalization:
+\itemize{
+  \item{\code{x} or \code{n} - none}  
+  \item{\code{c} - cosine}  
+  \item{\code{u} - pivoted unique}  
+  \item{\code{b} - pivoted character length}  
+}
+}
+

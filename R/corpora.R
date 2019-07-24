@@ -121,5 +121,6 @@ read_serialized_mmcorpus.character <- function(file){
 #' 
 #' @export
 corpora_transform <- function(model, corpus){
-  model[corpus]
+  transformed_corpus <- model[corpus]
+  structure(transformed_corpus, class = c(class(transformed_corpus), "transformed_corpus"))
 }

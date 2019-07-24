@@ -2,16 +2,13 @@
 % Please edit documentation in R/models.R
 \name{model_lsi}
 \alias{model_lsi}
-\alias{model_lsi.gensim.interfaces.TransformedCorpus}
-\alias{model_lsi.mm}
-\title{Latent Semantic Indexing}
+\alias{model_lsi.transformed_corpus}
+\title{Latent Semantic Indexing Model}
 \usage{
-model_lsi(corpus, dictionary, num_topics = 2)
+model_lsi(corpus, dictionary = NULL, num_topics = 2)
 
-\method{model_lsi}{gensim.interfaces.TransformedCorpus}(corpus, dictionary,
+\method{model_lsi}{transformed_corpus}(corpus, dictionary = NULL,
   num_topics = 2)
-
-\method{model_lsi}{mm}(corpus, dictionary, num_topics = 2)
 }
 \arguments{
 \item{corpus}{Model as returned by \code{\link{corpora_transform}}. A tf-idf/bag-of-words transformation is recommended for LSI.}
