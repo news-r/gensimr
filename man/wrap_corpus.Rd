@@ -2,12 +2,12 @@
 % Please edit documentation in R/models.R
 \name{wrap_corpus}
 \alias{wrap_corpus}
-\alias{wrap_corpus_docs}
+\alias{get_docs_topics}
 \title{Transform Model}
 \usage{
 wrap_corpus(model, corpus)
 
-wrap_corpus_docs(wrapped_corpus)
+get_docs_topics(wrapped_corpus)
 }
 \arguments{
 \item{model}{A model as returned, for instance by \code{\link{model_lsi}}.}

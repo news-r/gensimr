@@ -211,7 +211,7 @@ wrap_corpus <- function(model, corpus){
 
 #' @rdname wrap_corpus
 #' @export
-wrap_corpus_docs <- function(wrapped_corpus){
+get_docs_topics <- function(wrapped_corpus){
   l <- reticulate::py_len(wrapped_corpus)
 
   docs <- list()
