@@ -115,4 +115,5 @@ We can then wrap the model around the corpus to extract further information, bel
 ```{r}
 wrapped_corpus <- wrap_corpus(lsi, corpus_transformed)
 (wrapped_corpus_docs <- wrap_corpus_docs(wrapped_corpus))
+plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```

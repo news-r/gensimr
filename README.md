@@ -111,7 +111,7 @@ Then convert to matrix market format and serialise, the function returns the pat
 
 ``` r
 (mm_corpus <- mmcorpus_serialize(corpus))
-#> ℹ Path: /tmp/RtmpHPdgNZ/file208f30891be5.mm 
+#> ℹ Path: /tmp/Rtmpg3xX7g/file2813411f993d.mm 
 #>  ✔ Temp file
 ```
 
@@ -130,9 +130,9 @@ corpus_transformed <- corpora_transform(model, corpus)
 Finally, we build the model, the number of topics defautls to 2.
 
 ``` r
-lsi <- model_lsi(corpus_transformed, dictionary)
+lsi <- model_lsi(corpus_transformed, id2word = dictionary)
 lsi$print_topics()
-#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '0.460*"system" + 0.373*"user" + 0.332*"eps" + 0.328*"interface" + 0.320*"response" + 0.320*"time" + 0.293*"computer" + 0.280*"human" + 0.171*"survey" + -0.161*"trees"')]
+#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '0.460*"system" + 0.373*"user" + 0.332*"eps" + 0.328*"interface" + 0.320*"time" + 0.320*"response" + 0.293*"computer" + 0.280*"human" + 0.171*"survey" + -0.161*"trees"')]
 ```
 
 We can then wrap the model around the corpus to extract further information, below we extract how each document contribute to each dimension (topic).
@@ -152,4 +152,7 @@ wrapped_corpus <- wrap_corpus(lsi, corpus_transformed)
 #> 7             0        0.877              1       -0.168 
 #> 8             0        0.910              1       -0.141 
 #> 9             0        0.617              1        0.0539
+plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
+
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
