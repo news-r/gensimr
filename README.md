@@ -45,7 +45,7 @@ Firdt we preprocess the corpus.
 ``` r
 library(gensimr)
 
-text <- preprocess(corpus)
+docs <- preprocess(corpus)
 #> → Preprocessing 9 documents
 #> ← 9 documents preprocessed
 ```
@@ -53,12 +53,60 @@ text <- preprocess(corpus)
 Once preprocessed we can build a dictionary.
 
 ``` r
-dictionary <- corpora_dictionary(text)
+dictionary <- corpora_dictionary(docs)
 ```
 
 A dictionary essentially assigns an integer to each term.
 
 ``` r
-dictionary$token2id
-#> Dict (12 items)
+reticulate::py_to_r(dictionary$token2id)
+#> $computer
+#> [1] 0
+#> 
+#> $human
+#> [1] 1
+#> 
+#> $interface
+#> [1] 2
+#> 
+#> $response
+#> [1] 3
+#> 
+#> $survey
+#> [1] 4
+#> 
+#> $system
+#> [1] 5
+#> 
+#> $time
+#> [1] 6
+#> 
+#> $user
+#> [1] 7
+#> 
+#> $eps
+#> [1] 8
+#> 
+#> $trees
+#> [1] 9
+#> 
+#> $graph
+#> [1] 10
+#> 
+#> $minors
+#> [1] 11
+```
+
+`doc2bow` simply maps the \`method of the same name to every documents;
+it counts the number of occurrences of each distinct word, converts the
+word to its integer word id and returns the result as a sparse vector.
+
+``` r
+# native method
+dictionary$doc2bow(docs[[1]])
+#> [(0, 1), (1, 1), (2, 1)]
+
+# apply to all documents
+doc2bow(dictionary, docs)
+#> ([(0, 1), (1, 1), (2, 1)], [(0, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)], [(2, 1), (5, 1), (7, 1), (8, 1)], [(1, 1), (5, 2), (8, 1)], [(3, 1), (6, 1), (7, 1)], [(9, 1)], [(9, 1), (10, 1)], [(9, 1), (10, 1), (11, 1)], [(4, 1), (10, 1), (11, 1)])
 ```

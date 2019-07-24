@@ -7,7 +7,7 @@
 corpora_dictionary(docs, file = NULL)
 }
 \arguments{
-\item{docs}{A list of documents, for instance as returned by \code{\link{preprocess}}.}
+\item{docs}{A list of documents as returned by \code{\link{preprocess}}.}
 
 \item{file}{Path to save \code{.dict}.}
 }

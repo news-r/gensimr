@@ -57,17 +57,27 @@ Firdt we preprocess the corpus.
 ```{r}
 library(gensimr)
 
-text <- preprocess(corpus)
+docs <- preprocess(corpus)
 ```
 
 Once preprocessed we can build a dictionary.
 
 ```{r}
-dictionary <- corpora_dictionary(text)
+dictionary <- corpora_dictionary(docs)
 ```
 
 A dictionary essentially assigns an integer to each term.
 
 ```{r}
-dictionary$token2id
+reticulate::py_to_r(dictionary$token2id)
+```
+
+`doc2bow` simply maps the `method of the same name to every documents; it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector. 
+
+```{r}
+# native method
+dictionary$doc2bow(docs[[1]])
+
+# apply to all documents
+doc2bow(dictionary, docs)
 ```
