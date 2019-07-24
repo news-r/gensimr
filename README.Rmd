@@ -149,10 +149,13 @@ plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```{r}
 corpus_mm <- mmcorpus_serialize(corpus_bow)
 mm <- read_serialized_mmcorpus(corpus_mm)
+
+vec_bow <- dictionary$doc2bow(c("human", "computer", "interaction"))
+vec_lsi <- wrap(lsi, vec_bow)
+
 wrapped_lsi <- wrap(lsi, mm)
 index <- similarity_matrix(wrapped_lsi)
 
-vec_lsi <- dictionary$doc2bow(c("human", "computer", "interaction"))
 sims <- wrap(index, vec_lsi)
 
 x <- reticulate::py_to_r(sims)

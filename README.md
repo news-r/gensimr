@@ -83,7 +83,7 @@ Then convert to matrix market format and serialise, the function returns the pat
 
 ``` r
 (corpus_mm <- mmcorpus_serialize(corpus_bow))
-#> ℹ Path: /tmp/RtmpN21h1S/file2d394241c671.mm 
+#> ℹ Path: /tmp/RtmpN21h1S/file2d394a47799a.mm 
 #>  ✔ Temp file
 ```
 
@@ -170,10 +170,13 @@ Similarity
 ``` r
 corpus_mm <- mmcorpus_serialize(corpus_bow)
 mm <- read_serialized_mmcorpus(corpus_mm)
+
+vec_bow <- dictionary$doc2bow(c("human", "computer", "interaction"))
+vec_lsi <- wrap(lsi, vec_bow)
+
 wrapped_lsi <- wrap(lsi, mm)
 index <- similarity_matrix(wrapped_lsi)
 
-vec_lsi <- dictionary$doc2bow(c("human", "computer", "interaction"))
 sims <- wrap(index, vec_lsi)
 
 x <- reticulate::py_to_r(sims)
@@ -184,15 +187,15 @@ tibble::tibble(
   dplyr::mutate(doc = doc - 1) %>% 
   dplyr::arrange(-cosine)
 #> # A tibble: 9 x 2
-#>     doc cosine
-#>   <dbl>  <dbl>
-#> 1     5  0.847
-#> 2     6  0.827
-#> 3     7  0.811
-#> 4     8  0.665
-#> 5     1 -0.518
-#> 6     4 -0.575
-#> 7     2 -0.612
-#> 8     0 -0.612
-#> 9     3 -0.616
+#>     doc  cosine
+#>   <dbl>   <dbl>
+#> 1     2  1.000 
+#> 2     0  1.000 
+#> 3     3  1.000 
+#> 4     4  0.999 
+#> 5     1  0.995 
+#> 6     8  0.194 
+#> 7     7 -0.0237
+#> 8     6 -0.0516
+#> 9     5 -0.0880
 ```
