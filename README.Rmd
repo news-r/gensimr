@@ -79,5 +79,29 @@ reticulate::py_to_r(dictionary$token2id)
 dictionary$doc2bow(docs[[1]])
 
 # apply to all documents
-doc2bow(dictionary, docs)
+corpus <- doc2bow(dictionary, docs)
+```
+
+Then convert to matrix market format and serialise, the function returns the path to the file.
+
+```r
+(mm_corpus <- mmcorpus_serialize(corpus))
+```
+
+Then initialise a model.
+
+```r
+model <- model_tfidf(mm_corpus)
+```
+
+```r
+corpus_transformed <- corpora_transform(model, corpus)
+```
+
+```r
+lsi <- model_lsi(corpus_transformed, dictionary)
+lsi$print_topics()
+
+wrapped_corpus <- wrap_corpus(lsi, corpus_transformed)
+wrapped_corpus_docs <- wrap_corpus_docs(wrapped_corpus)
 ```

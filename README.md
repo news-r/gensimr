@@ -47,7 +47,7 @@ library(gensimr)
 
 docs <- preprocess(corpus)
 #> → Preprocessing 9 documents
-#> ← 9 documents preprocessed
+#> ← 9 documents after perprocessing
 ```
 
 Once preprocessed we can build a dictionary.
@@ -107,6 +107,30 @@ dictionary$doc2bow(docs[[1]])
 #> [(0, 1), (1, 1), (2, 1)]
 
 # apply to all documents
-doc2bow(dictionary, docs)
-#> ([(0, 1), (1, 1), (2, 1)], [(0, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)], [(2, 1), (5, 1), (7, 1), (8, 1)], [(1, 1), (5, 2), (8, 1)], [(3, 1), (6, 1), (7, 1)], [(9, 1)], [(9, 1), (10, 1)], [(9, 1), (10, 1), (11, 1)], [(4, 1), (10, 1), (11, 1)])
+corpus <- doc2bow(dictionary, docs)
+```
+
+Then convert to matrix market format and serialise, the function returns
+the path to the file.
+
+``` r
+(mm_corpus <- mmcorpus_serialize(corpus))
+```
+
+Then initialise a model.
+
+``` r
+model <- model_tfidf(mm_corpus)
+```
+
+``` r
+corpus_transformed <- corpora_transform(model, corpus)
+```
+
+``` r
+lsi <- model_lsi(corpus_transformed, dictionary)
+lsi$print_topics()
+
+wrapped_corpus <- wrap_corpus(lsi, corpus_transformed)
+wrapped_corpus_docs <- wrap_corpus_docs(wrapped_corpus)
 ```

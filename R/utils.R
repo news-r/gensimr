@@ -1,5 +1,7 @@
 globalVariables(
   c(
+    ".",
+    "name",
     "word",
     "text",
     "n",

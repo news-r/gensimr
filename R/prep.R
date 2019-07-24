@@ -38,7 +38,7 @@ preprocess.data.frame <- function(data, text, doc_id = NULL, min_freq = 1,
       id = !!id_enquo
     ) 
 
-  cat(crayon::yellow(cli::symbol$arrow_right), "Preprocessing", nrow(tokens), "documents\n")
+  cat(crayon::yellow(cli::symbol$arrow_right), "Preprocessing", crayon::blue(nrow(tokens)), "documents\n")
 
   if(!"id" %in% names(tokens))
     tokens <- dplyr::mutate(tokens, id = 1:dplyr::n())
@@ -52,7 +52,7 @@ preprocess.data.frame <- function(data, text, doc_id = NULL, min_freq = 1,
 preprocess.character <- function(data, doc_id = NULL, min_freq = 1, 
   lexicon = c("SMART", "snowball", "onix"), ...){
 
-  cat(crayon::yellow(cli::symbol$arrow_right), "Preprocessing", length(data), "documents\n")
+  cat(crayon::yellow(cli::symbol$arrow_right), "Preprocessing", crayon::blue(length(data)), "documents\n")
 
   if(is.null(doc_id))
     doc_id <- 1:length(data)
@@ -100,7 +100,7 @@ preprocess.factor <- preprocess.character
     lapply(as.list) %>% 
     purrr::set_names(ids)
 
-  cat(crayon::yellow(cli::symbol$arrow_left), length(filtered), "documents preprocessed\n")
+  cat(crayon::yellow(cli::symbol$arrow_left), crayon::blue(length(filtered)), "documents after perprocessing\n")
 
   invisible(filtered)
 }
