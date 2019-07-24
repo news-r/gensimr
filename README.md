@@ -83,7 +83,7 @@ Then convert to matrix market format and serialise, the function returns the pat
 
 ``` r
 (corpus_mm <- mmcorpus_serialize(corpus_bow))
-#> ℹ Path: /tmp/RtmpZL0HP3/file1b9f4108780d.mm 
+#> ℹ Path: /tmp/RtmpZL0HP3/file1b9f78f4d28e.mm 
 #>  ✔ Temp file
 ```
 
@@ -143,19 +143,7 @@ rp <- model_rp(corpus_transformed, id2word = dictionary)
 #> ⚠ Low number of topics
 
 wrapped_corpus <- wrap_corpus(rp, corpus_transformed)
-(wrapped_corpus_docs <- get_docs_topics(wrapped_corpus))
-#> # A tibble: 9 x 4
-#>   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
-#>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1             0         0.408             1         0.408
-#> 2             0         0.798             1         0.459
-#> 3             0        -0.590             1         0.590
-#> 4             0        -1.20              1         1.20 
-#> 5             0         0.564             1         0.324
-#> 6             0         0.707             1         0.707
-#> 7             1         1                NA        NA    
-#> 8             0        -0.492             1         1.21 
-#> 9             0        -0.324             1         0.324
+wrapped_corpus_docs <- get_docs_topics(wrapped_corpus)
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 

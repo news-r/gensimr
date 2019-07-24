@@ -2,19 +2,14 @@
 % Please edit documentation in R/models.R
 \name{wrap_corpus}
 \alias{wrap_corpus}
-\alias{get_docs_topics}
 \title{Transform Model}
 \usage{
 wrap_corpus(model, corpus)
-
-get_docs_topics(wrapped_corpus)
 }
 \arguments{
 \item{model}{A model as returned, for instance by \code{\link{model_lsi}}.}
 
 \item{corpus}{A corpus as returned by \code{\link{corpora_transform}}.}
-
-\item{wrapped_corpus}{Output of \code{\link{wrap_corpus}}.}
 }
 \description{
 Trasnform a corpus based on a model.

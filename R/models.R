@@ -201,7 +201,6 @@ model_lda.mm <- function(corpus, num_topics = 2L, ...){
 #' 
 #' @param model A model as returned, for instance by \code{\link{model_lsi}}.
 #' @param corpus A corpus as returned by \code{\link{corpora_transform}}.
-#' @param wrapped_corpus Output of \code{\link{wrap_corpus}}.
 #' 
 #' @name wrap_corpus
 #' @export
@@ -209,9 +208,18 @@ wrap_corpus <- function(model, corpus){
   model[corpus]
 }
 
-#' @rdname wrap_corpus
+#' Get Document Topics
+#' 
+#' @param transformed_corpus
+#' 
+#' @name get_docs_topics
 #' @export
-get_docs_topics <- function(wrapped_corpus){
+get_docs_topics <- function(transformed_corpus) UseMethod("get_docs_topics")
+
+#' @rdname get_docs_topics
+#' @method get_docs_topics gensim.interfaces.CorpusABC
+#' @export
+get_docs_topics.gensim.interfaces.CorpusABC <- function(transformed_corpus){
   l <- reticulate::py_len(wrapped_corpus)
 
   docs <- list()

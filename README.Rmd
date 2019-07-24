@@ -128,7 +128,7 @@ Note that we use the transformed corpus.
 rp <- model_rp(corpus_transformed, id2word = dictionary)
 
 wrapped_corpus <- wrap_corpus(rp, corpus_transformed)
-(wrapped_corpus_docs <- get_docs_topics(wrapped_corpus))
+wrapped_corpus_docs <- get_docs_topics(wrapped_corpus)
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
