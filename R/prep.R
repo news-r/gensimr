@@ -54,10 +54,10 @@ preprocess.character <- function(data, doc_id = NULL, min_freq = 1,
 
   cat(crayon::yellow(cli::symbol$arrow_right), "Preprocessing", length(data), "documents\n")
 
-  if(is.null(id))
-    id <- 1:length(data)
+  if(is.null(doc_id))
+    doc_id <- 1:length(data)
   
-  tibble::tibble(
+  tokens <- tibble::tibble(
     text = data,
     id = doc_id
   )
@@ -87,13 +87,17 @@ preprocess.factor <- preprocess.character
   filtered <- tokens %>% 
     dplyr::inner_join(token_count, by = "word") %>% 
     dplyr::group_by(id) %>% 
-    dplyr::summarise(text = paste(word, collapse = " "))
+    tidyr::nest(word)
+
+  filtered$data <- filtered$data %>% 
+    purrr::map(unlist) %>% 
+    purrr::map(unname)
   
   ids <- dplyr::pull(filtered, id) %>% unique()
 
   filtered <- filtered %>% 
-    dplyr::pull(text) %>% 
-    lapply(as.list)
+    dplyr::pull(data) %>% 
+    lapply(as.list) %>% 
     purrr::set_names(ids)
 
   cat(crayon::yellow(cli::symbol$arrow_left), length(filtered), "documents preprocessed\n")

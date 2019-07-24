@@ -4,11 +4,13 @@
 \alias{corpora_dictionary}
 \title{Create a dictionary}
 \usage{
-corpora_dictionary(docs)
+corpora_dictionary(docs, file = NULL)
 }
 \arguments{
 \item{docs}{A list of documents, for instance as returned by \code{\link{preprocess}}.}
+
+\item{file}{Path to save \code{.dict}.}
 }
 \description{
-Create a dictionarry from a list of documents.
+Create a dictionary from a list of documents.
 }

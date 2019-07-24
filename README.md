@@ -40,24 +40,25 @@ gensimr::install_gensim("./env") # install gensim in environment
 
 Use data from another [news-r](https://news-r.org) package.
 
-``` r
-# remotes::install_github("news-r/nethoser")
-data("webhoser", package = "nethoser")
-```
-
-Preprocess.
+Firdt we preprocess the corpus.
 
 ``` r
 library(gensimr)
 
-text <- preprocess(webhoser, text)
-#> → Preprocessing 272 documents
-#> ← 272 documents preprocessed
+text <- preprocess(corpus)
+#> → Preprocessing 9 documents
+#> ← 9 documents preprocessed
+```
+
+Once preprocessed we can build a dictionary.
+
+``` r
 dictionary <- corpora_dictionary(text)
+```
 
-#' save dictionary
-# dictionary$save("webhoser.dict")
+A dictionary essentially assigns an integer to each term.
 
+``` r
 dictionary$token2id
-#> Dict (266 items)
+#> Dict (12 items)
 ```

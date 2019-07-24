@@ -4,6 +4,7 @@ globalVariables(
     "text",
     "n",
     "id",
-    "tokens"
+    "tokens",
+    "data"
   )
 )
