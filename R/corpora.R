@@ -101,9 +101,9 @@ print.mm_file <- function(x, ...){
 read_serialized_mmcorpus <- function(file) UseMethod("read_serialized_mmcorpus")
 
 #' @rdname read_serialized_mmcorpus
-#' @method read_serialized_mmcorpus mm
+#' @method read_serialized_mmcorpus mm_file
 #' @export
-read_serialized_mmcorpus.mm <- function(file){
+read_serialized_mmcorpus.mm_file <- function(file){
   assert_that(!missing(file), msg = "Missing `file`")
   mm <- .as_mm(gensim$corpora$MmCorpus(file$file))
   invisible(mm)
@@ -116,17 +116,4 @@ read_serialized_mmcorpus.character <- function(file){
   assert_that(!missing(file), msg = "Missing `file`")
   mm <- .as_mm(gensim$corpora$MmCorpus(file))
   invisible(mm)
-}
-
-#' Transform Corpora
-#'
-#' Trasnform a corpus based on a model.
-#' 
-#' @param model A model as returned, for instance by \code{\link{model_tfidf}}.
-#' @param corpus A corpus as returned by \code{\link{doc2bow}}.
-#' 
-#' @export
-corpora_transform <- function(model, corpus){
-  transformed_corpus <- model[corpus]
-  structure(transformed_corpus, class = c(class(transformed_corpus), "transformed_corpus"))
 }

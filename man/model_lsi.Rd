@@ -2,16 +2,16 @@
 % Please edit documentation in R/models.R
 \name{model_lsi}
 \alias{model_lsi}
-\alias{model_lsi.transformed_corpus}
+\alias{model_lsi.wrapped}
 \title{Latent Semantic Indexing Model}
 \usage{
 model_lsi(corpus, num_topics = 2L, distributed = FALSE, ...)
 
-\method{model_lsi}{transformed_corpus}(corpus, num_topics = 2L,
+\method{model_lsi}{wrapped}(corpus, num_topics = 2L,
   distributed = FALSE, ...)
 }
 \arguments{
-\item{corpus}{Model as returned by \code{\link{corpora_transform}}. A tf-idf/bag-of-words transformation is recommended for LSI.}
+\item{corpus}{Model as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.}
 
 \item{num_topics}{Number of requested factors (latent dimensions).}
 

@@ -5,12 +5,12 @@
 \alias{get_docs_topics.gensim.interfaces.CorpusABC}
 \title{Get Document Topics}
 \usage{
-get_docs_topics(transformed_corpus)
+get_docs_topics(corpus)
 
-\method{get_docs_topics}{gensim.interfaces.CorpusABC}(transformed_corpus)
+\method{get_docs_topics}{gensim.interfaces.CorpusABC}(corpus)
 }
 \arguments{
-\item{transformed_corpus}{}
+\item{corpus}{Corpus.}
 }
 \description{
 Get Document Topics

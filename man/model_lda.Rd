@@ -17,7 +17,7 @@ model_lda(corpus, num_topics = 2L, ...)
 
 \item{num_topics}{Number of requested factors (latent dimensions).}
 
-\item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/rpmodel.html}{official documentation}.}
+\item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/ldamodel.html}{official documentation}.}
 }
 \description{
 Transformation from bag-of-words counts into a topic space of lower dimensionality. 

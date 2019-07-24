@@ -34,8 +34,8 @@ reticulate::use_virtualenv(my_env) # force reticulate to use env
 gensimr::install_gensim(my_env) # install gensim in environment
 ```
 
-Example
--------
+Topics
+------
 
 First we preprocess the corpus using example data, a tiny corpus of 9 documents.
 
@@ -83,7 +83,7 @@ Then convert to matrix market format and serialise, the function returns the pat
 
 ``` r
 (corpus_mm <- mmcorpus_serialize(corpus_bow))
-#> ℹ Path: /tmp/RtmpZL0HP3/file1b9f78f4d28e.mm 
+#> ℹ Path: /tmp/RtmpN21h1S/file2d394241c671.mm 
 #>  ✔ Temp file
 ```
 
@@ -96,7 +96,7 @@ tfidf <- model_tfidf(corpus_mm)
 We can then use the model to transform our original corpus.
 
 ``` r
-corpus_transformed <- corpora_transform(tfidf, corpus_bow)
+corpus_transformed <- wrap(tfidf, corpus_bow)
 ```
 
 Finally, we can build models, the number of topics of `model_*` functions defautls to 2, which is too low for what we generally would do with gensimr but works for the low number of documents we have.
@@ -109,13 +109,13 @@ Note that we use the transformed corpus.
 lsi <- model_lsi(corpus_transformed, id2word = dictionary)
 #> ⚠ Low number of topics
 lsi$print_topics()
-#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
+#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
 ```
 
 We can then wrap the model around the corpus to extract further information, below we extract how each document contribute to each dimension (topic).
 
 ``` r
-wrapped_corpus <- wrap_corpus(lsi, corpus_transformed)
+wrapped_corpus <- wrap(lsi, corpus_transformed)
 (wrapped_corpus_docs <- get_docs_topics(wrapped_corpus))
 #> # A tibble: 9 x 4
 #>   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
@@ -142,7 +142,7 @@ Note that we use the transformed corpus.
 rp <- model_rp(corpus_transformed, id2word = dictionary)
 #> ⚠ Low number of topics
 
-wrapped_corpus <- wrap_corpus(rp, corpus_transformed)
+wrapped_corpus <- wrap(rp, corpus_transformed)
 wrapped_corpus_docs <- get_docs_topics(wrapped_corpus)
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
@@ -163,3 +163,36 @@ plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+
+Similarity
+----------
+
+``` r
+corpus_mm <- mmcorpus_serialize(corpus_bow)
+mm <- read_serialized_mmcorpus(corpus_mm)
+wrapped_lsi <- wrap(lsi, mm)
+index <- similarity_matrix(wrapped_lsi)
+
+vec_lsi <- dictionary$doc2bow(c("human", "computer", "interaction"))
+sims <- wrap(index, vec_lsi)
+
+x <- reticulate::py_to_r(sims)
+tibble::tibble(
+  doc = 1:reticulate::py_len(sims),
+  cosine = x
+) %>% 
+  dplyr::mutate(doc = doc - 1) %>% 
+  dplyr::arrange(-cosine)
+#> # A tibble: 9 x 2
+#>     doc cosine
+#>   <dbl>  <dbl>
+#> 1     5  0.847
+#> 2     6  0.827
+#> 3     7  0.811
+#> 4     8  0.665
+#> 5     1 -0.518
+#> 6     4 -0.575
+#> 7     2 -0.612
+#> 8     0 -0.612
+#> 9     3 -0.616
+```

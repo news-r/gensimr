@@ -90,7 +90,7 @@ model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, s
 #' 
 #' Transform into a latent n dimensional space via Latent Semantic Indexing.
 #' 
-#' @param corpus Model as returned by \code{\link{corpora_transform}}. A tf-idf/bag-of-words transformation is recommended for LSI.
+#' @param corpus Model as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.
 #' @param num_topics Number of requested factors (latent dimensions).
 #' @param distributed If \code{TRUE} - distributed mode (parallel execution on several machines) will be used.
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/lsimodel.html}{official documentation}.
@@ -103,9 +103,9 @@ model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, s
 model_lsi <- function(corpus, num_topics = 2L, distributed = FALSE, ...) UseMethod("model_lsi")
 
 #' @rdname model_lsi
-#' @method model_lsi transformed_corpus
+#' @method model_lsi wrapped
 #' @export
-model_lsi.transformed_corpus <- function(corpus, num_topics = 2L, distributed = FALSE, ...){
+model_lsi.wrapped <- function(corpus, num_topics = 2L, distributed = FALSE, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
   num_topics <- as.integer(num_topics) # enforce integer
 
@@ -119,7 +119,7 @@ model_lsi.transformed_corpus <- function(corpus, num_topics = 2L, distributed = 
 #' Reduce vector space dimensionality. This is a very efficient (both memory- and CPU-friendly) 
 #' approach to approximating TfIdf distances between documents, by throwing in a little randomness.
 #' 
-#' @param corpus Model as returned by \code{\link{corpora_transform}}. A tf-idf/bag-of-words transformation is recommended for LSI.
+#' @param corpus Model as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.
 #' @param num_topics Number of requested factors (latent dimensions).
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/rpmodel.html}{official documentation}.
 #' 
@@ -131,9 +131,9 @@ model_lsi.transformed_corpus <- function(corpus, num_topics = 2L, distributed = 
 model_rp <- function(corpus, num_topics = 2L, ...) UseMethod("model_rp")
 
 #' @rdname model_rp
-#' @method model_rp transformed_corpus
+#' @method model_rp wrapped
 #' @export
-model_rp.transformed_corpus <- function(corpus, num_topics = 2L, ...){
+model_rp.wrapped <- function(corpus, num_topics = 2L, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
   num_topics <- as.integer(num_topics) # enforce integer
 
@@ -152,7 +152,7 @@ model_rp.transformed_corpus <- function(corpus, num_topics = 2L, ...){
 #' 
 #' @param corpus Model as returned by \code{\link{mmcorpus_serialize}}.
 #' @param num_topics Number of requested factors (latent dimensions).
-#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/rpmodel.html}{official documentation}.
+#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/ldamodel.html}{official documentation}.
 #' 
 #' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
 #' 
@@ -195,36 +195,23 @@ model_lda.mm <- function(corpus, num_topics = 2L, ...){
   invisible(model)
 }
 
-#' Transform Model
-#'
-#' Trasnform a corpus based on a model.
-#' 
-#' @param model A model as returned, for instance by \code{\link{model_lsi}}.
-#' @param corpus A corpus as returned by \code{\link{corpora_transform}}.
-#' 
-#' @name wrap_corpus
-#' @export
-wrap_corpus <- function(model, corpus){
-  model[corpus]
-}
-
 #' Get Document Topics
 #' 
-#' @param transformed_corpus
+#' @param corpus Corpus.
 #' 
 #' @name get_docs_topics
 #' @export
-get_docs_topics <- function(transformed_corpus) UseMethod("get_docs_topics")
+get_docs_topics <- function(corpus) UseMethod("get_docs_topics")
 
 #' @rdname get_docs_topics
 #' @method get_docs_topics gensim.interfaces.CorpusABC
 #' @export
-get_docs_topics.gensim.interfaces.CorpusABC <- function(transformed_corpus){
-  l <- reticulate::py_len(wrapped_corpus)
+get_docs_topics.gensim.interfaces.CorpusABC <- function(corpus){
+  l <- reticulate::py_len(corpus)
 
   docs <- list()
   for(i in 1:l){
-    doc <- reticulate::py_to_r(wrapped_corpus[i - 1])
+    doc <- reticulate::py_to_r(corpus[i - 1])
     docs <- append(docs, list(doc))
   }
 
