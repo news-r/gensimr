@@ -60,6 +60,8 @@ library(gensimr)
 
 data(corpus, package = "gensimr")
 
+print(corpus)
+
 docs <- preprocess(corpus)
 ```
 
@@ -70,10 +72,6 @@ dictionary <- corpora_dictionary(docs)
 ```
 
 A dictionary essentially assigns an integer to each term.
-
-```{r}
-reticulate::py_to_r(dictionary$token2id)
-```
 
 `doc2bow` simply applies the method of the same name to every documents (see example below); it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector. 
 

@@ -44,6 +44,17 @@ library(gensimr)
 
 data(corpus, package = "gensimr")
 
+print(corpus)
+#> [1] "Human machine interface for lab abc computer applications"    
+#> [2] "A survey of user opinion of computer system response time"    
+#> [3] "The EPS user interface management system"                     
+#> [4] "System and human system engineering testing of EPS"           
+#> [5] "Relation of user perceived response time to error measurement"
+#> [6] "The generation of random binary unordered trees"              
+#> [7] "The intersection graph of paths in trees"                     
+#> [8] "Graph minors IV Widths of trees and well quasi ordering"      
+#> [9] "Graph minors A survey"
+
 docs <- preprocess(corpus)
 #> → Preprocessing 9 documents
 #> ← 9 documents after perprocessing
@@ -56,45 +67,6 @@ dictionary <- corpora_dictionary(docs)
 ```
 
 A dictionary essentially assigns an integer to each term.
-
-``` r
-reticulate::py_to_r(dictionary$token2id)
-#> $computer
-#> [1] 0
-#> 
-#> $human
-#> [1] 1
-#> 
-#> $interface
-#> [1] 2
-#> 
-#> $response
-#> [1] 3
-#> 
-#> $survey
-#> [1] 4
-#> 
-#> $system
-#> [1] 5
-#> 
-#> $time
-#> [1] 6
-#> 
-#> $user
-#> [1] 7
-#> 
-#> $eps
-#> [1] 8
-#> 
-#> $trees
-#> [1] 9
-#> 
-#> $graph
-#> [1] 10
-#> 
-#> $minors
-#> [1] 11
-```
 
 `doc2bow` simply applies the method of the same name to every documents (see example below); it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector.
 
@@ -111,7 +83,7 @@ Then convert to matrix market format and serialise, the function returns the pat
 
 ``` r
 (corpus_mm <- mmcorpus_serialize(corpus_bow))
-#> ℹ Path: /tmp/RtmpZL0HP3/file1b9f2031ea59.mm 
+#> ℹ Path: /tmp/RtmpZL0HP3/file1b9f4108780d.mm 
 #>  ✔ Temp file
 ```
 
@@ -137,7 +109,7 @@ Note that we use the transformed corpus.
 lsi <- model_lsi(corpus_transformed, id2word = dictionary)
 #> ⚠ Low number of topics
 lsi$print_topics()
-#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"response" + -0.320*"time" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
+#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
 ```
 
 We can then wrap the model around the corpus to extract further information, below we extract how each document contribute to each dimension (topic).
@@ -160,7 +132,7 @@ wrapped_corpus <- wrap_corpus(lsi, corpus_transformed)
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 ### Random Projections
 
@@ -175,19 +147,19 @@ wrapped_corpus <- wrap_corpus(rp, corpus_transformed)
 #> # A tibble: 9 x 4
 #>   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1             0        -0.408             1        -0.408
-#> 2             0        -0.169             1        -1.26 
-#> 3             0         0.590             1         0.808
-#> 4             0        -0.188             1        -0.508
-#> 5             0         0.324             1        -0.564
-#> 6             0         0.707             1        -0.707
-#> 7             0         1                NA        NA    
-#> 8             0         0.227             1         0.492
-#> 9             0        -0.564             1         0.324
+#> 1             0         0.408             1         0.408
+#> 2             0         0.798             1         0.459
+#> 3             0        -0.590             1         0.590
+#> 4             0        -1.20              1         1.20 
+#> 5             0         0.564             1         0.324
+#> 6             0         0.707             1         0.707
+#> 7             1         1                NA        NA    
+#> 8             0        -0.492             1         1.21 
+#> 9             0        -0.324             1         0.324
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 ### Latent Dirichlet Allocation
 
@@ -202,4 +174,4 @@ wrapped_corpus_docs <- get_docs_topics(lda_topics)
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
