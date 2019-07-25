@@ -190,11 +190,35 @@ Clean up, delete the corpus.
 delete_mmcorpus(corpus_mm)
 ```
 
+### word2vec
+
+Word2vec works somewhat differently. The example below is a reproduction of the Kaggle [Gensim Word2Vec Tutorial](https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model).
+
+```{r}
+# initialise
+word2vec <- model_word2vec(size = 100L, window = 5L, min_count = 1L)
+word2vec$build_vocab(unname(docs)) 
+word2vec$train(unname(docs), total_examples = word2vec$corpus_count, epochs = 20L)
+word2vec$init_sims(replace = TRUE)
+```
+
+Now we can explore the model.
+
+```{r}
+word2vec$wv$most_similar(positive = c("interface"))
+```
+
+We expect "trees" to be the odd one out, it is a term that was in a different topic (\#2) whereas other terms were in topics \#1.
+
+```{r}
+word2vec$wv$doesnt_match(c("human", "interface", "trees"))
+```
+
 ## Downloader
 
 You can download external datasets to easily build models.
 
-```r
+```{r, cache=TRUE}
 dataset <- "glove-twitter-25"
 
 # info about model

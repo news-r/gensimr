@@ -248,6 +248,23 @@ model_hdp.mm <- function(corpus, id2word, ...){
   invisible(model)
 }
 
+#' Word2Vec Model
+#' 
+#' The word2vec algorithms include skip-gram and CBOW models, using either hierarchical softmax or negative sampling.
+#' 
+#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/word2vec.html}{official documentation}.
+#' 
+#' @details This is a non-parametric bayesian method: notice the lack of \code{num_topics} argument.
+#' 
+#' @name model_word2vec
+#' 
+#' @export
+model_word2vec <- function(...){
+  model <- gensim$models$Word2Vec(...)  
+  invisible(model)
+}
+
+
 #' Get Document Topics
 #' 
 #' @param corpus Corpus.
