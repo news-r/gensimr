@@ -1,6 +1,8 @@
 globalVariables(
   c(
     ".",
+    "cosine",
+    "doc",
     "name",
     "word",
     "text",

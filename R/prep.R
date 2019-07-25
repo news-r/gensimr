@@ -72,7 +72,7 @@ preprocess.factor <- preprocess.character
 
 .get_tokens <- function(tokens, min_freq = 1, lexicon = c("SMART", "snowball", "onix")){
 
-  assert_that(min_freq >= 1)
+  assert_that(min_freq >= 0)
   lexicon <- match.arg(lexicon)
 
   sw <- tidytext::stop_words %>% 
