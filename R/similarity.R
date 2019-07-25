@@ -19,7 +19,7 @@ similarity_matrix.wrapped <- function(corpus, ...){
 #' 
 #' Returns Documents by order of similarity.
 #' 
-#' @param sim A wrapped similarity.
+#' @param sim A wrapped similarity, output of \code{\link{wrap}}.
 #' 
 #' @return Documents by order of similarity, 
 #' the most similar at the top and the least similar at the bottom.
@@ -34,9 +34,9 @@ get_similarity <- function(sim) UseMethod("get_similarity")
 #' @export
 get_similarity.wrapped <- function(sim){
   x <- reticulate::py_to_r(sim)
-  tibble::tibble(
+  tibble::tibble( 
     doc = 1:length(x),
-    cosine = x
+    cosine = x[1,]
   ) %>% 
     dplyr::mutate(doc = doc - 1) %>% 
     dplyr::arrange(-cosine)

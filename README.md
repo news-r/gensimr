@@ -1,15 +1,23 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) [![Travis build status](https://travis-ci.org/news-r/gensimr.svg?branch=master)](https://travis-ci.org/news-r/gensimr) <!-- badges: end -->
 
-gensimr
-=======
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build
+status](https://travis-ci.org/news-r/gensimr.svg?branch=master)](https://travis-ci.org/news-r/gensimr)
+<!-- badges: end -->
 
-Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale topic modeling.
+# gensimr
 
-Installation
-------------
+Brings [gensim](https://radimrehurek.com/gensim) to R: efficient
+large-scale topic modeling.
+
+⚠️ Notice the “Experimental” lifecycle badge: things won’t work, stuff
+will break.
+
+## Installation
 
 Install the package.
 
@@ -24,20 +32,24 @@ Install the python dependency.
 gensimr::install_gensim()
 ```
 
-Ideally one should use a virtual environment and pass it to `install_gensim`, only do this once.
+Ideally one should use a virtual environment and pass it to
+`install_gensim`, only do this once.
 
 ``` r
+# replace with path of your choice
 my_env <- "./env"
+
+# run this (works on unix)
 args <- paste("-m venv", env)
 system2("python3", args) # create environment
 reticulate::use_virtualenv(my_env) # force reticulate to use env
 gensimr::install_gensim(my_env) # install gensim in environment
 ```
 
-Topics
-------
+## Topics
 
-First we preprocess the corpus using example data, a tiny corpus of 9 documents.
+First we preprocess the corpus using example data, a tiny corpus of 9
+documents.
 
 ``` r
 library(gensimr)
@@ -68,7 +80,10 @@ dictionary <- corpora_dictionary(docs)
 
 A dictionary essentially assigns an integer to each term.
 
-`doc2bow` simply applies the method of the same name to every documents (see example below); it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector.
+`doc2bow` simply applies the method of the same name to every documents
+(see example below); it counts the number of occurrences of each
+distinct word, converts the word to its integer word id and returns the
+result as a sparse vector.
 
 ``` r
 # native method to a single document
@@ -79,15 +94,18 @@ dictionary$doc2bow(docs[[1]])
 corpus_bow <- doc2bow(dictionary, docs)
 ```
 
-Then convert to matrix market format and serialise, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created.
+Then convert to matrix market format and serialise, the function returns
+the path to the file (this is saved on disk for efficiency), if no path
+is passed then a temp file is created.
 
 ``` r
 (corpus_mm <- mmcorpus_serialize(corpus_bow))
-#> ℹ Path: /tmp/RtmpN21h1S/file2d394a47799a.mm 
+#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpcYNbSs/file13c137d20faf.mm 
 #>  ✔ Temp file
 ```
 
-Then initialise a model, we're going to use a Latent Similarity Indexing method later on (`model_lsi`) which requires td-idf.
+Then initialise a model, we’re going to use a Latent Similarity Indexing
+method later on (`model_lsi`) which requires td-idf.
 
 ``` r
 tfidf <- model_tfidf(corpus_mm)
@@ -99,7 +117,9 @@ We can then use the model to transform our original corpus.
 corpus_transformed <- wrap(tfidf, corpus_bow)
 ```
 
-Finally, we can build models, the number of topics of `model_*` functions defautls to 2, which is too low for what we generally would do with gensimr but works for the low number of documents we have.
+Finally, we can build models, the number of topics of `model_*`
+functions defautls to 2, which is too low for what we generally would do
+with gensimr but works for the low number of documents we have.
 
 ### Latent Similarity Index
 
@@ -112,7 +132,9 @@ lsi$print_topics()
 #> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
 ```
 
-We can then wrap the model around the corpus to extract further information, below we extract how each document contribute to each dimension (topic).
+We can then wrap the model around the corpus to extract further
+information, below we extract how each document contribute to each
+dimension (topic).
 
 ``` r
 wrapped_corpus <- wrap(lsi, corpus_transformed)
@@ -164,14 +186,17 @@ plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 
 <img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
-Similarity
-----------
+## Similarity
 
 ``` r
 corpus_mm <- mmcorpus_serialize(corpus_bow)
 mm <- read_serialized_mmcorpus(corpus_mm)
 
-vec_bow <- dictionary$doc2bow(c("human", "computer", "interaction"))
+new_document <- "A human and computer interaction"
+preprocessed_new_document <- preprocess(new_document, min_freq = 0)
+#> → Preprocessing 1 documents
+#> ← 1 documents after perprocessing
+vec_bow <- doc2bow(dictionary, preprocessed_new_document)
 vec_lsi <- wrap(lsi, vec_bow)
 
 wrapped_lsi <- wrap(lsi, mm)
@@ -179,13 +204,7 @@ index <- similarity_matrix(wrapped_lsi)
 
 sims <- wrap(index, vec_lsi)
 
-x <- reticulate::py_to_r(sims)
-tibble::tibble(
-  doc = 1:reticulate::py_len(sims),
-  cosine = x
-) %>% 
-  dplyr::mutate(doc = doc - 1) %>% 
-  dplyr::arrange(-cosine)
+get_similarity(sims)
 #> # A tibble: 9 x 2
 #>     doc  cosine
 #>   <dbl>   <dbl>

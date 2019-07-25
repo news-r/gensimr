@@ -10,7 +10,7 @@ get_similarity(sim)
 \method{get_similarity}{wrapped}(sim)
 }
 \arguments{
-\item{sim}{A wrapped similarity.}
+\item{sim}{A wrapped similarity, output of \code{\link{wrap}}.}
 }
 \value{
 Documents by order of similarity, 

@@ -26,6 +26,8 @@ reticulate::use_virtualenv("./env")
 
 Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale topic modeling.
 
+⚠️ Notice the "Experimental" lifecycle badge: things won't work, stuff will break.
+
 ## Installation
 
 Install the package.
@@ -44,7 +46,10 @@ gensimr::install_gensim()
 Ideally one should use a virtual environment and pass it to `install_gensim`, only do this once.
 
 ```r
+# replace with path of your choice
 my_env <- "./env"
+
+# run this (works on unix)
 args <- paste("-m venv", env)
 system2("python3", args) # create environment
 reticulate::use_virtualenv(my_env) # force reticulate to use env
