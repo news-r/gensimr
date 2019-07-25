@@ -65,7 +65,7 @@ model_tfidf.mm_file <- function(mm, normalize = FALSE, smart = "nfc", pivot = NU
   )
 
   # unlink temp
-  if(mm$temp) unlink(mm$file)
+  if(mm$temp && mm$delete) unlink(mm$file)
 
   invisible(model)
 }
@@ -175,7 +175,7 @@ model_lda.mm_file <- function(corpus, num_topics = 2L, ...){
   model <- gensim$models$LdaModel(corpus_read, num_topics = num_topics, ...)
 
   # unlink temp
-  if(corpus$temp) unlink(corpus$file)
+  if(corpus$temp && corpus$delete) unlink(corpus$file)
   
   invisible(model)
 }
@@ -231,7 +231,7 @@ model_hdp.mm_file <- function(corpus, id2word, ...){
   model <- gensim$models$HdpModel(corpus_read, id2word, ...)
 
   # unlink temp
-  if(corpus$temp) unlink(corpus$file)
+  if(corpus$temp && corpus$delete) unlink(corpus$file)
   
   invisible(model)
 }

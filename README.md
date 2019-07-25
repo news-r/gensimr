@@ -9,8 +9,6 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 status](https://travis-ci.org/news-r/gensimr.svg?branch=master)](https://travis-ci.org/news-r/gensimr)
 <!-- badges: end -->
 
-# gensimr
-
 ![gensim official
 logo](https://radimrehurek.com/gensim/_static/images/gensim.png)
 
@@ -103,14 +101,17 @@ dictionary$doc2bow(docs[[1]])
 corpus_bow <- doc2bow(dictionary, docs)
 ```
 
-Then convert to matrix market format and serialise, the function returns
-the path to the file (this is saved on disk for efficiency), if no path
-is passed then a temp file is created.
+Then serialise to matrix market format, the function returns the path to
+the file (this is saved on disk for efficiency), if no path is passed
+then a temp file is created. Here we set `auto_delete` to `FALSE`
+otherwise the corpus is deleted after first use. Note this means you
+should manually delete it with `delete_mmcorpus`.
 
 ``` r
-(corpus_mm <- mmcorpus_serialize(corpus_bow))
-#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpGeGt5K/file1a938b20793.mm 
+(corpus_mm <- serialize_mmcorpus(corpus_bow, auto_delete = FALSE))
+#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmprGjq2r/file28813adc9934.mm 
 #>  ✔ Temp file
+#>  ✖ Delete after use
 ```
 
 Then initialise a model, we’re going to use a Latent Similarity Indexing
@@ -142,7 +143,7 @@ Note that we use the transformed corpus.
 lsi <- model_lsi(corpus_transformed, id2word = dictionary)
 #> ⚠ Low number of topics
 lsi$print_topics()
-#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
+#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '0.460*"system" + 0.373*"user" + 0.332*"eps" + 0.328*"interface" + 0.320*"response" + 0.320*"time" + 0.293*"computer" + 0.280*"human" + 0.171*"survey" + -0.161*"trees"')]
 ```
 
 We can then wrap the model around the corpus to extract further
@@ -155,15 +156,15 @@ wrapped_corpus <- wrap(lsi, corpus_transformed)
 #> # A tibble: 9 x 4
 #>   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1             0        0.0660             1       -0.520 
-#> 2             0        0.197              1       -0.761 
-#> 3             0        0.0899             1       -0.724 
-#> 4             0        0.0759             1       -0.632 
-#> 5             0        0.102              1       -0.574 
-#> 6             0        0.703              1        0.161 
-#> 7             0        0.877              1        0.168 
-#> 8             0        0.910              1        0.141 
-#> 9             0        0.617              1       -0.0539
+#> 1             0        0.0660             1        0.520 
+#> 2             0        0.197              1        0.761 
+#> 3             0        0.0899             1        0.724 
+#> 4             0        0.0759             1        0.632 
+#> 5             0        0.102              1        0.574 
+#> 6             0        0.703              1       -0.161 
+#> 7             0        0.877              1       -0.168 
+#> 8             0        0.910              1       -0.141 
+#> 9             0        0.617              1        0.0539
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
@@ -189,7 +190,6 @@ plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 Note that we use the original, non-transformed corpus.
 
 ``` r
-corpus_mm <- mmcorpus_serialize(corpus_bow)
 lda <- model_lda(corpus_mm, id2word = dictionary)
 #> ⚠ Low number of topics
 lda_topics <- lda$get_document_topics(corpus_bow)
@@ -202,47 +202,46 @@ plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ### Hierarchical Dirichlet Process
 
 ``` r
-corpus_mm <- mmcorpus_serialize(corpus_bow)
 hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [[1]]
 #> [[1]][[1]]
-#> [1] "computer"
+#> [1] "user"
 #> 
 #> [[1]][[2]]
-#> [1] 0.2173036
+#> [1] 0.306301
 #> 
 #> 
 #> [[2]]
 #> [[2]][[1]]
-#> [1] "response"
+#> [1] "trees"
 #> 
 #> [[2]][[2]]
-#> [1] 0.1365744
+#> [1] 0.1372399
 #> 
 #> 
 #> [[3]]
 #> [[3]][[1]]
-#> [1] "system"
+#> [1] "computer"
 #> 
 #> [[3]][[2]]
-#> [1] 0.1095201
+#> [1] 0.098577
 #> 
 #> 
 #> [[4]]
 #> [[4]][[1]]
-#> [1] "user"
+#> [1] "system"
 #> 
 #> [[4]][[2]]
-#> [1] 0.1062947
+#> [1] 0.09821121
 #> 
 #> 
 #> [[5]]
 #> [[5]][[1]]
-#> [1] "trees"
+#> [1] "minors"
 #> 
 #> [[5]][[2]]
-#> [1] 0.09769184
+#> [1] 0.08178417
 ```
 
 ## Document Similarity
@@ -251,7 +250,6 @@ Reproducing [tutorial on
 similarity](https://radimrehurek.com/gensim/tut3.html#similarity-interface).
 
 ``` r
-corpus_mm <- mmcorpus_serialize(corpus_bow)
 mm <- read_serialized_mmcorpus(corpus_mm)
 
 new_document <- "A human and computer interaction"
@@ -281,13 +279,8 @@ get_similarity(sims)
 #> 9     5 -0.0880
 ```
 
-> The thing to note here is that documents no. 2 (“The EPS user
-> interface management system”) and 4 (“Relation of user perceived
-> response time to error measurement”) would never be returned by a
-> standard boolean fulltext search, because they do not share any common
-> words with “Human computer interaction”. However, after applying LSI,
-> we can observe that both of them received quite high similarity scores
-> (no. 2 is actually the most similar\!), which corresponds better to
-> our intuition of them sharing a “computer-human” related topic with
-> the query. In fact, this semantic generalization is the reason why we
-> apply transformations and do topic modelling in the first place.
+Clean up, delete the corpus.
+
+``` r
+delete_mmcorpus(corpus_mm)
+```

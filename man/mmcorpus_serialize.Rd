@@ -2,21 +2,36 @@
 % Please edit documentation in R/corpora.R
 \name{mmcorpus_serialize}
 \alias{mmcorpus_serialize}
+\alias{serialize_mmcorpus}
 \alias{as_serialized_mmcorpus}
+\alias{delete_mmcorpus}
 \title{Serialise Matrix Market Corpus}
 \usage{
-mmcorpus_serialize(corpus, file = NULL)
+serialize_mmcorpus(corpus, file = NULL, auto_delete = TRUE)
 
 as_serialized_mmcorpus(file)
+
+delete_mmcorpus(file)
 }
 \arguments{
 \item{corpus}{A corpus as returned by \code{\link{doc2bow}}.}
 
 \item{file}{Path to a \code{.mm} file (recommended), if \code{NULL} it is saved to a temp file.}
+
+\item{auto_delete}{Wether to automatically delete the temp file after first use.}
 }
 \value{
 An object of class \code{mm_file} which holds the path to the \code{file} and metadata.
 }
 \description{
-Wrap a term-document matrix on disk.
+Serialise a term-document matrix on disk.
 }
+\section{Functions}{
+
+\itemize{
+  \item{\code{serialize_mmcorpus} - Serialize the corpus}  
+  \item{\code{as_serialized_mmcorpus} - Create an \code{mm_file} from an already created corpus file.}  
+  \item{\code{delete_mmcorpus} - Delete temp corpus.}  
+}
+}
+

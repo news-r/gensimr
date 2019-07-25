@@ -42,51 +42,78 @@ doc2bow <- function(dictionary, docs){
 
 #' Serialise Matrix Market Corpus
 #' 
-#' Wrap a term-document matrix on disk.
+#' Serialise a term-document matrix on disk.
 #'
 #' @param corpus A corpus as returned by \code{\link{doc2bow}}.
 #' @param file Path to a \code{.mm} file (recommended), if \code{NULL} it is saved to a temp file.
+#' @param auto_delete Wether to automatically delete the temp file after first use.
+#' 
+#' @section Functions:
+#' \itemize{
+#'   \item{\code{serialize_mmcorpus} - Serialize the corpus}  
+#'   \item{\code{as_serialized_mmcorpus} - Create an \code{mm_file} from an already created corpus file.}  
+#'   \item{\code{delete_mmcorpus} - Delete temp corpus.}  
+#' }
 #' 
 #' @return An object of class \code{mm_file} which holds the path to the \code{file} and metadata.
 #' 
 #' @name mmcorpus_serialize
 #' 
 #' @export
-mmcorpus_serialize <- function(corpus, file = NULL){
+serialize_mmcorpus <- function(corpus, file = NULL, auto_delete = TRUE){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
 
-  temp <- FALSE
+  if(!is.null(file) && auto_delete)
+    cat(crayon::yellow(cli::symbol$warning), "`auto_delete` only works when `file` is NULL\n")
+
+  # initialise
+  temp <- delete <- FALSE
   if(is.null(file)){
     temp <- TRUE
+
+    if(auto_delete) delete <- TRUE
     file <- tempfile(fileext = ".mm")
   }
 
   gensim$corpora$MmCorpus$serialize(file, corpus)
 
-  .as_mm_file(file, temp = temp)
+  .as_mm_file(file, temp = temp, delete = delete)
 }
 
 #' @rdname mmcorpus_serialize
 #' @export
 as_serialized_mmcorpus <- function(file){
-  .as_mm_file(file, temp = FALSE)
+  .as_mm_file(file, temp = FALSE, delete = FALSE)
 }
 
-.as_mm_file <- function(file, temp = FALSE){
-  obj <- list(file = file, temp = temp)
+#' @rdname mmcorpus_serialize
+#' @export
+delete_mmcorpus <- function(file){
+  if(!file$temp)
+    cat(crayon::yellow(cli::symbol$warning), "Not a temp file\n")
+  else {
+    cat(crayon::green(cli::symbol$tick), "Temp unlinked\n")
+    unlink(file$file, recursive = TRUE, force = TRUE)
+  } 
+}
+
+.as_mm_file <- function(file, temp = FALSE, delete = FALSE){
+  obj <- list(file = file, temp = temp, delete = delete)
   structure(obj, class = c(class(obj), "mm_file"))
 }
 
-.as_mm <- function(mm, temp = FALSE){
+.as_mm <- function(mm){
   structure(mm, class = c(class(mm), "mm"))
 }
 
 #' @export
 print.mm_file <- function(x, ...){
   tick_cross <- ifelse(x$temp, crayon::green(cli::symbol$tick), crayon::red(cli::symbol$cross))
+  delete_use <- ifelse(x$delete, crayon::green(cli::symbol$tick), crayon::red(cli::symbol$cross))
   cat(
     crayon::blue(cli::symbol$info), "Path:", x$file, "\n",
-    tick_cross, "Temp file", "\n"
+    tick_cross, "Temp file\n",
+    delete_use, "Delete after use\n"
   )
 }
 

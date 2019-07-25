@@ -22,8 +22,6 @@ reticulate::use_virtualenv("./env")
 [![Travis build status](https://travis-ci.org/news-r/gensimr.svg?branch=master)](https://travis-ci.org/news-r/gensimr)
 <!-- badges: end -->
 
-# gensimr
-
 ![gensim official logo](https://radimrehurek.com/gensim/_static/images/gensim.png)
 
 Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale topic modeling.
@@ -95,10 +93,10 @@ dictionary$doc2bow(docs[[1]])
 corpus_bow <- doc2bow(dictionary, docs)
 ```
 
-Then convert to matrix market format and serialise, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created.
+Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set `auto_delete` to `FALSE` otherwise the corpus is deleted after first use. Note this means you should manually delete it with `delete_mmcorpus`.
 
 ```{r}
-(corpus_mm <- mmcorpus_serialize(corpus_bow))
+(corpus_mm <- serialize_mmcorpus(corpus_bow, auto_delete = FALSE))
 ```
 
 Then initialise a model, we're going to use a Latent Similarity Indexing method later on (`model_lsi`) which requires td-idf.
@@ -151,7 +149,6 @@ plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 Note that we use the original, non-transformed corpus.
 
 ```{r}
-corpus_mm <- mmcorpus_serialize(corpus_bow)
 lda <- model_lda(corpus_mm, id2word = dictionary)
 lda_topics <- lda$get_document_topics(corpus_bow)
 wrapped_corpus_docs <- get_docs_topics(lda_topics)
@@ -161,7 +158,6 @@ plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ### Hierarchical Dirichlet Process
 
 ```{r}
-corpus_mm <- mmcorpus_serialize(corpus_bow)
 hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 ```
@@ -171,7 +167,6 @@ reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 Reproducing [tutorial on similarity](https://radimrehurek.com/gensim/tut3.html#similarity-interface).
 
 ```{r}
-corpus_mm <- mmcorpus_serialize(corpus_bow)
 mm <- read_serialized_mmcorpus(corpus_mm)
 
 new_document <- "A human and computer interaction"
@@ -187,4 +182,8 @@ sims <- wrap(index, vec_lsi)
 get_similarity(sims)
 ```
 
-> The thing to note here is that documents no. 2 ("The EPS user interface management system") and 4 ("Relation of user perceived response time to error measurement") would never be returned by a standard boolean fulltext search, because they do not share any common words with "Human computer interaction". However, after applying LSI, we can observe that both of them received quite high similarity scores (no. 2 is actually the most similar!), which corresponds better to our intuition of them sharing a “computer-human” related topic with the query. In fact, this semantic generalization is the reason why we apply transformations and do topic modelling in the first place.
+Clean up, delete the corpus.
+
+```r
+delete_mmcorpus(corpus_mm)
+```
