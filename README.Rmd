@@ -42,7 +42,9 @@ Install the package.
 remotes::install_github("news-r/gensimr")
 ```
 
-Install the python dependency. 
+Install the python dependency.
+
+*Make sure you have a C compiler before installing Gensim, to use the optimized word2vec routines (70x speedup compared to plain NumPy implementation).*
 
 ```r
 gensimr::install_gensim()
