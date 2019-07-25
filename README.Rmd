@@ -24,9 +24,16 @@ reticulate::use_virtualenv("./env")
 
 # gensimr
 
+![gensim official logo](https://radimrehurek.com/gensim/_static/images/gensim.png)
+
 Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale topic modeling.
 
 ⚠️ Notice the "Experimental" lifecycle badge: things won't work, stuff will break.
+
+- [Installation](#installation)
+- [Preprocessing](#preprocessing)
+- [Topic Modeling](#topic-modeling)
+- [Document Similarity](#document-similarity)
 
 ## Installation
 
@@ -56,9 +63,9 @@ reticulate::use_virtualenv(my_env) # force reticulate to use env
 gensimr::install_gensim(my_env) # install gensim in environment
 ```
 
-## Topics
+## Preprocessing
 
-First we preprocess the corpus using example data, a tiny corpus of 9 documents.
+First we preprocess the corpus using example data, a tiny corpus of 9 documents. Reproducing the tutorial on [corpora and vector spaces](https://radimrehurek.com/gensim/tut1.html).
 
 ```{r}
 library(gensimr)
@@ -106,7 +113,9 @@ We can then use the model to transform our original corpus.
 corpus_transformed <- wrap(tfidf, corpus_bow)
 ```
 
-Finally, we can build models, the number of topics of `model_*` functions defautls to 2, which is too low for what we generally would do with gensimr but works for the low number of documents we have.
+## Topic Modeling
+
+Finally, we can build models, the number of topics of `model_*` functions defautls to 2, which is too low for what we generally would do with gensimr but works for the low number of documents we have. Below we reproduce bits and bobs of the [topics and transformation](https://radimrehurek.com/gensim/tut2.html).
 
 ### Latent Similarity Index
 
@@ -157,7 +166,9 @@ hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 ```
 
-## Similarity
+## Document Similarity
+
+Reproducing [tutorial on similarity](https://radimrehurek.com/gensim/tut3.html#similarity-interface).
 
 ```{r}
 corpus_mm <- mmcorpus_serialize(corpus_bow)
@@ -175,3 +186,5 @@ sims <- wrap(index, vec_lsi)
 
 get_similarity(sims)
 ```
+
+> The thing to note here is that documents no. 2 ("The EPS user interface management system") and 4 ("Relation of user perceived response time to error measurement") would never be returned by a standard boolean fulltext search, because they do not share any common words with "Human computer interaction". However, after applying LSI, we can observe that both of them received quite high similarity scores (no. 2 is actually the most similar!), which corresponds better to our intuition of them sharing a “computer-human” related topic with the query. In fact, this semantic generalization is the reason why we apply transformations and do topic modelling in the first place.

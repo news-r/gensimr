@@ -11,11 +11,19 @@ status](https://travis-ci.org/news-r/gensimr.svg?branch=master)](https://travis-
 
 # gensimr
 
+![gensim official
+logo](https://radimrehurek.com/gensim/_static/images/gensim.png)
+
 Brings [gensim](https://radimrehurek.com/gensim) to R: efficient
 large-scale topic modeling.
 
 ⚠️ Notice the “Experimental” lifecycle badge: things won’t work, stuff
 will break.
+
+  - [Installation](#installation)
+  - [Preprocessing](#preprocessing)
+  - [Topic Modeling](#topic-modeling)
+  - [Document Similarity](#document-similarity)
 
 ## Installation
 
@@ -46,10 +54,11 @@ reticulate::use_virtualenv(my_env) # force reticulate to use env
 gensimr::install_gensim(my_env) # install gensim in environment
 ```
 
-## Topics
+\#\# Preprocessing
 
 First we preprocess the corpus using example data, a tiny corpus of 9
-documents.
+documents. Reproducing the tutorial on [corpora and vector
+spaces](https://radimrehurek.com/gensim/tut1.html).
 
 ``` r
 library(gensimr)
@@ -100,7 +109,7 @@ is passed then a temp file is created.
 
 ``` r
 (corpus_mm <- mmcorpus_serialize(corpus_bow))
-#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpzKfZQV/file18c12b31ecce.mm 
+#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpGeGt5K/file1a938b20793.mm 
 #>  ✔ Temp file
 ```
 
@@ -117,9 +126,13 @@ We can then use the model to transform our original corpus.
 corpus_transformed <- wrap(tfidf, corpus_bow)
 ```
 
+## Topic Modeling
+
 Finally, we can build models, the number of topics of `model_*`
 functions defautls to 2, which is too low for what we generally would do
-with gensimr but works for the low number of documents we have.
+with gensimr but works for the low number of documents we have. Below we
+reproduce bits and bobs of the [topics and
+transformation](https://radimrehurek.com/gensim/tut2.html).
 
 ### Latent Similarity Index
 
@@ -194,18 +207,18 @@ hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [[1]]
 #> [[1]][[1]]
-#> [1] "time"
+#> [1] "computer"
 #> 
 #> [[1]][[2]]
-#> [1] 0.1907375
+#> [1] 0.2173036
 #> 
 #> 
 #> [[2]]
 #> [[2]][[1]]
-#> [1] "human"
+#> [1] "response"
 #> 
 #> [[2]][[2]]
-#> [1] 0.1676811
+#> [1] 0.1365744
 #> 
 #> 
 #> [[3]]
@@ -213,7 +226,7 @@ reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [1] "system"
 #> 
 #> [[3]][[2]]
-#> [1] 0.1390491
+#> [1] 0.1095201
 #> 
 #> 
 #> [[4]]
@@ -221,18 +234,21 @@ reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [1] "user"
 #> 
 #> [[4]][[2]]
-#> [1] 0.1309728
+#> [1] 0.1062947
 #> 
 #> 
 #> [[5]]
 #> [[5]][[1]]
-#> [1] "interface"
+#> [1] "trees"
 #> 
 #> [[5]][[2]]
-#> [1] 0.09493314
+#> [1] 0.09769184
 ```
 
-## Similarity
+## Document Similarity
+
+Reproducing [tutorial on
+similarity](https://radimrehurek.com/gensim/tut3.html#similarity-interface).
 
 ``` r
 corpus_mm <- mmcorpus_serialize(corpus_bow)
@@ -264,3 +280,14 @@ get_similarity(sims)
 #> 8     6 -0.0516
 #> 9     5 -0.0880
 ```
+
+> The thing to note here is that documents no. 2 (“The EPS user
+> interface management system”) and 4 (“Relation of user perceived
+> response time to error measurement”) would never be returned by a
+> standard boolean fulltext search, because they do not share any common
+> words with “Human computer interaction”. However, after applying LSI,
+> we can observe that both of them received quite high similarity scores
+> (no. 2 is actually the most similar\!), which corresponds better to
+> our intuition of them sharing a “computer-human” related topic with
+> the query. In fact, this semantic generalization is the reason why we
+> apply transformations and do topic modelling in the first place.
