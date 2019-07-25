@@ -190,7 +190,60 @@ model_lda.mm <- function(corpus, num_topics = 2L, ...){
   if(num_topics < 200)
     cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
   
-  model <- gensim$models$RpModel(corpus, num_topics = num_topics, ...)
+  model <- gensim$models$LdaModel(corpus, num_topics = num_topics, ...)
+  
+  invisible(model)
+}
+
+#' Hierarchical Dirichlet Process Model
+#' 
+#' Hierarchical Dirichlet process (HDP) is a powerful mixed-membership model 
+#' for the unsupervised analysis of grouped data. Unlike its finite counterpart, 
+#' latent Dirichlet allocation, the HDP topic model infers the number of topics 
+#' from the data. Here we have used Online HDP, which provides the speed of online 
+#' variational Bayes with the modeling flexibility of the HDP. The idea behind Online 
+#' variational Bayes in general is to optimize the variational objective function with 
+#' stochastic optimization.The challenge we face is that the existing coordinate ascent
+#' variational Bayes algorithms for the HDP require complicated approximation methods
+#' or numerical optimization. This model utilises stick breaking construction of Hdp
+#' which enables it to allow for coordinate-ascent variational Bayes without numerical
+#' approximation.
+#' 
+#' @param corpus Model as returned by \code{\link{mmcorpus_serialize}}.
+#' @param id2word Dictionary for the input corpus, as returned by \code{\link{corpora_dictionary}}.
+#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/hdpmodel.html}{official documentation}.
+#' 
+#' @details This is a non-parametric bayesian method: notice the lack of \code{num_topics} argument.
+#' 
+#' @name model_hdp
+#' 
+#' @export
+model_hdp <- function(corpus, id2word, ...) UseMethod("model_hdp")
+
+#' @rdname model_hdp
+#' @method model_hdp mm_file
+#' @export
+model_hdp.mm_file <- function(corpus, id2word, ...){
+  assert_that(!missing(corpus), msg = "Missing `corpus`")
+  assert_that(!missing(id2word), msg = "Missing `id2word`")
+  
+  corpus_read <- gensim$corpora$MmCorpus(corpus$file)
+  model <- gensim$models$HdpModel(corpus_read, id2word, ...)
+
+  # unlink temp
+  if(corpus$temp) unlink(corpus$file)
+  
+  invisible(model)
+}
+
+#' @rdname model_hdp
+#' @method model_hdp mm
+#' @export
+model_hdp.mm <- function(corpus, id2word, ...){
+  assert_that(!missing(corpus), msg = "Missing `corpus`")
+  assert_that(!missing(id2word), msg = "Missing `id2word`")
+  
+  model <- gensim$models$HdpModel(corpus, id2word, ...)
   
   invisible(model)
 }

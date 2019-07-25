@@ -149,6 +149,14 @@ wrapped_corpus_docs <- get_docs_topics(lda_topics)
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
+### Hierarchical Dirichlet Process
+
+```{r}
+corpus_mm <- mmcorpus_serialize(corpus_bow)
+hdp <- model_hdp(corpus_mm, id2word = dictionary)
+reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
+```
+
 ## Similarity
 
 ```{r}

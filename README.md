@@ -100,7 +100,7 @@ is passed then a temp file is created.
 
 ``` r
 (corpus_mm <- mmcorpus_serialize(corpus_bow))
-#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpcYNbSs/file13c137d20faf.mm 
+#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpzKfZQV/file18c12b31ecce.mm 
 #>  ✔ Temp file
 ```
 
@@ -185,6 +185,52 @@ plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+
+### Hierarchical Dirichlet Process
+
+``` r
+corpus_mm <- mmcorpus_serialize(corpus_bow)
+hdp <- model_hdp(corpus_mm, id2word = dictionary)
+reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
+#> [[1]]
+#> [[1]][[1]]
+#> [1] "time"
+#> 
+#> [[1]][[2]]
+#> [1] 0.1907375
+#> 
+#> 
+#> [[2]]
+#> [[2]][[1]]
+#> [1] "human"
+#> 
+#> [[2]][[2]]
+#> [1] 0.1676811
+#> 
+#> 
+#> [[3]]
+#> [[3]][[1]]
+#> [1] "system"
+#> 
+#> [[3]][[2]]
+#> [1] 0.1390491
+#> 
+#> 
+#> [[4]]
+#> [[4]][[1]]
+#> [1] "user"
+#> 
+#> [[4]][[2]]
+#> [1] 0.1309728
+#> 
+#> 
+#> [[5]]
+#> [[5]][[1]]
+#> [1] "interface"
+#> 
+#> [[5]][[2]]
+#> [1] 0.09493314
+```
 
 ## Similarity
 
