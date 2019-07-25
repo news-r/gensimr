@@ -9,10 +9,15 @@ Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale top
 
 ⚠️ Notice the "Experimental" lifecycle badge: things won't work, stuff will break.
 
--   [Installation](#installation)
--   [Preprocessing](#preprocessing)
--   [Topic Modeling](#topic-modeling)
--   [Document Similarity](#document-similarity)
+- [Installation](#installation)
+- [Topic Modeling](#topic-modeling)
+  - [Latent Similarity Index](#latent-similarity-index)
+  - [Random Projections](#random-projections)
+  - [Latent Dirichlet Allocation](#latent-dirichlet-allocation)
+  - [Hierarchical Dirichlet Process](#hierarchical-dirichlet-process)
+- [Document Similarity](#document-similarity)
+  - [word2vec](#word2vec)
+- [Downloader](#downloader)
 
 Installation
 ------------
