@@ -187,3 +187,23 @@ Clean up, delete the corpus.
 ```r
 delete_mmcorpus(corpus_mm)
 ```
+
+## Downloader
+
+You can download external datasets to easily build models.
+
+```r
+dataset <- "glove-twitter-25"
+
+# info about model
+downloader_info(dataset) %>% 
+  reticulate::py_to_r() %>% 
+  .[["description"]]
+
+# download the model
+model <- downloader_load(dataset)
+
+# find words most similar to "cat"
+model$most_similar("cat") %>% 
+  reticulate::py_to_r()
+```

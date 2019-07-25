@@ -109,7 +109,7 @@ should manually delete it with `delete_mmcorpus`.
 
 ``` r
 (corpus_mm <- serialize_mmcorpus(corpus_bow, auto_delete = FALSE))
-#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmprGjq2r/file28813adc9934.mm 
+#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpAzWCLu/file2d126ad7004.mm 
 #>  ✔ Temp file
 #>  ✖ Delete after use
 ```
@@ -143,7 +143,7 @@ Note that we use the transformed corpus.
 lsi <- model_lsi(corpus_transformed, id2word = dictionary)
 #> ⚠ Low number of topics
 lsi$print_topics()
-#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '0.460*"system" + 0.373*"user" + 0.332*"eps" + 0.328*"interface" + 0.320*"response" + 0.320*"time" + 0.293*"computer" + 0.280*"human" + 0.171*"survey" + -0.161*"trees"')]
+#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"response" + -0.320*"time" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
 ```
 
 We can then wrap the model around the corpus to extract further
@@ -156,15 +156,15 @@ wrapped_corpus <- wrap(lsi, corpus_transformed)
 #> # A tibble: 9 x 4
 #>   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1             0        0.0660             1        0.520 
-#> 2             0        0.197              1        0.761 
-#> 3             0        0.0899             1        0.724 
-#> 4             0        0.0759             1        0.632 
-#> 5             0        0.102              1        0.574 
-#> 6             0        0.703              1       -0.161 
-#> 7             0        0.877              1       -0.168 
-#> 8             0        0.910              1       -0.141 
-#> 9             0        0.617              1        0.0539
+#> 1             0        0.0660             1       -0.520 
+#> 2             0        0.197              1       -0.761 
+#> 3             0        0.0899             1       -0.724 
+#> 4             0        0.0759             1       -0.632 
+#> 5             0        0.102              1       -0.574 
+#> 6             0        0.703              1        0.161 
+#> 7             0        0.877              1        0.168 
+#> 8             0        0.910              1        0.141 
+#> 9             0        0.617              1       -0.0539
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
@@ -206,42 +206,42 @@ hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [[1]]
 #> [[1]][[1]]
-#> [1] "user"
+#> [1] "human"
 #> 
 #> [[1]][[2]]
-#> [1] 0.306301
+#> [1] 0.2874479
 #> 
 #> 
 #> [[2]]
 #> [[2]][[1]]
-#> [1] "trees"
+#> [1] "computer"
 #> 
 #> [[2]][[2]]
-#> [1] 0.1372399
+#> [1] 0.145963
 #> 
 #> 
 #> [[3]]
 #> [[3]][[1]]
-#> [1] "computer"
+#> [1] "eps"
 #> 
 #> [[3]][[2]]
-#> [1] 0.098577
+#> [1] 0.1404769
 #> 
 #> 
 #> [[4]]
 #> [[4]][[1]]
-#> [1] "system"
+#> [1] "time"
 #> 
 #> [[4]][[2]]
-#> [1] 0.09821121
+#> [1] 0.08911537
 #> 
 #> 
 #> [[5]]
 #> [[5]][[1]]
-#> [1] "minors"
+#> [1] "user"
 #> 
 #> [[5]][[2]]
-#> [1] 0.08178417
+#> [1] 0.08424527
 ```
 
 ## Document Similarity
@@ -283,4 +283,24 @@ Clean up, delete the corpus.
 
 ``` r
 delete_mmcorpus(corpus_mm)
+```
+
+## Downloader
+
+You can download external datasets to easily build models.
+
+``` r
+dataset <- "glove-twitter-25"
+
+# info about model
+downloader_info(dataset) %>% 
+  reticulate::py_to_r() %>% 
+  .[["description"]]
+
+# download the model
+model <- downloader_load(dataset)
+
+# find words most similar to "cat"
+model$most_similar("cat") %>% 
+  reticulate::py_to_r()
 ```
