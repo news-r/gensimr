@@ -50,7 +50,7 @@ Install the python dependency.
 *Make sure you have a C compiler before installing Gensim, to use the optimized word2vec routines (70x speedup compared to plain NumPy implementation).*
 
 ```r
-gensimr::install_gensim()
+gensimr::install_dependencies()
 ```
 
 Ideally one should use a virtual environment and pass it to `install_gensim`, only do this once.
@@ -63,8 +63,7 @@ my_env <- "./env"
 args <- paste("-m venv", env)
 system2("python3", args) # create environment
 reticulate::use_virtualenv(my_env) # force reticulate to use env
-gensimr::install_gensim(my_env) # install gensim in environment
-gensimr::install_sklearn(my_env) # install if you want to use the sklearn API
+gensimr::install_dependencies(my_env) # install gensim & scikit-learn in environment
 ```
 
 ## Preprocessing

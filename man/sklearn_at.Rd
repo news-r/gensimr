@@ -7,7 +7,7 @@
 sklearn_at(...)
 }
 \arguments{
-\item{...}{Any other options, from the ¨
+\item{...}{Any other options, from the
 \href{https://radimrehurek.com/gensim/sklearn_api/atmodel.html}{official documentation}.}
 }
 \description{

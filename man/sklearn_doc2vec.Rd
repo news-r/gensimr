@@ -7,7 +7,7 @@
 sklearn_doc2vec(...)
 }
 \arguments{
-\item{...}{Any other options, from the ¨
+\item{...}{Any other options, from the
 \href{https://radimrehurek.com/gensim/sklearn_api/d2vmodel.html}{official documentation}.}
 }
 \description{

@@ -7,7 +7,7 @@
 sklearn_hdp(...)
 }
 \arguments{
-\item{...}{Any other options, from the ¨
+\item{...}{Any other options, from the
 \href{https://radimrehurek.com/gensim/sklearn_api/hdp.html}{official documentation}.}
 }
 \description{

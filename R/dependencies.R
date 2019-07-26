@@ -17,11 +17,18 @@
 #' 
 #' @name dependencies
 #' @export
+install_dependencies <- function(envname = NULL, method = "auto", conda = "auto") {
+  install_gensim(envname = envname, method = method, conda = conda)
+  install_sklearn(envname = envname, method = method, conda = conda)
+}
+
+#' @rdname dependencies
+#' @export
 install_gensim <- function(envname = NULL, method = "auto", conda = "auto") {
   reticulate::py_install("gensim", envname = envname, method = method, conda = conda)
 }
 
-#' @name dependencies
+#' @rdname dependencies
 #' @export
 install_sklearn <- function(envname = NULL, method = "auto", conda = "auto") {
   reticulate::py_install("sklearn", envname = envname, method = method, conda = conda)

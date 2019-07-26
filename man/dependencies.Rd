@@ -2,10 +2,13 @@
 % Please edit documentation in R/dependencies.R
 \name{dependencies}
 \alias{dependencies}
+\alias{install_dependencies}
 \alias{install_gensim}
 \alias{install_sklearn}
 \title{Install Dependencies}
 \usage{
+install_dependencies(envname = NULL, method = "auto", conda = "auto")
+
 install_gensim(envname = NULL, method = "auto", conda = "auto")
 
 install_sklearn(envname = NULL, method = "auto", conda = "auto")
