@@ -223,6 +223,30 @@ model_ldamc.mm <- function(corpus,...){
   invisible(model)
 }
 
+#' Log Entropy Model
+#' 
+#' This module allows simple Bag of Words (BoW) represented corpus 
+#' to be transformed into log entropy space. It implements Log Entropy 
+#' Model that produces entropy-weighted logarithmic term frequency representation.
+#' 
+#' @param corpus Model as returned by \code{\link{doc2bow}}.
+#' @param normalize If \code{TRUE}, the resulted log entropy weighted 
+#' vector will be normalized to length of 1, If \code{FALSE} - do nothing.
+#' 
+#' @name model_logentropy
+#' 
+#' @export
+model_logentropy <- function(corpus, normalize = FALSE) UseMethod("model_logentropy")
+
+#' @rdname model_logentropy
+#' @method model_logentropy python.builtin.tuple
+#' @export
+model_logentropy.python.builtin.tuple <- function(corpus, normalize = FALSE){
+  assert_that(!missing(corpus), msg = "Missing `corpus`")
+  model <- gensim$models$LogEntropyModel(corpus, normalize = normalize)
+  invisible(model)
+}
+
 #' Hierarchical Dirichlet Process Model
 #' 
 #' Hierarchical Dirichlet process (HDP) is a powerful mixed-membership model 
@@ -321,8 +345,16 @@ get_docs_topics.gensim.interfaces.CorpusABC <- function(corpus){
     dplyr::mutate(name = paste0(., "_", vars)) %>% 
     dplyr::pull(name)
 
+  is_empty <- function(x){
+    if(length(x) >= 1)
+      TRUE
+    else
+      FALSE
+  }
+
   docs %>% 
     purrr::map(unlist) %>% 
+    purrr::keep(is_empty) %>% 
     purrr::map(t) %>% 
     purrr::map_dfr(tibble::as_tibble) %>% 
     purrr::set_names(col_names)
