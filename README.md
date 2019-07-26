@@ -68,7 +68,7 @@ spaces](https://radimrehurek.com/gensim/tut1.html).
 ``` r
 library(gensimr)
 
-set.seed(42) # rerproducability
+set.seed(42) # reproducibility
 
 # sample data
 data(corpus, package = "gensimr")
@@ -107,7 +107,7 @@ dictionary <- corpora_dictionary(docs)
 
 A dictionary essentially assigns an integer to each term.
 
-`doc2bow` simply applies the method of the same name to every documents
+`doc2bow` simply applies the method of the same name to each document
 (see example below); it counts the number of occurrences of each
 distinct word, converts the word to its integer word id and returns the
 result as a sparse vector.
