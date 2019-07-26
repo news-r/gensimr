@@ -8,7 +8,7 @@ sklearn_lsi(...)
 }
 \arguments{
 \item{...}{Any other options, from the
-\href{https://radimrehurek.com/gensim/sklearn_api/ldamodel.html}{official documentation}.}
+\href{https://radimrehurek.com/gensim/sklearn_api/lsimodel.html}{official documentation}.}
 }
 \description{
 Latent Semantic Indexing Model with scikit-learn.

@@ -42,7 +42,7 @@ optimized word2vec routines (70x speedup compared to plain NumPy
 implementation).*
 
 ``` r
-gensimr::install_gensim()
+gensimr::install_dependencies()
 ```
 
 Ideally one should use a virtual environment and pass it to
@@ -56,8 +56,7 @@ my_env <- "./env"
 args <- paste("-m venv", env)
 system2("python3", args) # create environment
 reticulate::use_virtualenv(my_env) # force reticulate to use env
-gensimr::install_gensim(my_env) # install gensim in environment
-gensimr::install_sklearn(my_env) # install if you want to use the sklearn API
+gensimr::install_dependencies(my_env) # install gensim & scikit-learn in environment
 ```
 
 ## Preprocessing
@@ -127,7 +126,7 @@ should manually delete it with `delete_mmcorpus`.
 
 ``` r
 (corpus_mm <- serialize_mmcorpus(corpus_bow, auto_delete = FALSE))
-#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmprgOYUV/file2bd37ec89b4f.mm 
+#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpLe2BXB/file3ba04c6e0dd1.mm 
 #>  ✔ Temp file
 #>  ✖ Delete after use
 ```
@@ -161,7 +160,7 @@ Note that we use the transformed corpus.
 lsi <- model_lsi(corpus_transformed, id2word = dictionary)
 #> ⚠ Low number of topics
 lsi$print_topics()
-#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '0.460*"system" + 0.373*"user" + 0.332*"eps" + 0.328*"interface" + 0.320*"time" + 0.320*"response" + 0.293*"computer" + 0.280*"human" + 0.171*"survey" + -0.161*"trees"')]
+#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
 ```
 
 We can then wrap the model around the corpus to extract further
@@ -174,15 +173,15 @@ wrapped_corpus <- wrap(lsi, corpus_transformed)
 #> # A tibble: 9 x 4
 #>   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1             0        0.0660             1        0.520 
-#> 2             0        0.197              1        0.761 
-#> 3             0        0.0899             1        0.724 
-#> 4             0        0.0759             1        0.632 
-#> 5             0        0.102              1        0.574 
-#> 6             0        0.703              1       -0.161 
-#> 7             0        0.877              1       -0.168 
-#> 8             0        0.910              1       -0.141 
-#> 9             0        0.617              1        0.0539
+#> 1             0        0.0660             1       -0.520 
+#> 2             0        0.197              1       -0.761 
+#> 3             0        0.0899             1       -0.724 
+#> 4             0        0.0759             1       -0.632 
+#> 5             0        0.102              1       -0.574 
+#> 6             0        0.703              1        0.161 
+#> 7             0        0.877              1        0.168 
+#> 8             0        0.910              1        0.141 
+#> 9             0        0.617              1       -0.0539
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
@@ -223,26 +222,26 @@ hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [[1]]
 #> [[1]][[1]]
-#> [1] "survey"
+#> [1] "minors"
 #> 
 #> [[1]][[2]]
-#> [1] 0.2299116
+#> [1] 0.3597225
 #> 
 #> 
 #> [[2]]
 #> [[2]][[1]]
-#> [1] "minors"
+#> [1] "user"
 #> 
 #> [[2]][[2]]
-#> [1] 0.2039398
+#> [1] 0.1515091
 #> 
 #> 
 #> [[3]]
 #> [[3]][[1]]
-#> [1] "interface"
+#> [1] "human"
 #> 
 #> [[3]][[2]]
-#> [1] 0.1803729
+#> [1] 0.1035317
 #> 
 #> 
 #> [[4]]
@@ -250,15 +249,15 @@ reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [1] "computer"
 #> 
 #> [[4]][[2]]
-#> [1] 0.07612692
+#> [1] 0.09624662
 #> 
 #> 
 #> [[5]]
 #> [[5]][[1]]
-#> [1] "time"
+#> [1] "eps"
 #> 
 #> [[5]][[2]]
-#> [1] 0.069968
+#> [1] 0.09224965
 ```
 
 ### Log Entropy
@@ -334,16 +333,16 @@ Then extract the topics for each author.
 
 ``` r
 atmodel$get_author_topics("jack") # native for single author 
-#> [(0, 0.19906505032758703), (1, 0.800934949672413)]
+#> [(0, 0.12746929174418148), (1, 0.8725307082558185)]
 
 # apply to all authors
 get_author_topics(atmodel)
 #> # A tibble: 3 x 5
 #>   authors dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>   <chr>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1 jack                0         0.199             1         0.801
-#> 2 jane                0         0.538             1         0.462
-#> 3 john                0         0.264             1         0.736
+#> 1 jack                0         0.127             1         0.873
+#> 2 jane                0         0.118             1         0.882
+#> 3 john                0         0.701             1         0.299
 ```
 
 ## External Data & Models
@@ -468,7 +467,7 @@ Now we can explore the model.
 
 ``` r
 word2vec$wv$most_similar(positive = c("interface"))
-#> [('minors', 0.09402473270893097), ('trees', 0.09294942021369934), ('system', 0.07501131296157837), ('computer', 0.03396868705749512), ('user', -0.034138455986976624), ('human', -0.0867367833852768), ('survey', -0.09057703614234924), ('eps', -0.09393233805894852), ('graph', -0.1599176824092865), ('response', -0.18416160345077515)]
+#> [('human', 0.11428181827068329), ('response', 0.09944403916597366), ('system', 0.09674327075481415), ('trees', 0.0896456316113472), ('graph', 0.07361666858196259), ('computer', 0.03268759697675705), ('time', 0.012654841877520084), ('survey', -0.0009265393018722534), ('user', -0.011915519833564758), ('eps', -0.18456944823265076)]
 ```
 
 We expect “trees” to be the odd one out, it is a term that was in a
@@ -476,16 +475,16 @@ different topic (\#2) whereas other terms were in topics \#1.
 
 ``` r
 word2vec$wv$doesnt_match(c("human", "interface", "trees"))
-#> interface
+#> trees
 ```
 
 Test similarity between words.
 
 ``` r
 word2vec$wv$similarity("human", "trees")
-#> 0.09393059
+#> -0.010961959
 word2vec$wv$similarity("eps", "system")
-#> -0.09023158
+#> -0.039019916
 ```
 
 Clean up, delete the corpus.
@@ -516,7 +515,7 @@ atmodel <- sklearn_at(
 unlink(temp, recursive = TRUE)
 
 atmodel$fit(corpus_bow)$transform("jack")
-#> [[0.91516125 0.08483876]]
+#> [[0.18626782 0.8137322 ]]
 ```
 
 ### Doc2vec
@@ -533,7 +532,7 @@ hdp <- sklearn_hdp(id2word = dictionary)
 vectors <- hdp$fit_transform(corpus_bow)
 ```
 
-## Latent Dirichlet Allocation
+### Latent Dirichlet Allocation
 
 ``` r
 lda <- sklearn_lda(
@@ -543,4 +542,26 @@ lda <- sklearn_lda(
   random_state = 1
 )
 vectors <- hdp$fit_transform(corpus_bow)
+```
+
+### Latent Semantic Indexing
+
+Create stages for our pipeline (including gensim and sklearn models
+alike).
+
+``` r
+lsi <- sklearn_lsi(id2word = dictionary, num_topics = 15L)
+
+# L2 reg classifier
+clf <- sklearn_logistic(penalty = "l2", C = 0.1)
+
+# sklearn pipepline
+pipe <- sklearn_pipeline(lsi, clf)
+
+# Create some random binary labels for our documents.
+labels <- sample(c(0L, 1L), 9, replace = TRUE)
+
+# How well does our pipeline perform on the training set?
+pipe$fit(corpus_bow, labels)$score(corpus_bow, labels)
+#> 0.6666666666666666
 ```

@@ -326,7 +326,7 @@ hdp <- sklearn_hdp(id2word = dictionary)
 vectors <- hdp$fit_transform(corpus_bow)
 ```
 
-## Latent Dirichlet Allocation
+### Latent Dirichlet Allocation
 
 ```{r}
 lda <- sklearn_lda(
@@ -336,4 +336,24 @@ lda <- sklearn_lda(
   random_state = 1
 )
 vectors <- hdp$fit_transform(corpus_bow)
+```
+
+### Latent Semantic Indexing
+
+Create stages for our pipeline (including gensim and sklearn models alike).
+
+```{r}
+lsi <- sklearn_lsi(id2word = dictionary, num_topics = 15L)
+
+# L2 reg classifier
+clf <- sklearn_logistic(penalty = "l2", C = 0.1)
+
+# sklearn pipepline
+pipe <- sklearn_pipeline(lsi, clf)
+
+# Create some random binary labels for our documents.
+labels <- sample(c(0L, 1L), 9, replace = TRUE)
+
+# How well does our pipeline perform on the training set?
+pipe$fit(corpus_bow, labels)$score(corpus_bow, labels)
 ```
