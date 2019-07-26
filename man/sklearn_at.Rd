@@ -13,7 +13,7 @@ sklearn_at(dict, ...)
 \item{dict}{Dictionary as returned by \code{\link{corpora_dictionary}}.}
 
 \item{...}{Any other options, from the ¨
-\href{https://radimrehurek.com/gensim/models/atmodel.html}{official documentation}.}
+\href{https://radimrehurek.com/gensim/sklearn_api/atmodel.html}{official documentation}.}
 }
 \description{
 Scikit-learn wrapper for author topic model.

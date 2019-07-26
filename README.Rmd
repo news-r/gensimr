@@ -207,7 +207,10 @@ data("authors", package = "gensimr")
 
 auth2doc <- auth2doc(authors, name, document)
 
+# create temp to hold serialized data
 temp <- tempfile("serialized")
+
+# build model
 atmodel <- model_at(
   corpus_mm, 
   id2word = dictionary, 
@@ -216,6 +219,8 @@ atmodel <- model_at(
   serialized = TRUE,
   serialization_path = temp
 )
+
+# delete temp
 unlink(temp, recursive = TRUE)
 ```
 
@@ -293,7 +298,7 @@ Scikitlearn API.
 
 Author-topic model.
 
-```r
+```{r}
 temp <- tempfile("serialized")
 atmodel <- sklearn_at(
   dictionary, 
@@ -306,4 +311,11 @@ atmodel <- sklearn_at(
 unlink(temp, recursive = TRUE)
 
 atmodel$fit(corpus_bow)$transform("jack")
+```
+
+## Doc2vec
+
+```{r}
+d2v <- sklearn_doc2vec(min_count = 1, size = 5)
+vectors <- d2v$fit_transform(docs)
 ```
