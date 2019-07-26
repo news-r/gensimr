@@ -126,7 +126,7 @@ should manually delete it with `delete_mmcorpus`.
 
 ``` r
 (corpus_mm <- serialize_mmcorpus(corpus_bow, auto_delete = FALSE))
-#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpLe2BXB/file3ba04c6e0dd1.mm 
+#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpLe2BXB/file3ba03b77d42b.mm 
 #>  ✔ Temp file
 #>  ✖ Delete after use
 ```
@@ -160,7 +160,7 @@ Note that we use the transformed corpus.
 lsi <- model_lsi(corpus_transformed, id2word = dictionary)
 #> ⚠ Low number of topics
 lsi$print_topics()
-#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
+#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
 ```
 
 We can then wrap the model around the corpus to extract further
@@ -222,34 +222,34 @@ hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [[1]]
 #> [[1]][[1]]
-#> [1] "minors"
+#> [1] "survey"
 #> 
 #> [[1]][[2]]
-#> [1] 0.3597225
+#> [1] 0.186446
 #> 
 #> 
 #> [[2]]
 #> [[2]][[1]]
-#> [1] "user"
+#> [1] "response"
 #> 
 #> [[2]][[2]]
-#> [1] 0.1515091
+#> [1] 0.1683893
 #> 
 #> 
 #> [[3]]
 #> [[3]][[1]]
-#> [1] "human"
+#> [1] "graph"
 #> 
 #> [[3]][[2]]
-#> [1] 0.1035317
+#> [1] 0.1421735
 #> 
 #> 
 #> [[4]]
 #> [[4]][[1]]
-#> [1] "computer"
+#> [1] "user"
 #> 
 #> [[4]][[2]]
-#> [1] 0.09624662
+#> [1] 0.1301461
 #> 
 #> 
 #> [[5]]
@@ -257,7 +257,7 @@ reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [1] "eps"
 #> 
 #> [[5]][[2]]
-#> [1] 0.09224965
+#> [1] 0.1143309
 ```
 
 ### Log Entropy
@@ -333,16 +333,16 @@ Then extract the topics for each author.
 
 ``` r
 atmodel$get_author_topics("jack") # native for single author 
-#> [(0, 0.12746929174418148), (1, 0.8725307082558185)]
+#> [(0, 0.20781696245120523), (1, 0.7921830375487948)]
 
 # apply to all authors
 get_author_topics(atmodel)
 #> # A tibble: 3 x 5
 #>   authors dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>   <chr>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1 jack                0         0.127             1         0.873
-#> 2 jane                0         0.118             1         0.882
-#> 3 john                0         0.701             1         0.299
+#> 1 jack                0         0.208             1         0.792
+#> 2 jane                0         0.177             1         0.823
+#> 3 john                0         0.160             1         0.840
 ```
 
 ## External Data & Models
@@ -515,7 +515,7 @@ atmodel <- sklearn_at(
 unlink(temp, recursive = TRUE)
 
 atmodel$fit(corpus_bow)$transform("jack")
-#> [[0.18626782 0.8137322 ]]
+#> [[0.18908066 0.81091934]]
 ```
 
 ### Doc2vec
@@ -564,4 +564,26 @@ labels <- sample(c(0L, 1L), 9, replace = TRUE)
 # How well does our pipeline perform on the training set?
 pipe$fit(corpus_bow, labels)$score(corpus_bow, labels)
 #> 0.6666666666666666
+```
+
+### Phrase Detection
+
+``` r
+# split phrases into vectors of words
+corpus_split <- corpus %>% 
+  purrr::map(strsplit, " ") %>% 
+  purrr::map(function(x){
+    sentence <- x[[1]]
+    tolower(sentence)
+  })
+
+# Create the model. Make sure no term is ignored and combinations seen 2+ times are captured.
+pt_model <- sklearn_pt(min_count = 1, threshold = 2)
+
+# Use sklearn fit_transform to see the transformation.
+pt_trans <- pt_model$fit_transform(corpus_split)
+
+# Since graph and minors were seen together 2+ times they are considered a phrase.
+c("This", "is", "graph_minors") %in% reticulate::py_to_r(pt_trans)[[9]]
+#> [1] FALSE FALSE  TRUE
 ```

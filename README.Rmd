@@ -357,3 +357,24 @@ labels <- sample(c(0L, 1L), 9, replace = TRUE)
 # How well does our pipeline perform on the training set?
 pipe$fit(corpus_bow, labels)$score(corpus_bow, labels)
 ```
+
+### Phrase Detection
+
+```{r}
+# split phrases into vectors of words
+corpus_split <- corpus %>% 
+  purrr::map(strsplit, " ") %>% 
+  purrr::map(function(x){
+    sentence <- x[[1]]
+    tolower(sentence)
+  })
+
+# Create the model. Make sure no term is ignored and combinations seen 2+ times are captured.
+pt_model <- sklearn_pt(min_count = 1, threshold = 2)
+
+# Use sklearn fit_transform to see the transformation.
+pt_trans <- pt_model$fit_transform(corpus_split)
+
+# Since graph and minors were seen together 2+ times they are considered a phrase.
+c("This", "is", "graph_minors") %in% reticulate::py_to_r(pt_trans)[[9]]
+```

@@ -86,7 +86,8 @@ sklearn_lsi <- function(...){
 #' 
 #' @export
 sklearn_logistic <- function(...){
-  sklearn$linear_model$LogisticRegression(...)
+  model <- sklearn$linear_model$LogisticRegression(...)
+  invisible(model)
 }
 
 #' Scikit-learn Pipeline
@@ -114,5 +115,20 @@ sklearn_pipeline <- function(model, clf){
     )
   )
 
+  invisible(model)
+}
+
+#' Phrase (Colocation) Detection
+#' 
+#' Phrase Detection with scikit-learn phrase transformer.
+#' 
+#' @param ... Any other options, from the
+#' \href{https://radimrehurek.com/gensim/sklearn_api/phrases.html}{official documentation}.
+#' 
+#' @name sklearn_pt
+#' 
+#' @export
+sklearn_pt <- function(...){
+  model <- gensim$sklearn_api$phrases$PhrasesTransformer(...)
   invisible(model)
 }
