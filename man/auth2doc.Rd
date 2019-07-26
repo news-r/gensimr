@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocess.R
 \name{auth2doc}
 \alias{auth2doc}
-\title{Author Dcument Preprocess}
+\title{Author Document Preprocess}
 \usage{
 auth2doc(data, author, doc)
 }

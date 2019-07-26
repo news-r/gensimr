@@ -22,8 +22,9 @@ will break.
   - [Preprocessing](#preprocessing)
   - [Topic Modeling](#topic-modeling)
   - [Document Similarity](#document-similarity)
-  - [External Data & Models](#external-data-models)
+  - [External Data & Models](#external-data--models)
   - [Word Vectors](#word-vectors)
+  - [Scikit-learn](#scikit-learn)
 
 ## Installation
 
@@ -126,7 +127,7 @@ should manually delete it with `delete_mmcorpus`.
 
 ``` r
 (corpus_mm <- serialize_mmcorpus(corpus_bow, auto_delete = FALSE))
-#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmplCE2Ir/file20fe727c38a2.mm 
+#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmprgOYUV/file2bd36f4ffb8f.mm 
 #>  ✔ Temp file
 #>  ✖ Delete after use
 ```
@@ -160,7 +161,7 @@ Note that we use the transformed corpus.
 lsi <- model_lsi(corpus_transformed, id2word = dictionary)
 #> ⚠ Low number of topics
 lsi$print_topics()
-#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '0.460*"system" + 0.373*"user" + 0.332*"eps" + 0.328*"interface" + 0.320*"time" + 0.320*"response" + 0.293*"computer" + 0.280*"human" + 0.171*"survey" + -0.161*"trees"')]
+#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"response" + -0.320*"time" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
 ```
 
 We can then wrap the model around the corpus to extract further
@@ -173,15 +174,15 @@ wrapped_corpus <- wrap(lsi, corpus_transformed)
 #> # A tibble: 9 x 4
 #>   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1             0        0.0660             1        0.520 
-#> 2             0        0.197              1        0.761 
-#> 3             0        0.0899             1        0.724 
-#> 4             0        0.0759             1        0.632 
-#> 5             0        0.102              1        0.574 
-#> 6             0        0.703              1       -0.161 
-#> 7             0        0.877              1       -0.168 
-#> 8             0        0.910              1       -0.141 
-#> 9             0        0.617              1        0.0539
+#> 1             0        0.0660             1       -0.520 
+#> 2             0        0.197              1       -0.761 
+#> 3             0        0.0899             1       -0.724 
+#> 4             0        0.0759             1       -0.632 
+#> 5             0        0.102              1       -0.574 
+#> 6             0        0.703              1        0.161 
+#> 7             0        0.877              1        0.168 
+#> 8             0        0.910              1        0.141 
+#> 9             0        0.617              1       -0.0539
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
@@ -222,10 +223,10 @@ hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [[1]]
 #> [[1]][[1]]
-#> [1] "time"
+#> [1] "eps"
 #> 
 #> [[1]][[2]]
-#> [1] 0.2154603
+#> [1] 0.4956268
 #> 
 #> 
 #> [[2]]
@@ -233,31 +234,31 @@ reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [1] "computer"
 #> 
 #> [[2]][[2]]
-#> [1] 0.1712531
+#> [1] 0.1172552
 #> 
 #> 
 #> [[3]]
 #> [[3]][[1]]
-#> [1] "system"
+#> [1] "survey"
 #> 
 #> [[3]][[2]]
-#> [1] 0.1402072
+#> [1] 0.09072642
 #> 
 #> 
 #> [[4]]
 #> [[4]][[1]]
-#> [1] "graph"
+#> [1] "system"
 #> 
 #> [[4]][[2]]
-#> [1] 0.1334292
+#> [1] 0.08612828
 #> 
 #> 
 #> [[5]]
 #> [[5]][[1]]
-#> [1] "user"
+#> [1] "graph"
 #> 
 #> [[5]][[2]]
-#> [1] 0.1169253
+#> [1] 0.06871661
 ```
 
 ### Log Entropy
@@ -300,6 +301,44 @@ get_similarity(sims)
 #> 7     7 -0.0237
 #> 8     6 -0.0516
 #> 9     5 -0.0880
+```
+
+## Author-topic model
+
+First we build the model.
+
+``` r
+# authors of corpus
+data("authors", package = "gensimr")
+
+auth2doc <- auth2doc(authors, name, document)
+
+temp <- tempfile("serialized")
+atmodel <- model_at(
+  corpus_mm, 
+  id2word = dictionary, 
+  author2doc = auth2doc, 
+  num_topics = 2L, 
+  serialized = TRUE,
+  serialization_path = temp
+)
+unlink(temp, recursive = TRUE)
+```
+
+Then extract the topics for each author.
+
+``` r
+atmodel$get_author_topics("jack") # native for single author 
+#> [(0, 0.2243756488094798), (1, 0.7756243511905202)]
+
+# apply to all authors
+get_author_topics(atmodel)
+#> # A tibble: 3 x 5
+#>   authors dimension_1_x dimension_1_y dimension_2_x dimension_2_y
+#>   <chr>           <dbl>         <dbl>         <dbl>         <dbl>
+#> 1 jack                0         0.224             1         0.776
+#> 2 jane                0         0.159             1         0.841
+#> 3 john                0         0.137             1         0.863
 ```
 
 ## External Data & Models
@@ -424,7 +463,7 @@ Now we can explore the model.
 
 ``` r
 word2vec$wv$most_similar(positive = c("interface"))
-#> [('trees', 0.2601749300956726), ('minors', 0.12357524037361145), ('computer', 0.074931301176548), ('response', 0.07039420306682587), ('time', 0.05693456530570984), ('system', -0.041648197919130325), ('user', -0.048062846064567566), ('human', -0.09219866991043091), ('eps', -0.15730395913124084), ('survey', -0.169086754322052)]
+#> [('minors', 0.09402473270893097), ('trees', 0.09294942021369934), ('system', 0.07501131296157837), ('computer', 0.03396868705749512), ('user', -0.034138455986976624), ('human', -0.0867367833852768), ('survey', -0.09057703614234924), ('eps', -0.09393233805894852), ('graph', -0.1599176824092865), ('response', -0.18416160345077515)]
 ```
 
 We expect “trees” to be the odd one out, it is a term that was in a
@@ -432,56 +471,44 @@ different topic (\#2) whereas other terms were in topics \#1.
 
 ``` r
 word2vec$wv$doesnt_match(c("human", "interface", "trees"))
-#> human
+#> interface
 ```
 
 Test similarity between words.
 
 ``` r
 word2vec$wv$similarity("human", "trees")
-#> -0.063984536
+#> 0.09393059
 word2vec$wv$similarity("eps", "system")
-#> -0.14588615
-```
-
-## Scikit-learn
-
-Scikit learn API.
-
-### Author-topic model
-
-``` r
-# authors of corpus
-data("authors", package = "gensimr")
-
-auth2doc <- auth2doc(authors, name, document)
-
-temp <- tempfile("serialized")
-atmodel <- sklearn_atmodel(
-  corpus_mm, 
-  id2word = dictionary, 
-  author2doc = auth2doc, 
-  num_topics = 2L, 
-  serialized = TRUE,
-  serialization_path = temp
-)
-unlink(temp, recursive = TRUE)
-
-atmodel$get_author_topics("jack") # single author 
-#> [(0, 0.19926858269337291), (1, 0.8007314173066271)]
-
-# apply to all authors
-get_author_topics(atmodel)
-#> # A tibble: 3 x 5
-#>   authors dimension_1_x dimension_1_y dimension_2_x dimension_2_y
-#>   <chr>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1 jack                0         0.199             1         0.801
-#> 2 jane                0         0.143             1         0.857
-#> 3 john                0         0.142             1         0.858
+#> -0.09023158
 ```
 
 Clean up, delete the corpus.
 
 ``` r
 delete_mmcorpus(corpus_mm)
+#> ✔ Temp unlinked
+```
+
+## Scikit-learn
+
+Scikitlearn API.
+
+### Author-topic\_id
+
+Author-topic model.
+
+``` r
+temp <- tempfile("serialized")
+atmodel <- sklearn_at(
+  dictionary, 
+  author2doc = auth2doc, 
+  num_topics = 2L, 
+  passes = 100L,
+  serialized = TRUE,
+  serialization_path = temp
+)
+unlink(temp, recursive = TRUE)
+
+atmodel$fit(corpus_bow)$transform("jack")
 ```

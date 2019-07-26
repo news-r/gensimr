@@ -109,7 +109,7 @@ preprocess.factor <- preprocess.character
   invisible(filtered)
 }
 
-#' Author Dcument Preprocess
+#' Author Document Preprocess
 #' 
 #' Simply reshapes an authors to document data.frame to a format gensim expects.  
 #' 

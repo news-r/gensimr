@@ -32,8 +32,9 @@ Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale top
 - [Preprocessing](#preprocessing)
 - [Topic Modeling](#topic-modeling)
 - [Document Similarity](#document-similarity)
-- [External Data & Models](#external-data-models)
+- [External Data & Models](#external-data--models)
 - [Word Vectors](#word-vectors)
+- [Scikit-learn](#scikit-learn)
 
 ## Installation
 
@@ -196,6 +197,37 @@ sims <- wrap(index, vec_lsi)
 get_similarity(sims)
 ```
 
+## Author-topic model
+
+First we build the model.
+
+```{r}
+# authors of corpus
+data("authors", package = "gensimr")
+
+auth2doc <- auth2doc(authors, name, document)
+
+temp <- tempfile("serialized")
+atmodel <- model_at(
+  corpus_mm, 
+  id2word = dictionary, 
+  author2doc = auth2doc, 
+  num_topics = 2L, 
+  serialized = TRUE,
+  serialization_path = temp
+)
+unlink(temp, recursive = TRUE)
+```
+
+Then extract the topics for each author.
+
+```{r}
+atmodel$get_author_topics("jack") # native for single author 
+
+# apply to all authors
+get_author_topics(atmodel)
+```
+
 ## External Data & Models
 
 You can download external datasets to easily build models. External dataset can be found on [RaRe-Technologies/gensim-data](https://github.com/RaRe-Technologies/gensim-data).
@@ -247,37 +279,31 @@ word2vec$wv$similarity("human", "trees")
 word2vec$wv$similarity("eps", "system")
 ```
 
-## Scikit-learn
-
-Scikit learn API.
-
-### Author-topic model
+Clean up, delete the corpus.
 
 ```{r}
-# authors of corpus
-data("authors", package = "gensimr")
+delete_mmcorpus(corpus_mm)
+```
 
-auth2doc <- auth2doc(authors, name, document)
+## Scikit-learn
 
+Scikitlearn API.
+
+### Author-topic_id
+
+Author-topic model.
+
+```r
 temp <- tempfile("serialized")
-atmodel <- sklearn_atmodel(
-  corpus_mm, 
-  id2word = dictionary, 
+atmodel <- sklearn_at(
+  dictionary, 
   author2doc = auth2doc, 
   num_topics = 2L, 
+  passes = 100L,
   serialized = TRUE,
   serialization_path = temp
 )
 unlink(temp, recursive = TRUE)
 
-atmodel$get_author_topics("jack") # single author 
-
-# apply to all authors
-get_author_topics(atmodel)
-```
-
-Clean up, delete the corpus.
-
-```{r}
-delete_mmcorpus(corpus_mm)
+atmodel$fit(corpus_bow)$transform("jack")
 ```

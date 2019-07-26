@@ -356,3 +356,86 @@ get_docs_topics.gensim.interfaces.CorpusABC <- function(corpus){
     purrr::map_dfr(tibble::as_tibble) %>% 
     purrr::set_names(col_names)
 }
+
+#' Author-topic Model
+#' 
+#' @param corpus Model as returned by \code{\link{mmcorpus_serialize}}.
+#' @param ... Any other options, from the ¨
+#' \href{https://radimrehurek.com/gensim/models/atmodel.html}{official documentation}.
+#' 
+#' @name model_at
+#' 
+#' @seealso \code{\link{get_author_topics}}
+#' 
+#' @export
+model_at <- function(corpus, ...) UseMethod("model_at")
+
+#' @rdname model_at
+#' @method model_at mm_file
+#' @export
+model_at.mm_file <- function(corpus, ...){
+  assert_that(!missing(corpus), msg = "Missing `corpus`")
+  
+  corpus_read <- gensim$corpora$MmCorpus(corpus$file)
+  model <- gensim$models$AuthorTopicModel(corpus_read, ...)
+
+  # unlink temp
+  if(corpus$temp && corpus$delete) unlink(corpus$file)
+  
+  invisible(model)
+}
+
+#' @rdname model_at
+#' @method model_at mm
+#' @export
+model_at.mm <- function(corpus,...){
+  assert_that(!missing(corpus), msg = "Missing `corpus`")
+  model <- gensim$models$AuthorTopicModel(corpus, ...)
+  invisible(model)
+}
+
+#' Get Author topics
+#' 
+#' Construct vectors of topics for each author.
+#' 
+#' @param auth2doc Output of \code{\link{model_at}}.
+#' 
+#' @name get_author_topics
+#' 
+#' @export
+get_author_topics <- function(auth2doc) UseMethod("get_author_topics")
+
+#' @rdname get_author_topics
+#' @method get_author_topics gensim.models.atmodel.AuthorTopicModel
+#' @export
+get_author_topics.gensim.models.atmodel.AuthorTopicModel <- function(auth2doc){
+  assert_that(!missing(auth2doc), msg = "Missing `auth2doc`")
+
+  authors <- auth2doc$id2author %>% 
+    reticulate::py_to_r() %>% 
+    unname() %>% 
+    unlist()
+
+  dict <- purrr::map(authors, auth2doc$get_author_topics) 
+  
+  dimensions <- reticulate::py_len(dict[[1]])
+  vars <- c("x", "y")
+
+  col_names <- paste0("dimension_", 1:dimensions) %>% 
+    tidyr::crossing(vars) %>% 
+    dplyr::mutate(name = paste0(., "_", vars)) %>% 
+    dplyr::pull(name)
+
+  vectors <- dict %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    purrr::map(unlist) %>% 
+    purrr::map(as.data.frame) %>% 
+    purrr::map(t) %>% 
+    purrr::map(purrr::set_names, col_names) %>% 
+    purrr::map_dfr(dplyr::bind_rows)
+
+  dplyr::bind_cols(
+    tibble::tibble(authors = authors),
+    vectors
+  )
+}
