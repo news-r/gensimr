@@ -147,3 +147,37 @@ sklearn_rp <- function(...){
   model <- gensim$sklearn_api$rpmodel$RpTransformer(...)
   invisible(model)
 }
+
+#' Word ID Mapper
+#' 
+#' Initialize a \code{\link{doc2bow}} mapper in scikit-learn.
+#' 
+#' @param ... Any other options, from the
+#' \href{https://radimrehurek.com/gensim/sklearn_api/text2bow.html}{official documentation}.
+#' 
+#' @name sklearn_doc2bow
+#' 
+#' @export
+sklearn_doc2bow <- function(...){
+  model <- gensim$sklearn_api$Text2BowTransformer(...)
+  invisible(model)
+}
+
+#' @rdname sklearn_doc2bow
+#' @export
+sklearn_text2bow <- sklearn_doc2bow
+
+#' Tf-idf Model
+#' 
+#' Initialize a term frequncy inverse document frequency matrix with scikit-learn.
+#' 
+#' @param ... Any other options, from the
+#' \href{https://radimrehurek.com/gensim/sklearn_api/tfidf.html}{official documentation}.
+#' 
+#' @name sklearn_tfidf
+#' 
+#' @export
+sklearn_tfidf <- function(...){
+  model <- gensim$sklearn_api$TfIdfTransformer(...)
+  invisible(model)
+}

@@ -68,8 +68,10 @@ spaces](https://radimrehurek.com/gensim/tut1.html).
 ``` r
 library(gensimr)
 
-data(corpus, package = "gensimr")
+set.seed(42) # rerproducability
 
+# sample data
+data(corpus, package = "gensimr")
 print(corpus)
 #> [1] "Human machine interface for lab abc computer applications"    
 #> [2] "A survey of user opinion of computer system response time"    
@@ -81,6 +83,7 @@ print(corpus)
 #> [8] "Graph minors IV Widths of trees and well quasi ordering"      
 #> [9] "Graph minors A survey"
 
+# preprocess corpus
 docs <- preprocess(corpus)
 #> → Preprocessing 9 documents
 #> ← 9 documents after perprocessing
@@ -126,7 +129,7 @@ should manually delete it with `delete_mmcorpus`.
 
 ``` r
 (corpus_mm <- serialize_mmcorpus(corpus_bow, auto_delete = FALSE))
-#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpLe2BXB/file3ba03b77d42b.mm 
+#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpgVNBiC/file479c1246e46a.mm 
 #>  ✔ Temp file
 #>  ✖ Delete after use
 ```
@@ -222,42 +225,42 @@ hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [[1]]
 #> [[1]][[1]]
-#> [1] "survey"
+#> [1] "time"
 #> 
 #> [[1]][[2]]
-#> [1] 0.186446
+#> [1] 0.3118415
 #> 
 #> 
 #> [[2]]
 #> [[2]][[1]]
-#> [1] "response"
+#> [1] "interface"
 #> 
 #> [[2]][[2]]
-#> [1] 0.1683893
+#> [1] 0.1748817
 #> 
 #> 
 #> [[3]]
 #> [[3]][[1]]
-#> [1] "graph"
+#> [1] "human"
 #> 
 #> [[3]][[2]]
-#> [1] 0.1421735
+#> [1] 0.1304214
 #> 
 #> 
 #> [[4]]
 #> [[4]][[1]]
-#> [1] "user"
+#> [1] "graph"
 #> 
 #> [[4]][[2]]
-#> [1] 0.1301461
+#> [1] 0.0990004
 #> 
 #> 
 #> [[5]]
 #> [[5]][[1]]
-#> [1] "eps"
+#> [1] "response"
 #> 
 #> [[5]][[2]]
-#> [1] 0.1143309
+#> [1] 0.09613849
 ```
 
 ### Log Entropy
@@ -333,16 +336,16 @@ Then extract the topics for each author.
 
 ``` r
 atmodel$get_author_topics("jack") # native for single author 
-#> [(0, 0.20781696245120523), (1, 0.7921830375487948)]
+#> [(0, 0.23197808746929904), (1, 0.768021912530701)]
 
 # apply to all authors
 get_author_topics(atmodel)
 #> # A tibble: 3 x 5
 #>   authors dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>   <chr>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1 jack                0         0.208             1         0.792
-#> 2 jane                0         0.177             1         0.823
-#> 3 john                0         0.160             1         0.840
+#> 1 jack                0         0.232             1         0.768
+#> 2 jane                0         0.163             1         0.837
+#> 3 john                0         0.145             1         0.855
 ```
 
 ## External Data & Models
@@ -467,7 +470,7 @@ Now we can explore the model.
 
 ``` r
 word2vec$wv$most_similar(positive = c("interface"))
-#> [('human', 0.11428181827068329), ('response', 0.09944403916597366), ('system', 0.09674327075481415), ('trees', 0.0896456316113472), ('graph', 0.07361666858196259), ('computer', 0.03268759697675705), ('time', 0.012654841877520084), ('survey', -0.0009265393018722534), ('user', -0.011915519833564758), ('eps', -0.18456944823265076)]
+#> [('survey', 0.2405824065208435), ('response', 0.13890878856182098), ('system', 0.04266810044646263), ('minors', 0.03972306102514267), ('user', 0.010887958109378815), ('time', -0.019988685846328735), ('human', -0.030944999307394028), ('graph', -0.08678030967712402), ('eps', -0.12694384157657623), ('computer', -0.16667194664478302)]
 ```
 
 We expect “trees” to be the odd one out, it is a term that was in a
@@ -475,23 +478,16 @@ different topic (\#2) whereas other terms were in topics \#1.
 
 ``` r
 word2vec$wv$doesnt_match(c("human", "interface", "trees"))
-#> trees
+#> interface
 ```
 
 Test similarity between words.
 
 ``` r
 word2vec$wv$similarity("human", "trees")
-#> -0.010961959
+#> 0.013075942
 word2vec$wv$similarity("eps", "system")
-#> -0.039019916
-```
-
-Clean up, delete the corpus.
-
-``` r
-delete_mmcorpus(corpus_mm)
-#> ✔ Temp unlinked
+#> 0.08083813
 ```
 
 ## Scikit-learn
@@ -515,7 +511,7 @@ atmodel <- sklearn_at(
 unlink(temp, recursive = TRUE)
 
 atmodel$fit(corpus_bow)$transform("jack")
-#> [[0.18908066 0.81091934]]
+#> [[0.8106877  0.18931226]]
 ```
 
 ### Doc2vec
@@ -553,7 +549,7 @@ alike).
 lsi <- sklearn_lsi(id2word = dictionary, num_topics = 15L)
 
 # L2 reg classifier
-clf <- sklearn_logistic(penalty = "l2", C = 0.1)
+clf <- sklearn_logistic(penalty = "l2", C = 0.1, solver = "lbfgs")
 
 # sklearn pipepline
 pipe <- sklearn_pipeline(lsi, clf)
@@ -566,10 +562,24 @@ pipe$fit(corpus_bow, labels)$score(corpus_bow, labels)
 #> 0.6666666666666666
 ```
 
+### Random Projections
+
+``` r
+# initialise
+rp_model <- sklearn_rp(id2word = dictionary)
+
+# fit
+rp_fit <- rp_model$fit(corpus_bow)
+
+# Use the trained model to transform a document.
+result <- rp_fit$transform(corpus_bow)
+```
+
 ### Phrase Detection
 
 ``` r
 # split phrases into vectors of words
+# this should be further cleaned
 corpus_split <- corpus %>% 
   purrr::map(strsplit, " ") %>% 
   purrr::map(function(x){
@@ -586,4 +596,35 @@ pt_trans <- pt_model$fit_transform(corpus_split)
 # Since graph and minors were seen together 2+ times they are considered a phrase.
 c("This", "is", "graph_minors") %in% reticulate::py_to_r(pt_trans)[[9]]
 #> [1] FALSE FALSE  TRUE
+```
+
+### Word ID Mapping
+
+`doc2bow` with scikit-learn. Note that in the example below we do not
+clean the text (no `preprocess`).
+
+``` r
+# initialise
+skbow_model <- sklearn_doc2bow()
+
+# fit
+corpus_skbow <- skbow_model$fit_transform(corpus)
+```
+
+### Tf-idf
+
+``` r
+tfidf_model <- sklearn_tfidf(dictionary = dictionary)
+tfidf_w_sklearn <- tfidf_model$fit_transform(corpus_bow)
+
+# same as with gensim
+corpus_transformed[[1]] == tfidf_w_sklearn[[1]]
+#> [1] TRUE
+```
+
+Clean up, delete the corpus.
+
+``` r
+delete_mmcorpus(corpus_mm)
+#> ✔ Temp unlinked
 ```

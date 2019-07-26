@@ -286,12 +286,6 @@ word2vec$wv$similarity("human", "trees")
 word2vec$wv$similarity("eps", "system")
 ```
 
-Clean up, delete the corpus.
-
-```{r}
-delete_mmcorpus(corpus_mm)
-```
-
 ## Scikit-learn
 
 Scikitlearn API.
@@ -398,8 +392,28 @@ c("This", "is", "graph_minors") %in% reticulate::py_to_r(pt_trans)[[9]]
 
 ### Word ID Mapping
 
-`doc2bow` with scikit-learn.
+`doc2bow` with scikit-learn. Note that in the example below we do not clean the text (no `preprocess`).
 
 ```{r}
+# initialise
 skbow_model <- sklearn_doc2bow()
+
+# fit
+corpus_skbow <- skbow_model$fit_transform(corpus)
+```
+
+### Tf-idf
+
+```{r}
+tfidf_model <- sklearn_tfidf(dictionary = dictionary)
+tfidf_w_sklearn <- tfidf_model$fit_transform(corpus_bow)
+
+# same as with gensim
+corpus_transformed[[1]] == tfidf_w_sklearn[[1]]
+```
+
+Clean up, delete the corpus.
+
+```{r}
+delete_mmcorpus(corpus_mm)
 ```
