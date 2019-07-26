@@ -132,3 +132,18 @@ sklearn_pt <- function(...){
   model <- gensim$sklearn_api$phrases$PhrasesTransformer(...)
   invisible(model)
 }
+
+#' Random Project Model
+#' 
+#' Initialize random project models with scikit-learn's transformer.
+#' 
+#' @param ... Any other options, from the
+#' \href{https://radimrehurek.com/gensim/sklearn_api/rpmodel.html}{official documentation}.
+#' 
+#' @name sklearn_rp
+#' 
+#' @export
+sklearn_rp <- function(...){
+  model <- gensim$sklearn_api$rpmodel$RpTransformer(...)
+  invisible(model)
+}

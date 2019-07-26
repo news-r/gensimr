@@ -73,10 +73,13 @@ First we preprocess the corpus using example data, a tiny corpus of 9 documents.
 ```{r}
 library(gensimr)
 
-data(corpus, package = "gensimr")
+set.seed(42) # rerproducability
 
+# sample data
+data(corpus, package = "gensimr")
 print(corpus)
 
+# preprocess corpus
 docs <- preprocess(corpus)
 
 docs[[1]] # print first preprocessed document 
@@ -346,7 +349,7 @@ Create stages for our pipeline (including gensim and sklearn models alike).
 lsi <- sklearn_lsi(id2word = dictionary, num_topics = 15L)
 
 # L2 reg classifier
-clf <- sklearn_logistic(penalty = "l2", C = 0.1)
+clf <- sklearn_logistic(penalty = "l2", C = 0.1, solver = "lbfgs")
 
 # sklearn pipepline
 pipe <- sklearn_pipeline(lsi, clf)
@@ -358,10 +361,24 @@ labels <- sample(c(0L, 1L), 9, replace = TRUE)
 pipe$fit(corpus_bow, labels)$score(corpus_bow, labels)
 ```
 
+### Random Projections
+
+```{r}
+# initialise
+rp_model <- sklearn_rp(id2word = dictionary)
+
+# fit
+rp_fit <- rp_model$fit(corpus_bow)
+
+# Use the trained model to transform a document.
+result <- rp_fit$transform(corpus_bow)
+```
+
 ### Phrase Detection
 
 ```{r}
 # split phrases into vectors of words
+# this should be further cleaned
 corpus_split <- corpus %>% 
   purrr::map(strsplit, " ") %>% 
   purrr::map(function(x){
@@ -377,4 +394,12 @@ pt_trans <- pt_model$fit_transform(corpus_split)
 
 # Since graph and minors were seen together 2+ times they are considered a phrase.
 c("This", "is", "graph_minors") %in% reticulate::py_to_r(pt_trans)[[9]]
+```
+
+### Word ID Mapping
+
+`doc2bow` with scikit-learn.
+
+```{r}
+skbow_model <- sklearn_doc2bow()
 ```
