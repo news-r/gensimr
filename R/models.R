@@ -151,28 +151,30 @@ model_rp.wrapped <- function(corpus, num_topics = 2L, ...){
 #' interpreted as a (soft) mixture of these topics (again, just like with LSA).
 #' 
 #' @param corpus Model as returned by \code{\link{mmcorpus_serialize}}.
-#' @param num_topics Number of requested factors (latent dimensions).
-#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/ldamodel.html}{official documentation}.
+#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/ldamodel.html}{official documentation of \code{model_lda}} or
+#' the \href{https://radimrehurek.com/gensim/models/ldamulticore.html}{official documentation of \code{model_ldamc}}.
+#' 
+#' @section Functions:
+#' \itemize{
+#'   \item{\code{model_lda} - Single-core implementation.}
+#'   \item{\code{model_ldamc} - Multi-core implementation.}  
+#' }
 #' 
 #' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
 #' 
 #' @name model_lda
 #' 
 #' @export
-model_lda <- function(corpus, num_topics = 2L, ...) UseMethod("model_lda")
+model_lda <- function(corpus, ...) UseMethod("model_lda")
 
 #' @rdname model_lda
 #' @method model_lda mm_file
 #' @export
-model_lda.mm_file <- function(corpus, num_topics = 2L, ...){
+model_lda.mm_file <- function(corpus, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
-  num_topics <- as.integer(num_topics) # enforce integer
-  
-  if(num_topics < 200)
-    cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
   
   corpus_read <- gensim$corpora$MmCorpus(corpus$file)
-  model <- gensim$models$LdaModel(corpus_read, num_topics = num_topics, ...)
+  model <- gensim$models$LdaModel(corpus_read, ...)
 
   # unlink temp
   if(corpus$temp && corpus$delete) unlink(corpus$file)
@@ -183,14 +185,40 @@ model_lda.mm_file <- function(corpus, num_topics = 2L, ...){
 #' @rdname model_lda
 #' @method model_lda mm
 #' @export
-model_lda.mm <- function(corpus, num_topics = 2L, ...){
+model_lda.mm <- function(corpus, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
-  num_topics <- as.integer(num_topics) # enforce integer
   
-  if(num_topics < 200)
-    cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
+  model <- gensim$models$LdaModel(corpus, ...)
   
-  model <- gensim$models$LdaModel(corpus, num_topics = num_topics, ...)
+  invisible(model)
+}
+
+#' @rdname model_lda
+#' @export
+model_ldamc <- function(corpus, ...) UseMethod("model_ldamc")
+
+#' @rdname model_lda
+#' @method model_ldamc mm_file
+#' @export
+model_ldamc.mm_file <- function(corpus, ...){
+  assert_that(!missing(corpus), msg = "Missing `corpus`")
+  
+  corpus_read <- gensim$corpora$MmCorpus(corpus$file)
+  model <- gensim$models$LdaMulticore(corpus_read, ...)
+
+  # unlink temp
+  if(corpus$temp && corpus$delete) unlink(corpus$file)
+  
+  invisible(model)
+}
+
+#' @rdname model_lda
+#' @method model_ldamc mm
+#' @export
+model_ldamc.mm <- function(corpus,...){
+  assert_that(!missing(corpus), msg = "Missing `corpus`")
+  
+  model <- gensim$models$LdaMulticore(corpus, ...)
   
   invisible(model)
 }
