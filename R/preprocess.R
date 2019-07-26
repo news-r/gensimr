@@ -10,6 +10,7 @@
 #' @param min_freq Minimum term frequency to keep terms in. 
 #' @param lexicon Name of a lexicon of stopwords, borrowed from \link[tidytext]{stop_words}.
 #' @param ... Any other parameters.
+#' @param return_doc_id Whether to return document id (named list).
 #' 
 #' @return A named \code{list} of documents where the names are the documents \code{id}.
 #' 
@@ -24,7 +25,7 @@ preprocess <- function(data, ...) UseMethod("preprocess")
 #' @method preprocess data.frame
 #' @export
 preprocess.data.frame <- function(data, text, doc_id = NULL, min_freq = 1, 
-  lexicon = c("SMART", "snowball", "onix"), ...){
+  lexicon = c("SMART", "snowball", "onix"), ..., return_doc_id = FALSE){
 
   assert_that(!missing(data), msg = "Missing `data`")
   assert_that(!missing(text), msg = "Missing `text`")
@@ -43,14 +44,14 @@ preprocess.data.frame <- function(data, text, doc_id = NULL, min_freq = 1,
   if(!"id" %in% names(tokens))
     tokens <- dplyr::mutate(tokens, id = 1:dplyr::n())
 
-  .get_tokens(tokens, min_freq)
+  .get_tokens(tokens, min_freq, lexicon = lexicon, return_doc_id = return_doc_id)
 }
 
 #' @rdname preprocess
 #' @method preprocess character
 #' @export
 preprocess.character <- function(data, doc_id = NULL, min_freq = 1, 
-  lexicon = c("SMART", "snowball", "onix"), ...){
+  lexicon = c("SMART", "snowball", "onix"), ..., return_doc_id = FALSE){
 
   cat(crayon::yellow(cli::symbol$arrow_right), "Preprocessing", crayon::blue(length(data)), "documents\n")
 
@@ -62,7 +63,7 @@ preprocess.character <- function(data, doc_id = NULL, min_freq = 1,
     id = doc_id
   )
 
-  .get_tokens(tokens, min_freq)
+  .get_tokens(tokens, min_freq, lexicon = lexicon, return_doc_id = return_doc_id)
 }
 
 #' @rdname preprocess
@@ -70,7 +71,7 @@ preprocess.character <- function(data, doc_id = NULL, min_freq = 1,
 #' @export
 preprocess.factor <- preprocess.character
 
-.get_tokens <- function(tokens, min_freq = 1, lexicon = c("SMART", "snowball", "onix")){
+.get_tokens <- function(tokens, min_freq = 1, lexicon = c("SMART", "snowball", "onix"), return_doc_id = return_doc_id){
 
   assert_that(min_freq >= 0)
   lexicon <- match.arg(lexicon)
@@ -93,14 +94,57 @@ preprocess.factor <- preprocess.character
     purrr::map(unlist) %>% 
     purrr::map(unname)
   
-  ids <- dplyr::pull(filtered, id) %>% unique()
+  if(return_doc_id)
+    ids <- dplyr::pull(filtered, id) %>% unique()
 
   filtered <- filtered %>% 
     dplyr::pull(data) %>% 
-    lapply(as.list) %>% 
-    purrr::set_names(ids)
+    lapply(as.list)
+
+  if(return_doc_id)
+    filtered <- purrr::set_names(filtered, ids)
 
   cat(crayon::yellow(cli::symbol$arrow_left), crayon::blue(length(filtered)), "documents after perprocessing\n")
 
   invisible(filtered)
+}
+
+#' Author Dcument Preprocess
+#' 
+#' Simply reshapes an authors to document data.frame to a format gensim expects.  
+#' 
+#' @param data A data.frame.
+#' @param author Bare column name containing author names.
+#' @param doc Bare column name of document ids. 
+#' 
+#' @return A Python \code{dict}.
+#' 
+#' @export
+auth2doc <- function(data, author, doc){
+  assert_that(!missing(data), msg = "Missing `data`")
+  assert_that(!missing(author), msg = "Missing `author`")
+  assert_that(!missing(doc), msg = "Missing `doc`")
+
+  author_enquo <- dplyr::enquo(author)
+  doc_enquo <- dplyr::enquo(doc)
+
+  data <- data %>% 
+    dplyr::select(
+      authors = !!author_enquo, 
+      documents = !!doc_enquo
+    ) %>% 
+    dplyr::mutate(documents = as.integer(documents)) %>% 
+    tidyr::nest(documents)
+
+  data$data <- data$data %>% 
+    purrr::map(unlist) %>% 
+    purrr::map(unname) 
+
+  docs <- dplyr::pull(data, "data")
+  names(docs) <- dplyr::pull(data, "authors")
+
+  docs <- docs %>% 
+    reticulate::dict()
+
+  structure(docs, class = c(class(docs), "auth2doc"))
 }

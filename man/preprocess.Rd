@@ -10,13 +10,14 @@
 preprocess(data, ...)
 
 \method{preprocess}{data.frame}(data, text, doc_id = NULL,
-  min_freq = 1, lexicon = c("SMART", "snowball", "onix"), ...)
+  min_freq = 1, lexicon = c("SMART", "snowball", "onix"), ...,
+  return_doc_id = FALSE)
 
 \method{preprocess}{character}(data, doc_id = NULL, min_freq = 1,
-  lexicon = c("SMART", "snowball", "onix"), ...)
+  lexicon = c("SMART", "snowball", "onix"), ..., return_doc_id = FALSE)
 
 \method{preprocess}{factor}(data, doc_id = NULL, min_freq = 1,
-  lexicon = c("SMART", "snowball", "onix"), ...)
+  lexicon = c("SMART", "snowball", "onix"), ..., return_doc_id = FALSE)
 }
 \arguments{
 \item{data}{A \code{data.frame} containing \code{text} and \code{id} 
@@ -32,6 +33,8 @@ assuming each element of \code{text}.}
 \item{min_freq}{Minimum term frequency to keep terms in.}
 
 \item{lexicon}{Name of a lexicon of stopwords, borrowed from \link[tidytext]{stop_words}.}
+
+\item{return_doc_id}{Whether to return document id (named list).}
 }
 \value{
 A named \code{list} of documents where the names are the documents \code{id}.

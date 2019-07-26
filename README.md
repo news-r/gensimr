@@ -22,6 +22,8 @@ will break.
   - [Preprocessing](#preprocessing)
   - [Topic Modeling](#topic-modeling)
   - [Document Similarity](#document-similarity)
+  - [External Data & Models](#external-data-models)
+  - [Word Vectors](#word-vectors)
 
 ## Installation
 
@@ -54,9 +56,10 @@ args <- paste("-m venv", env)
 system2("python3", args) # create environment
 reticulate::use_virtualenv(my_env) # force reticulate to use env
 gensimr::install_gensim(my_env) # install gensim in environment
+gensimr::install_sklearn(my_env) # install if you want to use the sklearn API
 ```
 
-\#\# Preprocessing
+## Preprocessing
 
 First we preprocess the corpus using example data, a tiny corpus of 9
 documents. Reproducing the tutorial on [corpora and vector
@@ -123,7 +126,7 @@ should manually delete it with `delete_mmcorpus`.
 
 ``` r
 (corpus_mm <- serialize_mmcorpus(corpus_bow, auto_delete = FALSE))
-#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpLY2TyP/filee06ddc2ab.mm 
+#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmplCE2Ir/file20fe727c38a2.mm 
 #>  ✔ Temp file
 #>  ✖ Delete after use
 ```
@@ -157,7 +160,7 @@ Note that we use the transformed corpus.
 lsi <- model_lsi(corpus_transformed, id2word = dictionary)
 #> ⚠ Low number of topics
 lsi$print_topics()
-#> [(0, '-0.703*"trees" + -0.538*"graph" + -0.402*"minors" + -0.187*"survey" + -0.061*"system" + -0.060*"response" + -0.060*"time" + -0.058*"user" + -0.049*"computer" + -0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
+#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '0.460*"system" + 0.373*"user" + 0.332*"eps" + 0.328*"interface" + 0.320*"time" + 0.320*"response" + 0.293*"computer" + 0.280*"human" + 0.171*"survey" + -0.161*"trees"')]
 ```
 
 We can then wrap the model around the corpus to extract further
@@ -170,15 +173,15 @@ wrapped_corpus <- wrap(lsi, corpus_transformed)
 #> # A tibble: 9 x 4
 #>   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1             0       -0.0660             1       -0.520 
-#> 2             0       -0.197              1       -0.761 
-#> 3             0       -0.0899             1       -0.724 
-#> 4             0       -0.0759             1       -0.632 
-#> 5             0       -0.102              1       -0.574 
-#> 6             0       -0.703              1        0.161 
-#> 7             0       -0.877              1        0.168 
-#> 8             0       -0.910              1        0.141 
-#> 9             0       -0.617              1       -0.0539
+#> 1             0        0.0660             1        0.520 
+#> 2             0        0.197              1        0.761 
+#> 3             0        0.0899             1        0.724 
+#> 4             0        0.0759             1        0.632 
+#> 5             0        0.102              1        0.574 
+#> 6             0        0.703              1       -0.161 
+#> 7             0        0.877              1       -0.168 
+#> 8             0        0.910              1       -0.141 
+#> 9             0        0.617              1        0.0539
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
@@ -222,71 +225,39 @@ reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [1] "time"
 #> 
 #> [[1]][[2]]
-#> [1] 0.2436053
+#> [1] 0.2154603
 #> 
 #> 
 #> [[2]]
 #> [[2]][[1]]
-#> [1] "survey"
+#> [1] "computer"
 #> 
 #> [[2]][[2]]
-#> [1] 0.1652509
+#> [1] 0.1712531
 #> 
 #> 
 #> [[3]]
 #> [[3]][[1]]
-#> [1] "user"
+#> [1] "system"
 #> 
 #> [[3]][[2]]
-#> [1] 0.12511
+#> [1] 0.1402072
 #> 
 #> 
 #> [[4]]
 #> [[4]][[1]]
-#> [1] "trees"
+#> [1] "graph"
 #> 
 #> [[4]][[2]]
-#> [1] 0.08698714
+#> [1] 0.1334292
 #> 
 #> 
 #> [[5]]
 #> [[5]][[1]]
-#> [1] "human"
+#> [1] "user"
 #> 
 #> [[5]][[2]]
-#> [1] 0.07790606
-```
-
-### word2vec
-
-Word2vec works somewhat differently. The example below is a reproduction
-of the Kaggle [Gensim Word2Vec
-Tutorial](https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model).
-
-``` r
-# initialise
-word2vec <- model_word2vec(size = 100L, window = 5L, min_count = 1L)
-word2vec$build_vocab(unname(docs)) 
-#> None
-word2vec$train(unname(docs), total_examples = word2vec$corpus_count, epochs = 20L)
-#> (76, 580)
-word2vec$init_sims(replace = TRUE)
-#> None
-```
-
-Now we can explore the model.
-
-``` r
-word2vec$wv$most_similar(positive = c("interface"))
-#> [('survey', 0.24039584398269653), ('time', 0.10832533240318298), ('eps', 0.10326456278562546), ('user', 0.06701876223087311), ('trees', 0.046254344284534454), ('response', 0.03557050600647926), ('graph', -0.00787646695971489), ('human', -0.017413843423128128), ('minors', -0.08258240669965744), ('computer', -0.12464559078216553)]
-```
-
-We expect “trees” to be the odd one out, it is a term that was in a
-different topic (\#2) whereas other terms were in topics \#1.
-
-``` r
-word2vec$wv$doesnt_match(c("human", "interface", "trees"))
-#> human
+#> [1] 0.1169253
 ```
 
 ### Log Entropy
@@ -331,20 +302,16 @@ get_similarity(sims)
 #> 9     5 -0.0880
 ```
 
-Clean up, delete the corpus.
+## External Data & Models
 
-``` r
-delete_mmcorpus(corpus_mm)
-```
-
-## Downloader
-
-You can download external datasets to easily build models.
+You can download external datasets to easily build models. External
+dataset can be found on
+[RaRe-Technologies/gensim-data](https://github.com/RaRe-Technologies/gensim-data).
 
 ``` r
 dataset <- "glove-twitter-25"
 
-# info about model
+# model description
 downloader_info(dataset) %>% 
   reticulate::py_to_r() %>% 
   .[["description"]]
@@ -434,4 +401,87 @@ model$most_similar("cat") %>%
 #> 
 #> [[10]][[2]]
 #> [1] 0.8845519
+```
+
+### Word Vectors
+
+Word2vec works somewhat differently. The example below is a reproduction
+of the Kaggle [Gensim Word2Vec
+Tutorial](https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model).
+
+``` r
+# initialise
+word2vec <- model_word2vec(size = 100L, window = 5L, min_count = 1L)
+word2vec$build_vocab(docs) 
+#> None
+word2vec$train(docs, total_examples = word2vec$corpus_count, epochs = 20L)
+#> (76, 580)
+word2vec$init_sims(replace = TRUE)
+#> None
+```
+
+Now we can explore the model.
+
+``` r
+word2vec$wv$most_similar(positive = c("interface"))
+#> [('trees', 0.2601749300956726), ('minors', 0.12357524037361145), ('computer', 0.074931301176548), ('response', 0.07039420306682587), ('time', 0.05693456530570984), ('system', -0.041648197919130325), ('user', -0.048062846064567566), ('human', -0.09219866991043091), ('eps', -0.15730395913124084), ('survey', -0.169086754322052)]
+```
+
+We expect “trees” to be the odd one out, it is a term that was in a
+different topic (\#2) whereas other terms were in topics \#1.
+
+``` r
+word2vec$wv$doesnt_match(c("human", "interface", "trees"))
+#> human
+```
+
+Test similarity between words.
+
+``` r
+word2vec$wv$similarity("human", "trees")
+#> -0.063984536
+word2vec$wv$similarity("eps", "system")
+#> -0.14588615
+```
+
+## Scikit-learn
+
+Scikit learn API.
+
+### Author-topic model
+
+``` r
+# authors of corpus
+data("authors", package = "gensimr")
+
+auth2doc <- auth2doc(authors, name, document)
+
+temp <- tempfile("serialized")
+atmodel <- sklearn_atmodel(
+  corpus_mm, 
+  id2word = dictionary, 
+  author2doc = auth2doc, 
+  num_topics = 2L, 
+  serialized = TRUE,
+  serialization_path = temp
+)
+unlink(temp, recursive = TRUE)
+
+atmodel$get_author_topics("jack") # single author 
+#> [(0, 0.19926858269337291), (1, 0.8007314173066271)]
+
+# apply to all authors
+get_author_topics(atmodel)
+#> # A tibble: 3 x 5
+#>   authors dimension_1_x dimension_1_y dimension_2_x dimension_2_y
+#>   <chr>           <dbl>         <dbl>         <dbl>         <dbl>
+#> 1 jack                0         0.199             1         0.801
+#> 2 jane                0         0.143             1         0.857
+#> 3 john                0         0.142             1         0.858
+```
+
+Clean up, delete the corpus.
+
+``` r
+delete_mmcorpus(corpus_mm)
 ```

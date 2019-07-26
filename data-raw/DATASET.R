@@ -10,4 +10,18 @@ corpus <- c(
   "Graph minors A survey"
 )
 
-usethis::use_data(corpus)
+authors <- tibble::tibble(
+  name = c(
+    rep("john", 7),
+    rep("jane", 7),
+    rep("jack", 5)
+  ),
+  document = c(
+    0, 1, 2, 3, 4, 5, 6,
+    2, 3, 4, 5, 6, 7, 8,
+    0, 2, 4, 6, 8
+  )
+) %>% 
+  dplyr::mutate(document = as.integer(document))
+
+usethis::use_data(corpus, authors, overwrite = TRUE)

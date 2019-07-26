@@ -217,9 +217,7 @@ model_ldamc.mm_file <- function(corpus, ...){
 #' @export
 model_ldamc.mm <- function(corpus,...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
-  
   model <- gensim$models$LdaMulticore(corpus, ...)
-  
   invisible(model)
 }
 
@@ -315,7 +313,6 @@ model_word2vec <- function(...){
   model <- gensim$models$Word2Vec(...)  
   invisible(model)
 }
-
 
 #' Get Document Topics
 #' 

@@ -3,3 +3,4 @@ env
 ^README\.Rmd$
 ^\.travis\.yml$
 ^data-raw$
+README_cache

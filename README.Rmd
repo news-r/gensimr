@@ -32,6 +32,8 @@ Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale top
 - [Preprocessing](#preprocessing)
 - [Topic Modeling](#topic-modeling)
 - [Document Similarity](#document-similarity)
+- [External Data & Models](#external-data-models)
+- [Word Vectors](#word-vectors)
 
 ## Installation
 
@@ -61,9 +63,10 @@ args <- paste("-m venv", env)
 system2("python3", args) # create environment
 reticulate::use_virtualenv(my_env) # force reticulate to use env
 gensimr::install_gensim(my_env) # install gensim in environment
+gensimr::install_sklearn(my_env) # install if you want to use the sklearn API
 ```
 
-## Preprocessing
+## Preprocessing
 
 First we preprocess the corpus using example data, a tiny corpus of 9 documents. Reproducing the tutorial on [corpora and vector spaces](https://radimrehurek.com/gensim/tut1.html).
 
@@ -166,30 +169,6 @@ hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 ```
 
-### word2vec
-
-Word2vec works somewhat differently. The example below is a reproduction of the Kaggle [Gensim Word2Vec Tutorial](https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model).
-
-```{r}
-# initialise
-word2vec <- model_word2vec(size = 100L, window = 5L, min_count = 1L)
-word2vec$build_vocab(unname(docs)) 
-word2vec$train(unname(docs), total_examples = word2vec$corpus_count, epochs = 20L)
-word2vec$init_sims(replace = TRUE)
-```
-
-Now we can explore the model.
-
-```{r}
-word2vec$wv$most_similar(positive = c("interface"))
-```
-
-We expect "trees" to be the odd one out, it is a term that was in a different topic (\#2) whereas other terms were in topics \#1.
-
-```{r}
-word2vec$wv$doesnt_match(c("human", "interface", "trees"))
-```
-
 ### Log Entropy
 
 ```{r}
@@ -217,20 +196,14 @@ sims <- wrap(index, vec_lsi)
 get_similarity(sims)
 ```
 
-Clean up, delete the corpus.
+## External Data & Models
 
-```r
-delete_mmcorpus(corpus_mm)
-```
-
-## Downloader
-
-You can download external datasets to easily build models.
+You can download external datasets to easily build models. External dataset can be found on [RaRe-Technologies/gensim-data](https://github.com/RaRe-Technologies/gensim-data).
 
 ```{r, cache=TRUE}
 dataset <- "glove-twitter-25"
 
-# info about model
+# model description
 downloader_info(dataset) %>% 
   reticulate::py_to_r() %>% 
   .[["description"]]
@@ -241,4 +214,70 @@ model <- downloader_load(dataset)
 # find words most similar to "cat"
 model$most_similar("cat") %>% 
   reticulate::py_to_r()
+```
+
+### Word Vectors
+
+Word2vec works somewhat differently. The example below is a reproduction of the Kaggle [Gensim Word2Vec Tutorial](https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model).
+
+```{r}
+# initialise
+word2vec <- model_word2vec(size = 100L, window = 5L, min_count = 1L)
+word2vec$build_vocab(docs) 
+word2vec$train(docs, total_examples = word2vec$corpus_count, epochs = 20L)
+word2vec$init_sims(replace = TRUE)
+```
+
+Now we can explore the model.
+
+```{r}
+word2vec$wv$most_similar(positive = c("interface"))
+```
+
+We expect "trees" to be the odd one out, it is a term that was in a different topic (\#2) whereas other terms were in topics \#1.
+
+```{r}
+word2vec$wv$doesnt_match(c("human", "interface", "trees"))
+```
+
+Test similarity between words.
+
+```{r}
+word2vec$wv$similarity("human", "trees")
+word2vec$wv$similarity("eps", "system")
+```
+
+## Scikit-learn
+
+Scikit learn API.
+
+### Author-topic model
+
+```{r}
+# authors of corpus
+data("authors", package = "gensimr")
+
+auth2doc <- auth2doc(authors, name, document)
+
+temp <- tempfile("serialized")
+atmodel <- sklearn_atmodel(
+  corpus_mm, 
+  id2word = dictionary, 
+  author2doc = auth2doc, 
+  num_topics = 2L, 
+  serialized = TRUE,
+  serialization_path = temp
+)
+unlink(temp, recursive = TRUE)
+
+atmodel$get_author_topics("jack") # single author 
+
+# apply to all authors
+get_author_topics(atmodel)
+```
+
+Clean up, delete the corpus.
+
+```{r}
+delete_mmcorpus(corpus_mm)
 ```

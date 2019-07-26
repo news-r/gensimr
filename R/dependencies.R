@@ -1,7 +1,6 @@
 #' Install Dependencies
 #' 
-#' Install the \href{https://textblob.readthedocs.io/en/dev/quickstart.html}{TextBlob}. 
-#' Arguments are passed to \link[reticulate]{py_install}.
+#' Install Python dependencies. Arguments are passed to \link[reticulate]{py_install}.
 #' 
 #' @param envname Name of environment to install packages into
 #' @param method Installation method. By default, "auto" automatically 
@@ -20,4 +19,10 @@
 #' @export
 install_gensim <- function(envname = NULL, method = "auto", conda = "auto") {
   reticulate::py_install("gensim", envname = envname, method = method, conda = conda)
+}
+
+#' @name dependencies
+#' @export
+install_sklearn <- function(envname = NULL, method = "auto", conda = "auto") {
+  reticulate::py_install("sklearn", envname = envname, method = method, conda = conda)
 }

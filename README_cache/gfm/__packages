@@ -1,8 +1,2 @@
 base
-methods
-utils
-datasets
-grDevices
-graphics
-stats
 gensimr

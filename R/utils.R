@@ -9,6 +9,7 @@ globalVariables(
     "n",
     "id",
     "tokens",
-    "data"
+    "data",
+    "documents"
   )
 )
