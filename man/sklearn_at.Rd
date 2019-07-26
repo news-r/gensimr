@@ -2,16 +2,11 @@
 % Please edit documentation in R/sklearn.R
 \name{sklearn_at}
 \alias{sklearn_at}
-\alias{sklearn_at.gensim.corpora.dictionary.Dictionary}
 \title{Author Topic Model}
 \usage{
-sklearn_at(dict, ...)
-
-\method{sklearn_at}{gensim.corpora.dictionary.Dictionary}(dict, ...)
+sklearn_at(...)
 }
 \arguments{
-\item{dict}{Dictionary as returned by \code{\link{corpora_dictionary}}.}
-
 \item{...}{Any other options, from the ¨
 \href{https://radimrehurek.com/gensim/sklearn_api/atmodel.html}{official documentation}.}
 }

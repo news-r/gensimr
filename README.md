@@ -127,7 +127,7 @@ should manually delete it with `delete_mmcorpus`.
 
 ``` r
 (corpus_mm <- serialize_mmcorpus(corpus_bow, auto_delete = FALSE))
-#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmprgOYUV/file2bd36f4ffb8f.mm 
+#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmprgOYUV/file2bd37ec89b4f.mm 
 #>  ✔ Temp file
 #>  ✖ Delete after use
 ```
@@ -161,7 +161,7 @@ Note that we use the transformed corpus.
 lsi <- model_lsi(corpus_transformed, id2word = dictionary)
 #> ⚠ Low number of topics
 lsi$print_topics()
-#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"response" + -0.320*"time" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
+#> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '0.460*"system" + 0.373*"user" + 0.332*"eps" + 0.328*"interface" + 0.320*"time" + 0.320*"response" + 0.293*"computer" + 0.280*"human" + 0.171*"survey" + -0.161*"trees"')]
 ```
 
 We can then wrap the model around the corpus to extract further
@@ -174,15 +174,15 @@ wrapped_corpus <- wrap(lsi, corpus_transformed)
 #> # A tibble: 9 x 4
 #>   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1             0        0.0660             1       -0.520 
-#> 2             0        0.197              1       -0.761 
-#> 3             0        0.0899             1       -0.724 
-#> 4             0        0.0759             1       -0.632 
-#> 5             0        0.102              1       -0.574 
-#> 6             0        0.703              1        0.161 
-#> 7             0        0.877              1        0.168 
-#> 8             0        0.910              1        0.141 
-#> 9             0        0.617              1       -0.0539
+#> 1             0        0.0660             1        0.520 
+#> 2             0        0.197              1        0.761 
+#> 3             0        0.0899             1        0.724 
+#> 4             0        0.0759             1        0.632 
+#> 5             0        0.102              1        0.574 
+#> 6             0        0.703              1       -0.161 
+#> 7             0        0.877              1       -0.168 
+#> 8             0        0.910              1       -0.141 
+#> 9             0        0.617              1        0.0539
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
@@ -223,42 +223,42 @@ hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [[1]]
 #> [[1]][[1]]
-#> [1] "eps"
+#> [1] "survey"
 #> 
 #> [[1]][[2]]
-#> [1] 0.4956268
+#> [1] 0.2299116
 #> 
 #> 
 #> [[2]]
 #> [[2]][[1]]
-#> [1] "computer"
+#> [1] "minors"
 #> 
 #> [[2]][[2]]
-#> [1] 0.1172552
+#> [1] 0.2039398
 #> 
 #> 
 #> [[3]]
 #> [[3]][[1]]
-#> [1] "survey"
+#> [1] "interface"
 #> 
 #> [[3]][[2]]
-#> [1] 0.09072642
+#> [1] 0.1803729
 #> 
 #> 
 #> [[4]]
 #> [[4]][[1]]
-#> [1] "system"
+#> [1] "computer"
 #> 
 #> [[4]][[2]]
-#> [1] 0.08612828
+#> [1] 0.07612692
 #> 
 #> 
 #> [[5]]
 #> [[5]][[1]]
-#> [1] "graph"
+#> [1] "time"
 #> 
 #> [[5]][[2]]
-#> [1] 0.06871661
+#> [1] 0.069968
 ```
 
 ### Log Entropy
@@ -313,7 +313,10 @@ data("authors", package = "gensimr")
 
 auth2doc <- auth2doc(authors, name, document)
 
+# create temp to hold serialized data
 temp <- tempfile("serialized")
+
+# build model
 atmodel <- model_at(
   corpus_mm, 
   id2word = dictionary, 
@@ -322,6 +325,8 @@ atmodel <- model_at(
   serialized = TRUE,
   serialization_path = temp
 )
+
+# delete temp
 unlink(temp, recursive = TRUE)
 ```
 
@@ -329,16 +334,16 @@ Then extract the topics for each author.
 
 ``` r
 atmodel$get_author_topics("jack") # native for single author 
-#> [(0, 0.2243756488094798), (1, 0.7756243511905202)]
+#> [(0, 0.19906505032758703), (1, 0.800934949672413)]
 
 # apply to all authors
 get_author_topics(atmodel)
 #> # A tibble: 3 x 5
 #>   authors dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>   <chr>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1 jack                0         0.224             1         0.776
-#> 2 jane                0         0.159             1         0.841
-#> 3 john                0         0.137             1         0.863
+#> 1 jack                0         0.199             1         0.801
+#> 2 jane                0         0.538             1         0.462
+#> 3 john                0         0.264             1         0.736
 ```
 
 ## External Data & Models
@@ -494,14 +499,14 @@ delete_mmcorpus(corpus_mm)
 
 Scikitlearn API.
 
-### Author-topic\_id
+### Author-topic Model
 
 Author-topic model.
 
 ``` r
 temp <- tempfile("serialized")
 atmodel <- sklearn_at(
-  dictionary, 
+  id2word = dictionary, 
   author2doc = auth2doc, 
   num_topics = 2L, 
   passes = 100L,
@@ -511,4 +516,31 @@ atmodel <- sklearn_at(
 unlink(temp, recursive = TRUE)
 
 atmodel$fit(corpus_bow)$transform("jack")
+#> [[0.91516125 0.08483876]]
+```
+
+### Doc2vec
+
+``` r
+d2v <- sklearn_doc2vec(min_count = 1, size = 5)
+vectors <- d2v$fit_transform(docs)
+```
+
+### Hierarchical Dirichlet Process
+
+``` r
+hdp <- sklearn_hdp(id2word = dictionary)
+vectors <- hdp$fit_transform(corpus_bow)
+```
+
+## Latent Dirichlet Allocation
+
+``` r
+lda <- sklearn_lda(
+  id2word = dictionary, 
+  num_topics = 2, 
+  iterations = 20, 
+  random_state = 1
+)
+vectors <- hdp$fit_transform(corpus_bow)
 ```

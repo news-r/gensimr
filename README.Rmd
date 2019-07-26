@@ -294,14 +294,14 @@ delete_mmcorpus(corpus_mm)
 
 Scikitlearn API.
 
-### Author-topic_id
+### Author-topic Model
 
 Author-topic model.
 
 ```{r}
 temp <- tempfile("serialized")
 atmodel <- sklearn_at(
-  dictionary, 
+  id2word = dictionary, 
   author2doc = auth2doc, 
   num_topics = 2L, 
   passes = 100L,
@@ -313,9 +313,28 @@ unlink(temp, recursive = TRUE)
 atmodel$fit(corpus_bow)$transform("jack")
 ```
 
-## Doc2vec
+### Doc2vec
 
 ```{r}
 d2v <- sklearn_doc2vec(min_count = 1, size = 5)
 vectors <- d2v$fit_transform(docs)
+```
+
+### Hierarchical Dirichlet Process
+
+```{r}
+hdp <- sklearn_hdp(id2word = dictionary)
+vectors <- hdp$fit_transform(corpus_bow)
+```
+
+## Latent Dirichlet Allocation
+
+```{r}
+lda <- sklearn_lda(
+  id2word = dictionary, 
+  num_topics = 2, 
+  iterations = 20, 
+  random_state = 1
+)
+vectors <- hdp$fit_transform(corpus_bow)
 ```
