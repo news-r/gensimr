@@ -1,4 +1,4 @@
-#' Preprocess
+#' Prepare Documents
 #' 
 #' Simple text preprocessor for, namely for example purposes.
 #' 
@@ -17,14 +17,14 @@
 #' @details Simply tokenises each document, removes punctuation, stop words, digits,
 #' and keeps only terms that appear more than \code{min_freq} \emph{across documents.} 
 #' 
-#' @name preprocess
+#' @name prepare_documents
 #' @export
-preprocess <- function(data, ...) UseMethod("preprocess")
+prepare_documents <- function(data, ...) UseMethod("prepare_documents")
 
-#' @rdname preprocess
-#' @method preprocess data.frame
+#' @rdname prepare_documents
+#' @method prepare_documents data.frame
 #' @export
-preprocess.data.frame <- function(data, text, doc_id = NULL, min_freq = 1, 
+prepare_documents.data.frame <- function(data, text, doc_id = NULL, min_freq = 1, 
   lexicon = c("SMART", "snowball", "onix"), ..., return_doc_id = FALSE){
 
   assert_that(!missing(data), msg = "Missing `data`")
@@ -47,10 +47,10 @@ preprocess.data.frame <- function(data, text, doc_id = NULL, min_freq = 1,
   .get_tokens(tokens, min_freq, lexicon = lexicon, return_doc_id = return_doc_id)
 }
 
-#' @rdname preprocess
-#' @method preprocess character
+#' @rdname prepare_documents
+#' @method prepare_documents character
 #' @export
-preprocess.character <- function(data, doc_id = NULL, min_freq = 1, 
+prepare_documents.character <- function(data, doc_id = NULL, min_freq = 1, 
   lexicon = c("SMART", "snowball", "onix"), ..., return_doc_id = FALSE){
 
   cat(crayon::yellow(cli::symbol$arrow_right), "Preprocessing", crayon::blue(length(data)), "documents\n")
@@ -66,10 +66,10 @@ preprocess.character <- function(data, doc_id = NULL, min_freq = 1,
   .get_tokens(tokens, min_freq, lexicon = lexicon, return_doc_id = return_doc_id)
 }
 
-#' @rdname preprocess
-#' @method preprocess factor
+#' @rdname prepare_documents
+#' @method prepare_documents factor
 #' @export
-preprocess.factor <- preprocess.character
+prepare_documents.factor <- prepare_documents.character
 
 .get_tokens <- function(tokens, min_freq = 1, lexicon = c("SMART", "snowball", "onix"), return_doc_id = return_doc_id){
 

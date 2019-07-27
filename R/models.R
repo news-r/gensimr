@@ -316,13 +316,15 @@ model_word2vec <- function(...){
 
 #' Get Document Topics
 #' 
+#' Get document-topics matrix.
+#' 
 #' @param corpus Corpus.
 #' 
-#' @name get_docs_topics
+#' @name get_documents_topics
 #' @export
 get_docs_topics <- function(corpus) UseMethod("get_docs_topics")
 
-#' @rdname get_docs_topics
+#' @rdname get_documents_topics
 #' @method get_docs_topics gensim.interfaces.CorpusABC
 #' @export
 get_docs_topics.gensim.interfaces.CorpusABC <- function(corpus){

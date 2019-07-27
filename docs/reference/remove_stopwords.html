@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Document Topics — get_docs_topics • gensimr</title>
+<title>Remove stopwords — remove_stopwords • gensimr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -41,9 +41,9 @@
 
 
 
-<meta property="og:title" content="Get Document Topics — get_docs_topics" />
+<meta property="og:title" content="Remove stopwords — remove_stopwords" />
 
-<meta property="og:description" content="Get document-topics matrix." />
+<meta property="og:description" content="Remove stopwords from a character string." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -119,28 +119,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Document Topics</h1>
+    <h1>Remove stopwords</h1>
     
-    <div class="hidden name"><code>get_docs_topics.Rd</code></div>
+    <div class="hidden name"><code>remove_stopwords.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Get document-topics matrix.</p>
+    <p>Remove stopwords from a character string.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_docs_topics</span>(<span class='no'>corpus</span>)
+    <pre class="usage"><span class='fu'>remove_stopwords</span>(<span class='no'>s</span>, <span class='no'>...</span>)
 
-<span class='co'># S3 method for gensim.interfaces.CorpusABC</span>
-<span class='fu'>get_docs_topics</span>(<span class='no'>corpus</span>)</pre>
+<span class='co'># S3 method for character</span>
+<span class='fu'>remove_stopwords</span>(<span class='no'>s</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for data.frame</span>
+<span class='fu'>remove_stopwords</span>(<span class='no'>s</span>, <span class='no'>text</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>corpus</th>
-      <td><p>Corpus.</p></td>
+      <th>s</th>
+      <td><p>A Character string or data.frame.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Any other options.</p></td>
+    </tr>
+    <tr>
+      <th>text</th>
+      <td><p>bare name of text column.</p></td>
     </tr>
     </table>
     

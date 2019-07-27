@@ -1,70 +1,19 @@
 ---
-output: 
-  github_document:
-    html_preview: false
+title: "Models"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  comment = "#>"
 )
 
 reticulate::use_virtualenv("./env")
-```
-
-<!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build status](https://travis-ci.org/news-r/gensimr.svg?branch=master)](https://travis-ci.org/news-r/gensimr)
-<!-- badges: end -->
-
-# gensimr
-
-<img src="./man/figures/logo.png" height="200" align="right" />
-
-Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale topic modeling.
-
-⚠️ Notice the "Experimental" lifecycle badge: things won't work, stuff will break.
-
-- [Installation](#installation)
-- [Preprocessing](#preprocessing)
-- [Topic Modeling](#topic-modeling)
-- [Document Similarity](#document-similarity)
-- [External Data & Models](#external-data--models)
-- [Word Vectors](#word-vectors)
-
-## Installation
-
-Install the package.
-
-```r
-# install.packages("remotes")
-remotes::install_github("news-r/gensimr")
-```
-
-Install the python dependency.
-
-*Make sure you have a C compiler before installing Gensim, to use the optimized word2vec routines (70x speedup compared to plain NumPy implementation).*
-
-```r
-gensimr::install_dependencies()
-```
-
-Ideally one should use a virtual environment and pass it to `install_dependencies`, only do this once.
-
-```r
-# replace with path of your choice
-my_env <- "./env"
-
-# run this (works on unix)
-args <- paste("-m venv", my_env)
-system2("python3", args) # create environment
-reticulate::use_virtualenv(my_env) # force reticulate to use env
-gensimr::install_dependencies(my_env) # install gensim & scikit-learn in environment
 ```
 
 ## Preprocessing
@@ -122,11 +71,9 @@ We can then use the model to transform our original corpus.
 corpus_transformed <- wrap(tfidf, corpus_bow)
 ```
 
-## Topic Modeling
-
 Finally, we can build models, the number of topics of `model_*` functions defautls to 2, which is too low for what we generally would do with gensimr but works for the low number of documents we have. Below we reproduce bits and bobs of the [topics and transformation](https://radimrehurek.com/gensim/tut2.html).
 
-### Latent Similarity Index
+## Latent Similarity Index
 
 Note that we use the transformed corpus.
 
@@ -143,7 +90,7 @@ wrapped_corpus <- wrap(lsi, corpus_transformed)
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
-### Random Projections
+## Random Projections
 
 Note that we use the transformed corpus.
 
@@ -155,7 +102,7 @@ wrapped_corpus_docs <- get_docs_topics(wrapped_corpus)
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
-### Latent Dirichlet Allocation
+## Latent Dirichlet Allocation
 
 Note that we use the original, non-transformed corpus.
 
@@ -166,39 +113,13 @@ wrapped_corpus_docs <- get_docs_topics(lda_topics)
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 ```
 
-### Hierarchical Dirichlet Process
+## Hierarchical Dirichlet Process
 
 ```{r}
 hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 ```
 
-### Log Entropy
-
-```{r}
-log_entropy <- model_logentropy(corpus_bow)
-vector <- wrap(log_entropy, corpus_bow)
-```
-
-## Document Similarity
-
-Reproducing [tutorial on similarity](https://radimrehurek.com/gensim/tut3.html#similarity-interface).
-
-```{r}
-mm <- read_serialized_mmcorpus(corpus_mm)
-
-new_document <- "A human and computer interaction"
-preprocessed_new_document <- preprocess(new_document, min_freq = 0)
-vec_bow <- doc2bow(dictionary, preprocessed_new_document)
-vec_lsi <- wrap(lsi, vec_bow)
-
-wrapped_lsi <- wrap(lsi, mm)
-index <- similarity_matrix(wrapped_lsi)
-
-sims <- wrap(index, vec_lsi)
-
-get_similarity(sims)
-```
 
 ## Author-topic model
 
@@ -256,35 +177,11 @@ model$most_similar("cat") %>%
   reticulate::py_to_r()
 ```
 
-### Word Vectors
-
-Word2vec works somewhat differently. The example below is a reproduction of the Kaggle [Gensim Word2Vec Tutorial](https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model).
+## Log Entropy
 
 ```{r}
-# initialise
-word2vec <- model_word2vec(size = 100L, window = 5L, min_count = 1L)
-word2vec$build_vocab(docs) 
-word2vec$train(docs, total_examples = word2vec$corpus_count, epochs = 20L)
-word2vec$init_sims(replace = TRUE)
-```
-
-Now we can explore the model.
-
-```{r}
-word2vec$wv$most_similar(positive = c("interface"))
-```
-
-We expect "trees" to be the odd one out, it is a term that was in a different topic (\#2) whereas other terms were in topics \#1.
-
-```{r}
-word2vec$wv$doesnt_match(c("human", "interface", "trees"))
-```
-
-Test similarity between words.
-
-```{r}
-word2vec$wv$similarity("human", "trees")
-word2vec$wv$similarity("eps", "system")
+log_entropy <- model_logentropy(corpus_bow)
+wrap(log_entropy, corpus_bow)
 ```
 
 Clean up, delete the corpus.

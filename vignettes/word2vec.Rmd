@@ -1,0 +1,65 @@
+---
+title: "word2vec"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{word2vec}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+reticulate::use_virtualenv("./env")
+```
+
+## Preprocessing
+
+First we preprocess the corpus using example data, a tiny corpus of 9 documents. Reproducing the tutorial on [corpora and vector spaces](https://radimrehurek.com/gensim/tut1.html).
+
+```{r}
+library(gensimr)
+
+set.seed(42) # rerproducability
+
+# sample data
+data(corpus, package = "gensimr")
+print(corpus)
+
+# preprocess corpus
+docs <- prepare_documents(corpus)
+
+docs[[1]] # print first preprocessed document 
+```
+
+Word2vec works somewhat differently. The example below is a reproduction of the Kaggle [Gensim Word2Vec Tutorial](https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model).
+
+```{r}
+# initialise
+word2vec <- model_word2vec(size = 100L, window = 5L, min_count = 1L)
+word2vec$build_vocab(docs) 
+word2vec$train(docs, total_examples = word2vec$corpus_count, epochs = 20L)
+word2vec$init_sims(replace = TRUE)
+```
+
+Now we can explore the model.
+
+```{r}
+word2vec$wv$most_similar(positive = c("interface"))
+```
+
+We expect "trees" to be the odd one out, it is a term that was in a different topic (\#2) whereas other terms were in topics \#1.
+
+```{r}
+word2vec$wv$doesnt_match(c("human", "interface", "trees"))
+```
+
+Test similarity between words.
+
+```{r}
+word2vec$wv$similarity("human", "trees")
+word2vec$wv$similarity("eps", "system")
+```

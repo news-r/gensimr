@@ -3,5 +3,7 @@ pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
   installation: installation.html
+  models: models.html
   sklearn: sklearn.html
+  word2vec: word2vec.html
 

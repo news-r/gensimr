@@ -31,7 +31,7 @@ data(corpus, package = "gensimr")
 print(corpus)
 
 # preprocess corpus
-docs <- preprocess(corpus)
+docs <- prepare_documents(corpus)
 
 docs[[1]] # print first preprocessed document 
 ```
@@ -211,4 +211,10 @@ w2v_model <- w2v_model$fit(docs)
 
 # What is the vector representation of the word 'graph'?
 w2v_model$transform(list("graph"))
+```
+
+Clean up, delete the corpus.
+
+```{r}
+delete_mmcorpus(corpus_mm)
 ```

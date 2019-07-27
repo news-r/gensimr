@@ -9,7 +9,7 @@ doc2bow(dictionary, docs)
 \arguments{
 \item{dictionary}{A dictionary as returned by \code{\link{corpora_dictionary}}.}
 
-\item{docs}{A list of documents as returned by \code{\link{preprocess}}.}
+\item{docs}{A list of documents as returned by \code{\link{prepare_documents}}.}
 }
 \value{
 A sparse matrix in the form, \link[reticulate]{tuple}.

@@ -2,7 +2,7 @@
 #' 
 #' Create a dictionary from a list of documents.
 #' 
-#' @param docs A list of documents as returned by \code{\link{preprocess}}.
+#' @param docs A list of documents as returned by \code{\link{prepare_documents}}.
 #' @param file Path to save \code{.dict}, If \code{NULL} the dictionary is \emph{not} saved.
 #' 
 #' @export
@@ -22,7 +22,7 @@ corpora_dictionary <- function(docs, file = NULL){
 #' Create a dictionary from a list of documents.
 #' 
 #' @param dictionary A dictionary as returned by \code{\link{corpora_dictionary}}.
-#' @param docs A list of documents as returned by \code{\link{preprocess}}.
+#' @param docs A list of documents as returned by \code{\link{prepare_documents}}.
 #' 
 #' @details Counts the number of occurrences of each distinct word, 
 #' converts the word to its integer word id and returns the result as a sparse vector. 
