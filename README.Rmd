@@ -22,7 +22,9 @@ reticulate::use_virtualenv("./env")
 [![Travis build status](https://travis-ci.org/news-r/gensimr.svg?branch=master)](https://travis-ci.org/news-r/gensimr)
 <!-- badges: end -->
 
-![gensim official logo](https://radimrehurek.com/gensim/_static/images/gensim.png)
+# gensimr
+
+<img src="./man/figures/logo.png" height="150" align="right" />
 
 Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale topic modeling.
 
@@ -60,7 +62,7 @@ Ideally one should use a virtual environment and pass it to `install_gensim`, on
 my_env <- "./env"
 
 # run this (works on unix)
-args <- paste("-m venv", env)
+args <- paste("-m venv", my_env)
 system2("python3", args) # create environment
 reticulate::use_virtualenv(my_env) # force reticulate to use env
 gensimr::install_dependencies(my_env) # install gensim & scikit-learn in environment

@@ -1,32 +1,27 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) [![Travis build status](https://travis-ci.org/news-r/gensimr.svg?branch=master)](https://travis-ci.org/news-r/gensimr) <!-- badges: end -->
 
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build
-status](https://travis-ci.org/news-r/gensimr.svg?branch=master)](https://travis-ci.org/news-r/gensimr)
-<!-- badges: end -->
+gensimr
+=======
 
-![gensim official
-logo](https://radimrehurek.com/gensim/_static/images/gensim.png)
+<img src="./man/figures/logo.png" height="150" align="right" />
 
-Brings [gensim](https://radimrehurek.com/gensim) to R: efficient
-large-scale topic modeling.
+Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale topic modeling.
 
-⚠️ Notice the “Experimental” lifecycle badge: things won’t work, stuff
-will break.
+⚠️ Notice the "Experimental" lifecycle badge: things won't work, stuff will break.
 
-  - [Installation](#installation)
-  - [Preprocessing](#preprocessing)
-  - [Topic Modeling](#topic-modeling)
-  - [Document Similarity](#document-similarity)
-  - [External Data & Models](#external-data--models)
-  - [Word Vectors](#word-vectors)
-  - [Scikit-learn](#scikit-learn)
+-   [Installation](#installation)
+-   [Preprocessing](#preprocessing)
+-   [Topic Modeling](#topic-modeling)
+-   [Document Similarity](#document-similarity)
+-   [External Data & Models](#external-data--models)
+-   [Word Vectors](#word-vectors)
+-   [Scikit-learn](#scikit-learn)
 
-## Installation
+Installation
+------------
 
 Install the package.
 
@@ -37,33 +32,29 @@ remotes::install_github("news-r/gensimr")
 
 Install the python dependency.
 
-*Make sure you have a C compiler before installing Gensim, to use the
-optimized word2vec routines (70x speedup compared to plain NumPy
-implementation).*
+*Make sure you have a C compiler before installing Gensim, to use the optimized word2vec routines (70x speedup compared to plain NumPy implementation).*
 
 ``` r
 gensimr::install_dependencies()
 ```
 
-Ideally one should use a virtual environment and pass it to
-`install_gensim`, only do this once.
+Ideally one should use a virtual environment and pass it to `install_gensim`, only do this once.
 
 ``` r
 # replace with path of your choice
 my_env <- "./env"
 
 # run this (works on unix)
-args <- paste("-m venv", env)
+args <- paste("-m venv", my_env)
 system2("python3", args) # create environment
 reticulate::use_virtualenv(my_env) # force reticulate to use env
 gensimr::install_dependencies(my_env) # install gensim & scikit-learn in environment
 ```
 
-## Preprocessing
+Preprocessing
+-------------
 
-First we preprocess the corpus using example data, a tiny corpus of 9
-documents. Reproducing the tutorial on [corpora and vector
-spaces](https://radimrehurek.com/gensim/tut1.html).
+First we preprocess the corpus using example data, a tiny corpus of 9 documents. Reproducing the tutorial on [corpora and vector spaces](https://radimrehurek.com/gensim/tut1.html).
 
 ``` r
 library(gensimr)
@@ -107,10 +98,7 @@ dictionary <- corpora_dictionary(docs)
 
 A dictionary essentially assigns an integer to each term.
 
-`doc2bow` simply applies the method of the same name to every documents
-(see example below); it counts the number of occurrences of each
-distinct word, converts the word to its integer word id and returns the
-result as a sparse vector.
+`doc2bow` simply applies the method of the same name to every documents (see example below); it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector.
 
 ``` r
 # native method to a single document
@@ -121,21 +109,16 @@ dictionary$doc2bow(docs[[1]])
 corpus_bow <- doc2bow(dictionary, docs)
 ```
 
-Then serialise to matrix market format, the function returns the path to
-the file (this is saved on disk for efficiency), if no path is passed
-then a temp file is created. Here we set `auto_delete` to `FALSE`
-otherwise the corpus is deleted after first use. Note this means you
-should manually delete it with `delete_mmcorpus`.
+Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set `auto_delete` to `FALSE` otherwise the corpus is deleted after first use. Note this means you should manually delete it with `delete_mmcorpus`.
 
 ``` r
 (corpus_mm <- serialize_mmcorpus(corpus_bow, auto_delete = FALSE))
-#> ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpgVNBiC/file479c1246e46a.mm 
+#> ℹ Path: /tmp/Rtmp9Q7RLO/file251c4b9ec6da.mm 
 #>  ✔ Temp file
 #>  ✖ Delete after use
 ```
 
-Then initialise a model, we’re going to use a Latent Similarity Indexing
-method later on (`model_lsi`) which requires td-idf.
+Then initialise a model, we're going to use a Latent Similarity Indexing method later on (`model_lsi`) which requires td-idf.
 
 ``` r
 tfidf <- model_tfidf(corpus_mm)
@@ -147,13 +130,10 @@ We can then use the model to transform our original corpus.
 corpus_transformed <- wrap(tfidf, corpus_bow)
 ```
 
-## Topic Modeling
+Topic Modeling
+--------------
 
-Finally, we can build models, the number of topics of `model_*`
-functions defautls to 2, which is too low for what we generally would do
-with gensimr but works for the low number of documents we have. Below we
-reproduce bits and bobs of the [topics and
-transformation](https://radimrehurek.com/gensim/tut2.html).
+Finally, we can build models, the number of topics of `model_*` functions defautls to 2, which is too low for what we generally would do with gensimr but works for the low number of documents we have. Below we reproduce bits and bobs of the [topics and transformation](https://radimrehurek.com/gensim/tut2.html).
 
 ### Latent Similarity Index
 
@@ -166,9 +146,7 @@ lsi$print_topics()
 #> [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]
 ```
 
-We can then wrap the model around the corpus to extract further
-information, below we extract how each document contribute to each
-dimension (topic).
+We can then wrap the model around the corpus to extract further information, below we extract how each document contribute to each dimension (topic).
 
 ``` r
 wrapped_corpus <- wrap(lsi, corpus_transformed)
@@ -225,42 +203,42 @@ hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #> [[1]]
 #> [[1]][[1]]
-#> [1] "time"
+#> [1] "human"
 #> 
 #> [[1]][[2]]
-#> [1] 0.3118415
+#> [1] 0.1850884
 #> 
 #> 
 #> [[2]]
 #> [[2]][[1]]
-#> [1] "interface"
+#> [1] "survey"
 #> 
 #> [[2]][[2]]
-#> [1] 0.1748817
+#> [1] 0.1671609
 #> 
 #> 
 #> [[3]]
 #> [[3]][[1]]
-#> [1] "human"
+#> [1] "computer"
 #> 
 #> [[3]][[2]]
-#> [1] 0.1304214
+#> [1] 0.1536896
 #> 
 #> 
 #> [[4]]
 #> [[4]][[1]]
-#> [1] "graph"
+#> [1] "interface"
 #> 
 #> [[4]][[2]]
-#> [1] 0.0990004
+#> [1] 0.1477025
 #> 
 #> 
 #> [[5]]
 #> [[5]][[1]]
-#> [1] "response"
+#> [1] "eps"
 #> 
 #> [[5]][[2]]
-#> [1] 0.09613849
+#> [1] 0.1119504
 ```
 
 ### Log Entropy
@@ -270,10 +248,10 @@ log_entropy <- model_logentropy(corpus_bow)
 vector <- wrap(log_entropy, corpus_bow)
 ```
 
-## Document Similarity
+Document Similarity
+-------------------
 
-Reproducing [tutorial on
-similarity](https://radimrehurek.com/gensim/tut3.html#similarity-interface).
+Reproducing [tutorial on similarity](https://radimrehurek.com/gensim/tut3.html#similarity-interface).
 
 ``` r
 mm <- read_serialized_mmcorpus(corpus_mm)
@@ -305,7 +283,8 @@ get_similarity(sims)
 #> 9     5 -0.0880
 ```
 
-## Author-topic model
+Author-topic model
+------------------
 
 First we build the model.
 
@@ -336,23 +315,22 @@ Then extract the topics for each author.
 
 ``` r
 atmodel$get_author_topics("jack") # native for single author 
-#> [(0, 0.23197808746929904), (1, 0.768021912530701)]
+#> [(0, 0.2166241771419722), (1, 0.7833758228580278)]
 
 # apply to all authors
 get_author_topics(atmodel)
 #> # A tibble: 3 x 5
 #>   authors dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #>   <chr>           <dbl>         <dbl>         <dbl>         <dbl>
-#> 1 jack                0         0.232             1         0.768
-#> 2 jane                0         0.163             1         0.837
-#> 3 john                0         0.145             1         0.855
+#> 1 jack                0         0.217             1         0.783
+#> 2 jane                0         0.324             1         0.676
+#> 3 john                0         0.848             1         0.152
 ```
 
-## External Data & Models
+External Data & Models
+----------------------
 
-You can download external datasets to easily build models. External
-dataset can be found on
-[RaRe-Technologies/gensim-data](https://github.com/RaRe-Technologies/gensim-data).
+You can download external datasets to easily build models. External dataset can be found on [RaRe-Technologies/gensim-data](https://github.com/RaRe-Technologies/gensim-data).
 
 ``` r
 dataset <- "glove-twitter-25"
@@ -374,7 +352,7 @@ model$most_similar("cat") %>%
 #> [1] "dog"
 #> 
 #> [[1]][[2]]
-#> [1] 0.9590819
+#> [1] 0.9590821
 #> 
 #> 
 #> [[2]]
@@ -382,7 +360,7 @@ model$most_similar("cat") %>%
 #> [1] "monkey"
 #> 
 #> [[2]][[2]]
-#> [1] 0.9203578
+#> [1] 0.9203579
 #> 
 #> 
 #> [[3]]
@@ -414,7 +392,7 @@ model$most_similar("cat") %>%
 #> [1] "horse"
 #> 
 #> [[6]][[2]]
-#> [1] 0.8872727
+#> [1] 0.8872728
 #> 
 #> 
 #> [[7]]
@@ -422,7 +400,7 @@ model$most_similar("cat") %>%
 #> [1] "kitty"
 #> 
 #> [[7]][[2]]
-#> [1] 0.8870542
+#> [1] 0.8870541
 #> 
 #> 
 #> [[8]]
@@ -430,7 +408,7 @@ model$most_similar("cat") %>%
 #> [1] "puppy"
 #> 
 #> [[8]][[2]]
-#> [1] 0.8867697
+#> [1] 0.8867698
 #> 
 #> 
 #> [[9]]
@@ -438,7 +416,7 @@ model$most_similar("cat") %>%
 #> [1] "hot"
 #> 
 #> [[9]][[2]]
-#> [1] 0.8865255
+#> [1] 0.8865256
 #> 
 #> 
 #> [[10]]
@@ -451,9 +429,7 @@ model$most_similar("cat") %>%
 
 ### Word Vectors
 
-Word2vec works somewhat differently. The example below is a reproduction
-of the Kaggle [Gensim Word2Vec
-Tutorial](https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model).
+Word2vec works somewhat differently. The example below is a reproduction of the Kaggle [Gensim Word2Vec Tutorial](https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model).
 
 ``` r
 # initialise
@@ -470,11 +446,10 @@ Now we can explore the model.
 
 ``` r
 word2vec$wv$most_similar(positive = c("interface"))
-#> [('survey', 0.2405824065208435), ('response', 0.13890878856182098), ('system', 0.04266810044646263), ('minors', 0.03972306102514267), ('user', 0.010887958109378815), ('time', -0.019988685846328735), ('human', -0.030944999307394028), ('graph', -0.08678030967712402), ('eps', -0.12694384157657623), ('computer', -0.16667194664478302)]
+#> [('minors', 0.20017659664154053), ('user', 0.048555176705121994), ('human', 0.029404081404209137), ('trees', 0.028548257425427437), ('survey', 0.014836287125945091), ('system', 0.012123954482376575), ('eps', -0.006295409053564072), ('computer', -0.04913489893078804), ('response', -0.07182417064905167), ('graph', -0.1333383470773697)]
 ```
 
-We expect “trees” to be the odd one out, it is a term that was in a
-different topic (\#2) whereas other terms were in topics \#1.
+We expect "trees" to be the odd one out, it is a term that was in a different topic (\#2) whereas other terms were in topics \#1.
 
 ``` r
 word2vec$wv$doesnt_match(c("human", "interface", "trees"))
@@ -485,12 +460,13 @@ Test similarity between words.
 
 ``` r
 word2vec$wv$similarity("human", "trees")
-#> 0.013075942
+#> 0.04847084
 word2vec$wv$similarity("eps", "system")
-#> 0.08083813
+#> 0.12659988
 ```
 
-## Scikit-learn
+Scikit-learn
+------------
 
 Scikitlearn API.
 
@@ -511,7 +487,7 @@ atmodel <- sklearn_at(
 unlink(temp, recursive = TRUE)
 
 atmodel$fit(corpus_bow)$transform("jack")
-#> [[0.8106877  0.18931226]]
+#> [[0.81925064 0.18074933]]
 ```
 
 ### Doc2vec
@@ -542,8 +518,7 @@ vectors <- hdp$fit_transform(corpus_bow)
 
 ### Latent Semantic Indexing
 
-Create stages for our pipeline (including gensim and sklearn models
-alike).
+Create stages for our pipeline (including gensim and sklearn models alike).
 
 ``` r
 lsi <- sklearn_lsi(id2word = dictionary, num_topics = 15L)
@@ -559,7 +534,7 @@ labels <- sample(c(0L, 1L), 9, replace = TRUE)
 
 # How well does our pipeline perform on the training set?
 pipe$fit(corpus_bow, labels)$score(corpus_bow, labels)
-#> 0.6666666666666666
+#> 0.8888888888888888
 ```
 
 ### Random Projections
@@ -600,8 +575,7 @@ c("This", "is", "graph_minors") %in% reticulate::py_to_r(pt_trans)[[9]]
 
 ### Word ID Mapping
 
-`doc2bow` with scikit-learn. Note that in the example below we do not
-clean the text (no `preprocess`).
+`doc2bow` with scikit-learn. Note that in the example below we do not clean the text (no `preprocess`).
 
 ``` r
 # initialise
