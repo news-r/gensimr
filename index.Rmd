@@ -27,7 +27,9 @@ div(
   div(
     class = "col-md-8",
     p(
-      "Package description goes here."
+      "Topic Modeling for Humans with gensim.",
+      br(),
+      "Large scale efficient topic modeling in R and Python."
     ),
     p(
       tags$a(
@@ -35,41 +37,22 @@ div(
         class = "btn btn-primary",
         href = "articles/installation.html",
         style = "margin-bottom: 5px;",
-        "First button"
+        "Installation"
       ),
       tags$a(
         tags$i(class = "fa fa-paint-brush"),
         class = "btn btn-default",
-        href = "articles/something.html",
+        href = "https://github.com/news-r/gensim",
         style = "margin-bottom: 5px;",
-        "Second button"
+        "Github"
       )
     )
   )
 )
 ```
 
-## Installation
-
-You can install the package with `remotes` from Github, see [changes](news/index.html).
-
-```{r, eval=FALSE}
-# install.packages("remotes")
-remotes::install_github("news-r/pkg") # github
-```
-
-## Setup
-
-Get a free key from the [site.org](https://) website.
-
-```r
-pkg_key("xxXXxxXx")
-```
-
-Note that you can specify the `PKG_API_KEY` key as an environment variable in your `.Renviron` for convenience.
-
 ## Example
 
 ```r
-library(pkg)
+library(gensimr)
 ```

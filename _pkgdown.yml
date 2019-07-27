@@ -4,15 +4,13 @@ template:
 navbar:
   title: "gensimr"
   left:
-    - icon: fa-home
-      href: index.html
     - icon: fa-balance-scale
       href: LICENSE.html
     - icon: fa-newspaper-o
       href: news/index.html
-    - icon: fa-code
+    - text: "Reference"
       href: "reference/"
-    - icon: fa-code
-      href: "reference/"
-    - icon: fa-download
-      text: "Install"
+    - text: "Installation"
+      href: "articles/installation.html"
+    - text: "sklearn"
+      href: "articles/sklearn.html"
