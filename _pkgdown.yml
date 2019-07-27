@@ -2,7 +2,7 @@ template:
   package: newsrdown
 
 navbar:
-  title: "echarts4r"
+  title: "gensimr"
   left:
     - icon: fa-home
       href: index.html
@@ -14,3 +14,5 @@ navbar:
       href: "reference/"
     - icon: fa-code
       href: "reference/"
+    - icon: fa-download
+      text: "Install"

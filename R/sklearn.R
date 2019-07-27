@@ -189,10 +189,10 @@ sklearn_tfidf <- function(...){
 #' @param ... Any other options, from the
 #' \href{https://radimrehurek.com/gensim/sklearn_api/w2vmodel.html}{official documentation}.
 #' 
-#' @name sklearn_tfidf
+#' @name sklearn_word2vec
 #' 
 #' @export
-sklearn_tfidf <- function(...){
+sklearn_word2vec <- function(...){
   model <- gensim$sklearn_api$W2VTransformer(...)
   invisible(model)
 }

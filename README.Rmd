@@ -55,7 +55,7 @@ Install the python dependency.
 gensimr::install_dependencies()
 ```
 
-Ideally one should use a virtual environment and pass it to `install_gensim`, only do this once.
+Ideally one should use a virtual environment and pass it to `install_dependencies`, only do this once.
 
 ```r
 # replace with path of your choice
@@ -412,6 +412,19 @@ tfidf_w_sklearn <- tfidf_model$fit_transform(corpus_bow)
 
 # same as with gensim
 corpus_transformed[[1]] == tfidf_w_sklearn[[1]]
+```
+
+### Word2vec
+
+```{r}
+# Create a model to represent each word by a 10 dimensional vector.
+w2v_model <- sklearn_word2vec(size = 10L, min_count = 1L, seed = 1L)
+
+# train
+w2v_model <- w2v_model$fit(docs)
+
+# What is the vector representation of the word 'graph'?
+w2v_model$transform(list("graph"))
 ```
 
 Clean up, delete the corpus.

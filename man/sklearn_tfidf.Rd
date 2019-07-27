@@ -11,5 +11,5 @@ sklearn_tfidf(...)
 \href{https://radimrehurek.com/gensim/sklearn_api/tfidf.html}{official documentation}.}
 }
 \description{
-Initialize a term frequncy inverse document frequency matrix with scikit-learn.
+Initialize a term frequency inverse document frequency matrix with scikit-learn.
 }

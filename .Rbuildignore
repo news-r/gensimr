@@ -6,3 +6,4 @@ env
 README_cache
 ^_pkgdown\.yml$
 ^index\.Rmd$
+vignettes

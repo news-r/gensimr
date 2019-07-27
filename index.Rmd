@@ -33,7 +33,7 @@ div(
       tags$a(
         tags$i(class = "fa fa-rocket"),
         class = "btn btn-primary",
-        href = "articles/something.html",
+        href = "articles/installation.html",
         style = "margin-bottom: 5px;",
         "First button"
       ),
