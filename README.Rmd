@@ -24,7 +24,7 @@ reticulate::use_virtualenv("./env")
 
 # gensimr
 
-<img src="./man/figures/logo.png" height="150" align="right" />
+<img src="./man/figures/logo.png" height="200" align="right" />
 
 Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale topic modeling.
 

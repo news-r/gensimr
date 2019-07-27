@@ -4,3 +4,5 @@ env
 ^\.travis\.yml$
 ^data-raw$
 README_cache
+^_pkgdown\.yml$
+^index\.Rmd$

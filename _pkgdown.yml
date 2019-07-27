@@ -1,0 +1,16 @@
+template:
+  package: newsrdown
+
+navbar:
+  title: "echarts4r"
+  left:
+    - icon: fa-home
+      href: index.html
+    - icon: fa-balance-scale
+      href: LICENSE.html
+    - icon: fa-newspaper-o
+      href: news/index.html
+    - icon: fa-code
+      href: "reference/"
+    - icon: fa-code
+      href: "reference/"

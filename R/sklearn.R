@@ -169,7 +169,7 @@ sklearn_text2bow <- sklearn_doc2bow
 
 #' Tf-idf Model
 #' 
-#' Initialize a term frequncy inverse document frequency matrix with scikit-learn.
+#' Initialize a term frequency inverse document frequency matrix with scikit-learn.
 #' 
 #' @param ... Any other options, from the
 #' \href{https://radimrehurek.com/gensim/sklearn_api/tfidf.html}{official documentation}.
@@ -179,5 +179,20 @@ sklearn_text2bow <- sklearn_doc2bow
 #' @export
 sklearn_tfidf <- function(...){
   model <- gensim$sklearn_api$TfIdfTransformer(...)
+  invisible(model)
+}
+
+#' Word2vec Model
+#' 
+#' Word vectors with scikit-learn.
+#' 
+#' @param ... Any other options, from the
+#' \href{https://radimrehurek.com/gensim/sklearn_api/w2vmodel.html}{official documentation}.
+#' 
+#' @name sklearn_tfidf
+#' 
+#' @export
+sklearn_tfidf <- function(...){
+  model <- gensim$sklearn_api$W2VTransformer(...)
   invisible(model)
 }

@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display|Ubuntu+Mono&display=swap');
+
+* {
+  border-radius: 0 !important;
+}
+
+body {
+  font-family: 'Playfair Display', serif;
+  background-color: #f9f7f1;
+  color:#2f2f2f;
+}
+
+code, pre {
+  font-family: 'Ubuntu Mono', monospace;
+  background-color: #f4f1e6;
+}
+
+pre {
+  box-shadow:
+    rgba(150, 147, 129, 0.1) 0 2px 3px 1px,
+    rgba(150, 147, 129, 0.1) 0 1px 3px 1px,
+    rgba(150, 147, 129, 0.2) 0 1px 1px -1px;
+}
+
+/* SELECTION */
+
+::selection {
+  background: #B2DBBF;
+}
+::-moz-selection {
+  background: #B2DBBF;
+}
+
+/* NAVBAR */
+.navbar-default {
+  color: #f9f7f1;
+  background-color: #2f2f2f;
+  border-color: #2f2f2f;
+}
+/* Title */
+.navbar-default .navbar-brand {
+  color: #f9f7f1;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+  color: #247BA0;
+}
+/* Link */
+.navbar-default .navbar-nav > li > a {
+  color: #f9f7f1;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+  color: #247BA0;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  color: #f9f7f1;
+  background-color: #2f2f2f;
+}
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+  color: #f9f7f1;
+  background-color: #2f2f2f;
+}
+/* Caret */
+.navbar-default .navbar-nav > .dropdown > a .caret {
+  border-top-color: #f9f7f1;
+  border-bottom-color: #f9f7f1;
+}
+.navbar-default .navbar-nav > .dropdown > a:hover .caret,
+.navbar-default .navbar-nav > .dropdown > a:focus .caret {
+  border-top-color: #f9f7f1;
+  border-bottom-color: #f9f7f1;
+}
+.navbar-default .navbar-nav > .open > a .caret,
+.navbar-default .navbar-nav > .open > a:hover .caret,
+.navbar-default .navbar-nav > .open > a:focus .caret {
+  border-top-color: #f9f7f1;
+  border-bottom-color: #f9f7f1;
+}
+/* Mobile version */
+.navbar-default .navbar-toggle {
+  border-color: #2f2f2f;
+}
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+  background-color: #2f2f2f;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #2f2f2f;
+}
+
+.by{
+  color: #f9f7f1!important;
+}
+
+.by > a {
+  color: #f9f7f1;
+}
+
+.by > a:hover {
+  color: #f9f7f1;
+}
+
+.by > a:visited {
+  color: #f9f7f1;
+}
+
+/* LINKS */
+a {
+  text-decoration: underline;
+}
+
+.sourceLine > a{
+  text-decoration: none !important;
+}
+
+code > a{
+  text-decoration: none !important;
+}
+
+.kw > a {
+  text-decoration: none !important;
+}
+
+.btn {
+  text-transform: none;
+  font-size: 16px;
+  color: #f9f7f1 !important;
+  text-decoration: none !important;
+}
+
+a:link {
+  color: #2f2f2f;
+}
+
+a:visited {
+  color: #2f2f2f;
+}
+
+a:hover {
+  color: #2f2f2f;
+  text-decoration-color: #FF1654 !important;
+}
+
+ul.nav li a, ul.nav li a:visited {
+  text-decoration: none !important;
+}
+
+ul.nav li a:hover, ul.nav li a:active {
+  text-decoration: none !important;
+}
+
+ul.nav li.active a {
+  text-decoration: none !important;
+}
+
+.btn:hover {
+  color: #FF1654;
+}
+
+.navbar-brand{
+  font-size: 25px;
+  color: #247BA0;
+  text-decoration: none !important;
+}
+
+.btn-primary{
+  background-color: #247BA0;
+}
+
+.btn-info{
+  background-color: #B2DBBF;
+}
+
+.btn-success{
+  background-color: #70C1B3;
+}
+
+.btn-warning{
+  background-color: #F3FFBD;
+}
+
+.btn-danger{
+  background-color: #FF1654;
+}
+
+/* SYNTHAX */
+
+.co{
+  color: #8c8c8c;
+}
+
+.st, .fl, .dv {
+  color: #247BA0
+}
+
+.kw, .op{
+  color: #2f2f2f;
+}
+
+.kw > a:hover{
+  text-decoration: underline !important;
+  text-decoration-color: #FF1654 !important;
+}
