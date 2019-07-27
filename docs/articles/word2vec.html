@@ -138,15 +138,15 @@ word2vec<span class="op">$</span><span class="kw">init_sims</span>(<span class="
 <span class="co">#&gt; None</span></code></pre></div>
 <p>Now we can explore the model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">most_similar</span>(<span class="dt">positive =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"interface"</span>))
-<span class="co">#&gt; [('survey', 0.1630864143371582), ('response', 0.10701072961091995), ('eps', 0.0901200994849205), ('graph', 0.07641693204641342), ('trees', 0.04708386957645416), ('computer', -0.028815103694796562), ('human', -0.03911639377474785), ('time', -0.04795306175947189), ('user', -0.08213845640420914), ('system', -0.13354672491550446)]</span></code></pre></div>
+<span class="co">#&gt; [('eps', 0.15148137509822845), ('system', 0.14322322607040405), ('trees', 0.10912390053272247), ('response', 0.09655957669019699), ('computer', 0.09194307774305344), ('survey', 0.07558480650186539), ('time', 0.04562891647219658), ('graph', 0.010462644509971142), ('user', -0.0633017048239708), ('human', -0.09210484474897385)]</span></code></pre></div>
 <p>We expect “trees” to be the odd one out, it is a term that was in a different topic (#2) whereas other terms were in topics #1.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">doesnt_match</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"human"</span>, <span class="st">"interface"</span>, <span class="st">"trees"</span>))
-<span class="co">#&gt; interface</span></code></pre></div>
+<span class="co">#&gt; human</span></code></pre></div>
 <p>Test similarity between words.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"human"</span>, <span class="st">"trees"</span>)
-<span class="co">#&gt; 0.1599054</span>
+<span class="co">#&gt; -0.023678346</span>
 word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"eps"</span>, <span class="st">"system"</span>)
-<span class="co">#&gt; -0.073401086</span></code></pre></div>
+<span class="co">#&gt; 0.033709176</span></code></pre></div>
 </div>
   </div>
 
