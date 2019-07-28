@@ -75,6 +75,14 @@ Replaces punctuation with space.
 strip_punctuation("A semicolon is a stronger break than a comma, but not as much as a full stop!")
 ```
 
+## Strip Tags
+
+Removes tags.
+
+```{r}
+strip_tags("<i>Hello</i> <b>World</b>!")
+```
+
 ## Stem
 
 Transform to lowercase and stem.

@@ -5,6 +5,7 @@
 \alias{strip_punctuation.character}
 \alias{strip_punctuation.list}
 \alias{strip_punctuation.data.frame}
+\alias{strip_tags.data.frame}
 \title{Strip Punctuation}
 \usage{
 strip_punctuation(s, ...)
@@ -12,6 +13,8 @@ strip_punctuation(s, ...)
 \method{strip_punctuation}{character}(s, ...)
 
 \method{strip_punctuation}{list}(s, ...)
+
+\method{strip_punctuation}{data.frame}(s, text, ...)
 
 \method{strip_punctuation}{data.frame}(s, text, ...)
 }

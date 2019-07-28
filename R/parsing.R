@@ -278,3 +278,48 @@ strip_punctuation.data.frame <- function(s, text, ...){
     purrr::map(reticulate::py_to_r) %>% 
     unlist()
 }
+
+#' Strip Tags
+#' 
+#' Remove tags from character string.
+#' 
+#' @param s A Character string or data.frame.
+#' @param text bare name of text column.
+#' @param ... Any other options.
+#' 
+#' @name strip_tags
+#' 
+#' @export
+strip_tags <- function(s, ...) UseMethod("strip_tags")
+
+#' @rdname strip_tags
+#' @method strip_tags character
+#' @export
+strip_tags.character <- function(s, ...){
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_tags) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' @rdname strip_tags
+#' @method strip_tags list
+#' @export
+strip_tags.list <- function(s, ...){
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_tags) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' @rdname strip_punctuation
+#' @method strip_punctuation data.frame
+#' @export
+strip_tags.data.frame <- function(s, text, ...){
+  assert_that(!missing(text), msg = "Missing `text`")
+  s %>% 
+    dplyr::pull(!!dplyr::enquo(text)) %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_tags) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
