@@ -5,7 +5,7 @@
 \alias{preprocess.character}
 \alias{preprocess.list}
 \alias{preprocess.data.frame}
-\title{Remove stopwords}
+\title{Preprocess text}
 \usage{
 preprocess(s, ...)
 

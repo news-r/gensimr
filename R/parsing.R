@@ -143,3 +143,48 @@ preprocess.data.frame <- function(s, text, ...){
     gensim$parsing$preprocessing$preprocess_documents() %>% 
     reticulate::py_to_r()
 }
+
+#' Split Alphanumerics
+#' 
+#' Split Alphanumerics from a character string.
+#' 
+#' @param s A Character string or data.frame.
+#' @param text bare name of text column.
+#' @param ... Any other options.
+#' 
+#' @name split_alphanum
+#' 
+#' @export
+split_alphanum <- function(s, ...) UseMethod("split_alphanum")
+
+#' @rdname split_alphanum
+#' @method split_alphanum character
+#' @export
+split_alphanum.character <- function(s, ...){
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$split_alphanum) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' @rdname split_alphanum
+#' @method split_alphanum list
+#' @export
+split_alphanum.list <- function(s, ...){
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$split_alphanum) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' @rdname split_alphanum
+#' @method split_alphanum data.frame
+#' @export
+split_alphanum.data.frame <- function(s, text, ...){
+  assert_that(!missing(text), msg = "Missing `text`")
+  s %>% 
+    dplyr::pull(!!dplyr::enquo(text)) %>% 
+    purrr::map(gensim$parsing$preprocessing$split_alphanum) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
