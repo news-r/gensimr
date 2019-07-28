@@ -83,6 +83,14 @@ Removes tags.
 strip_tags("<i>Hello</i> <b>World</b>!")
 ```
 
+## Strip Numerics
+
+Removes digits.
+
+```{r}
+strip_numerics("0text24gensim365test")
+```
+
 ## Stem
 
 Transform to lowercase and stem.

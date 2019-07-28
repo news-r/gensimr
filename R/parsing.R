@@ -312,14 +312,59 @@ strip_tags.list <- function(s, ...){
     unlist()
 }
 
-#' @rdname strip_punctuation
-#' @method strip_punctuation data.frame
+#' @rdname strip_tags
+#' @method strip_tags data.frame
 #' @export
 strip_tags.data.frame <- function(s, text, ...){
   assert_that(!missing(text), msg = "Missing `text`")
   s %>% 
     dplyr::pull(!!dplyr::enquo(text)) %>% 
     purrr::map(gensim$parsing$preprocessing$strip_tags) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' Strip Numerics
+#' 
+#' Remove digits from character string.
+#' 
+#' @param s A Character string or data.frame.
+#' @param text bare name of text column.
+#' @param ... Any other options.
+#' 
+#' @name strip_numerics
+#' 
+#' @export
+strip_numerics <- function(s, ...) UseMethod("strip_numerics")
+
+#' @rdname strip_numerics
+#' @method strip_numerics character
+#' @export
+strip_numerics.character <- function(s, ...){
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_numerics) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' @rdname strip_numerics
+#' @method strip_numerics list
+#' @export
+strip_numerics.list <- function(s, ...){
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_numerics) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' @rdname strip_numerics
+#' @method strip_numerics data.frame
+#' @export
+strip_numerics.data.frame <- function(s, text, ...){
+  assert_that(!missing(text), msg = "Missing `text`")
+  s %>% 
+    dplyr::pull(!!dplyr::enquo(text)) %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_numerics) %>% 
     purrr::map(reticulate::py_to_r) %>% 
     unlist()
 }
