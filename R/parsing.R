@@ -110,38 +110,92 @@ strip_short.data.frame <- function(s, min_len = 5, text, ...){
 #' 
 #' @param s A Character string or data.frame.
 #' @param text bare name of text column.
+#' @param filters Filters to apply, see filter section.
 #' @param ... Any other options.
+#' 
+#' @section Filters:
+#' \itemize{
+#'   \item{\code{strip_tags}}
+#'   \item{\code{strip_punctuation}}
+#'   \item{\code{strip_multiple_spaces}}
+#'   \item{\code{strip_numeric}}
+#'   \item{\code{remove_stopwords}}
+#'   \item{\code{strip_short}}
+#'   \item{\code{stem_text}}
+#' }
 #' 
 #' @name preprocess
 #' 
 #' @export
-preprocess <- function(s, ...) UseMethod("preprocess")
+preprocess <- function(s, ..., 
+  filters = c("strip_tags", "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
+    "remove_stopwords", "strip_short", "stem_text")) UseMethod("preprocess")
 
 #' @rdname preprocess
 #' @method preprocess character
 #' @export
-preprocess.character <- function(s, ...){
-  gensim$parsing$preprocessing$preprocess_documents(s) %>% 
-    reticulate::py_to_r()
+preprocess.character <- function(s, ...,
+  filters = c("strip_tags", "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
+    "remove_stopwords", "strip_short", "stem_text")){
+
+  custom_filters <- .custom_filters(filters) 
+
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$preprocess_string, custom_filters) %>% 
+    purrr::map(reticulate::py_to_r)
 }
 
 #' @rdname preprocess
 #' @method preprocess list
 #' @export
-preprocess.list <- function(s, ...){
-  gensim$parsing$preprocessing$preprocess_documents(s) %>% 
-    reticulate::py_to_r()
+preprocess.list <- function(s, ...,
+  filters = c("strip_tags", "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
+    "remove_stopwords", "strip_short", "stem_text")){
+
+  custom_filters <- .custom_filters(filters) 
+
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$preprocess_string, custom_filters) %>% 
+    purrr::map(reticulate::py_to_r)
 }
 
 #' @rdname preprocess
 #' @method preprocess data.frame
 #' @export
-preprocess.data.frame <- function(s, text, ...){
+preprocess.data.frame <- function(s, text, ...,
+  filters = c("strip_tags", "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
+    "remove_stopwords", "strip_short", "stem_text")){
   assert_that(!missing(text), msg = "Missing `text`")
+
+  custom_filters <- .custom_filters(filters) 
+
   s %>% 
     dplyr::pull(!!dplyr::enquo(text)) %>% 
-    gensim$parsing$preprocessing$preprocess_documents() %>% 
-    reticulate::py_to_r()
+    purrr::map(gensim$parsing$preprocessing$preprocess_string, custom_filters) %>% 
+    purrr::map(reticulate::py_to_r)
+}
+
+.availabale_filters <- function(){
+  tibble::tibble(
+    args = c("strip_tags", "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
+      "remove_stopwords", "strip_short", "stem_text"),
+    func = c(
+      gensim$parsing$preprocessing$strip_tags,
+      gensim$parsing$preprocessing$strip_punctuation,
+      gensim$parsing$preprocessing$strip_multiple_whitespaces,
+      gensim$parsing$preprocessing$strip_numeric,
+      gensim$parsing$preprocessing$remove_stopwords,
+      gensim$parsing$preprocessing$strip_short,
+      gensim$parsing$preprocessing$stem_text
+    )
+  )
+}
+
+.custom_filters <- function(filters){
+  .availabale_filters() %>% 
+    dplyr::filter(args %in% filters) %>%
+    dplyr::pull(func) %>% 
+    as.list()
 }
 
 #' Split Alphanumerics

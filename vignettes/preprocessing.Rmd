@@ -56,6 +56,12 @@ By default, the function `preprocess` applies the following:
 - `strip_short`
 - `stem_text`
 
+```{r}
+preprocessed <- preprocess(corpus, filters = c("strip_tags", "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
+    "remove_stopwords"))
+preprocessed[[1]]
+```
+
 ## Remove Stopwords
 
 Remove stopwords.

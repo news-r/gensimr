@@ -7,21 +7,44 @@
 \alias{preprocess.data.frame}
 \title{Preprocess text}
 \usage{
-preprocess(s, ...)
+preprocess(s, ..., filters = c("strip_tags", "strip_punctuation",
+  "strip_multiple_spaces", "strip_numeric", "remove_stopwords",
+  "strip_short", "stem_text"))
 
-\method{preprocess}{character}(s, ...)
+\method{preprocess}{character}(s, ..., filters = c("strip_tags",
+  "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
+  "remove_stopwords", "strip_short", "stem_text"))
 
-\method{preprocess}{list}(s, ...)
+\method{preprocess}{list}(s, ..., filters = c("strip_tags",
+  "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
+  "remove_stopwords", "strip_short", "stem_text"))
 
-\method{preprocess}{data.frame}(s, text, ...)
+\method{preprocess}{data.frame}(s, text, ..., filters = c("strip_tags",
+  "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
+  "remove_stopwords", "strip_short", "stem_text"))
 }
 \arguments{
 \item{s}{A Character string or data.frame.}
 
 \item{...}{Any other options.}
 
+\item{filters}{Filters to apply, see filter section.}
+
 \item{text}{bare name of text column.}
 }
 \description{
 Remove stopwords from a character string.
 }
+\section{Filters}{
+
+\itemize{
+  \item{\code{strip_tags}}
+  \item{\code{strip_punctuation}}
+  \item{\code{strip_multiple_spaces}}
+  \item{\code{strip_numeric}}
+  \item{\code{remove_stopwords}}
+  \item{\code{strip_short}}
+  \item{\code{stem_text}}
+}
+}
+

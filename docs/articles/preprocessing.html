@@ -151,34 +151,25 @@ docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepar
 <div id="preprocess" class="section level2">
 <h2 class="hasAnchor">
 <a href="#preprocess" class="anchor"></a>Preprocess</h2>
-<p>The following are methods that work on lists, character vectors and data.frames. The function <code>preprocess</code> applies all methods below (by default).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/preprocess.html">preprocess</a></span>(corpus)
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "human"    "machin"   "interfac" "lab"      "abc"      "applic"  </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [1] "survei"  "user"    "opinion" "respons" "time"   </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; [1] "ep"       "user"     "interfac" "manag"   </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[4]]</span>
-<span class="co">#&gt; [1] "human" "engin" "test"  "ep"   </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[5]]</span>
-<span class="co">#&gt; [1] "relat"   "user"    "perceiv" "respons" "time"    "error"   "measur" </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[6]]</span>
-<span class="co">#&gt; [1] "gener"  "random" "binari" "unord"  "tree"  </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[7]]</span>
-<span class="co">#&gt; [1] "intersect" "graph"     "path"      "tree"     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[8]]</span>
-<span class="co">#&gt; [1] "graph" "minor" "width" "tree"  "quasi" "order"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[9]]</span>
-<span class="co">#&gt; [1] "graph"  "minor"  "survei"</span></code></pre></div>
+<p>The following are methods that work on lists, character vectors and data.frames.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preprocessed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/preprocess.html">preprocess</a></span>(corpus)
+preprocessed[[<span class="dv">1</span>]]
+<span class="co">#&gt; [1] "human"    "machin"   "interfac" "lab"      "abc"      "applic"</span></code></pre></div>
+<p>By default, the function <code>preprocess</code> applies the following:</p>
+<ul>
+<li><code>strip_tags</code></li>
+<li><code>strip_punctuation</code></li>
+<li><code>strip_multiple_spaces</code></li>
+<li><code>strip_numeric</code></li>
+<li><code>remove_stopwords</code></li>
+<li><code>strip_short</code></li>
+<li><code>stem_text</code></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preprocessed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/preprocess.html">preprocess</a></span>(corpus, <span class="dt">filters =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"strip_tags"</span>, <span class="st">"strip_punctuation"</span>, <span class="st">"strip_multiple_spaces"</span>, <span class="st">"strip_numeric"</span>,
+    <span class="st">"remove_stopwords"</span>))
+preprocessed[[<span class="dv">1</span>]]
+<span class="co">#&gt; [1] "Human"        "machine"      "interface"    "lab"         </span>
+<span class="co">#&gt; [5] "abc"          "applications"</span></code></pre></div>
 </div>
 <div id="remove-stopwords" class="section level2">
 <h2 class="hasAnchor">

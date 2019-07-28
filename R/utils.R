@@ -10,6 +10,9 @@ globalVariables(
     "id",
     "tokens",
     "data",
-    "documents"
+    "documents",
+    "args",
+    "func",
+    "filters"
   )
 )
