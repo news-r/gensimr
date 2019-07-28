@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Preprocess text — preprocess • gensimr</title>
+<title>Strip Multiple space — strip_multiple_spaces • gensimr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -41,9 +41,9 @@
 
 
 
-<meta property="og:title" content="Preprocess text — preprocess" />
+<meta property="og:title" content="Strip Multiple space — strip_multiple_spaces" />
 
-<meta property="og:description" content="Remove stopwords from a character string." />
+<meta property="og:description" content="Remove repeating whitespace characters (spaces, tabs, line breaks) from s and turns tabs &amp;amp; line breaks into spaces." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -125,35 +125,27 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Preprocess text</h1>
+    <h1>Strip Multiple space</h1>
     
-    <div class="hidden name"><code>preprocess.Rd</code></div>
+    <div class="hidden name"><code>strip_multiple_spaces.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Remove stopwords from a character string.</p>
+    <p>Remove repeating whitespace characters (spaces, tabs, line breaks) from s and turns tabs &amp; line breaks into spaces.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>preprocess</span>(<span class='no'>s</span>, <span class='no'>...</span>, <span class='kw'>filters</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"strip_tags"</span>, <span class='st'>"strip_punctuation"</span>,
-  <span class='st'>"strip_multiple_spaces"</span>, <span class='st'>"strip_numeric"</span>, <span class='st'>"remove_stopwords"</span>,
-  <span class='st'>"strip_short"</span>, <span class='st'>"stem_text"</span>))
+    <pre class="usage"><span class='fu'>strip_multiple_spaces</span>(<span class='no'>s</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for character</span>
-<span class='fu'>preprocess</span>(<span class='no'>s</span>, <span class='no'>...</span>, <span class='kw'>filters</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"strip_tags"</span>,
-  <span class='st'>"strip_punctuation"</span>, <span class='st'>"strip_multiple_spaces"</span>, <span class='st'>"strip_numeric"</span>,
-  <span class='st'>"remove_stopwords"</span>, <span class='st'>"strip_short"</span>, <span class='st'>"stem_text"</span>))
+<span class='fu'>strip_multiple_spaces</span>(<span class='no'>s</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for list</span>
-<span class='fu'>preprocess</span>(<span class='no'>s</span>, <span class='no'>...</span>, <span class='kw'>filters</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"strip_tags"</span>,
-  <span class='st'>"strip_punctuation"</span>, <span class='st'>"strip_multiple_spaces"</span>, <span class='st'>"strip_numeric"</span>,
-  <span class='st'>"remove_stopwords"</span>, <span class='st'>"strip_short"</span>, <span class='st'>"stem_text"</span>))
+<span class='fu'>strip_multiple_spaces</span>(<span class='no'>s</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for data.frame</span>
-<span class='fu'>preprocess</span>(<span class='no'>s</span>, <span class='no'>text</span>, <span class='no'>...</span>, <span class='kw'>filters</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"strip_tags"</span>,
-  <span class='st'>"strip_punctuation"</span>, <span class='st'>"strip_multiple_spaces"</span>, <span class='st'>"strip_numeric"</span>,
-  <span class='st'>"remove_stopwords"</span>, <span class='st'>"strip_short"</span>, <span class='st'>"stem_text"</span>))</pre>
+<span class='fu'>strip_multiple_spaces</span>(<span class='no'>s</span>, <span class='no'>text</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,27 +159,10 @@
       <td><p>Any other options.</p></td>
     </tr>
     <tr>
-      <th>filters</th>
-      <td><p>Filters to apply, see filter section.</p></td>
-    </tr>
-    <tr>
       <th>text</th>
       <td><p>bare name of text column.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="filters"><a class="anchor" href="#filters"></a>Filters</h2>
-
-    
-    <ul>
-<li><p><code>strip_tags</code></p></li>
-<li><p><code>strip_punctuation</code></p></li>
-<li><p><code>strip_multiple_spaces</code></p></li>
-<li><p><code>strip_numeric</code></p></li>
-<li><p><code>remove_stopwords</code></p></li>
-<li><p><code>strip_short</code></p></li>
-<li><p><code>stem_text</code></p></li>
-</ul>
     
 
   </div>
@@ -195,9 +170,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#filters">Filters</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

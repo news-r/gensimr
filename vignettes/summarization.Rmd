@@ -1,0 +1,35 @@
+---
+title: "Summarization"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Summarization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+reticulate::use_virtualenv("./env")
+```
+
+```{r}
+library(gensimr)
+
+set.seed(42) # rerproducability
+
+# sample data
+data(corpus, package = "gensimr")
+
+# preprocess corpus
+docs <- preprocess(corpus)
+```
+
+## BM25 Weights
+
+```{r}
+get_bm25_weights(docs)
+```
