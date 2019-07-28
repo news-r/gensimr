@@ -188,3 +188,48 @@ split_alphanum.data.frame <- function(s, text, ...){
     purrr::map(reticulate::py_to_r) %>% 
     unlist()
 }
+
+#' Stem
+#' 
+#' Transform s into lowercase and stem a character string.
+#' 
+#' @param s A Character string or data.frame.
+#' @param text bare name of text column.
+#' @param ... Any other options.
+#' 
+#' @name stem_text
+#' 
+#' @export
+stem_text <- function(s, ...) UseMethod("stem_text")
+
+#' @rdname stem_text
+#' @method stem_text character
+#' @export
+stem_text.character <- function(s, ...){
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$stem_text) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' @rdname stem_text
+#' @method stem_text list
+#' @export
+stem_text.list <- function(s, ...){
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$stem_text) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' @rdname split_astem_textlphanum
+#' @method stem_text data.frame
+#' @export
+stem_text.data.frame <- function(s, text, ...){
+  assert_that(!missing(text), msg = "Missing `text`")
+  s %>% 
+    dplyr::pull(!!dplyr::enquo(text)) %>% 
+    purrr::map(gensim$parsing$preprocessing$stem_text) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}

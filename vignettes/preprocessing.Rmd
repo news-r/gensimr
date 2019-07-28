@@ -67,6 +67,14 @@ remove_stopwords(corpus[[2]], min_len = 3)
 split_alphanum("24.0hours7 days365 a1b2c3")
 ```
 
+## Stem
+
+Transform to lowercase and stem.
+
+```{r}
+stem_text("It is useful to be able to search a large collection of documents almost instantly.")
+```
+
 ## Porter Stemmer
 
 ```{r}
