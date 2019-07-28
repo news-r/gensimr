@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>word2vec • gensimr</title>
+<title>Preprocessing • gensimr</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <link href="../news-r.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="word2vec">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Preprocessing">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -88,19 +88,16 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>word2vec</h1>
+      <h1>Preprocessing</h1>
             
       
       
-      <div class="hidden name"><code>word2vec.Rmd</code></div>
+      <div class="hidden name"><code>preprocessing.Rmd</code></div>
 
     </div>
 
     
     
-<div id="preprocessing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#preprocessing" class="anchor"></a>Preprocessing</h2>
 <p>First we preprocess the corpus using example data, a tiny corpus of 9 documents. Reproducing the tutorial on <a href="https://radimrehurek.com/gensim/tut1.html">corpora and vector spaces</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
 
@@ -122,37 +119,109 @@
 <span class="co"># preprocess corpus</span>
 docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepare_documents.html">prepare_documents</a></span>(corpus)
 <span class="co">#&gt; → Preprocessing 9 documents</span>
-<span class="co">#&gt; ← 9 documents after perprocessing</span>
-
-docs[[<span class="dv">1</span>]] <span class="co"># print first preprocessed document </span>
+<span class="co">#&gt; ← 9 documents after perprocessing</span></code></pre></div>
+<p>This produces the same output as the built-in prepared documents.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/common_texts.html">common_texts</a></span>()
 <span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "human"</span>
+<span class="co">#&gt; [1] "human"     "interface" "computer" </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [1] "interface"</span>
+<span class="co">#&gt; [1] "survey"   "user"     "computer" "system"   "response" "time"    </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; [1] "computer"</span></code></pre></div>
-<p>Word2vec works somewhat differently. The example below is a reproduction of the Kaggle <a href="https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model">Gensim Word2Vec Tutorial</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># initialise</span>
-word2vec &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_word2vec.html">model_word2vec</a></span>(<span class="dt">size =</span> 100L, <span class="dt">window =</span> 5L, <span class="dt">min_count =</span> 1L)
-word2vec<span class="op">$</span><span class="kw">build_vocab</span>(docs) 
-<span class="co">#&gt; None</span>
-word2vec<span class="op">$</span><span class="kw">train</span>(docs, <span class="dt">total_examples =</span> word2vec<span class="op">$</span>corpus_count, <span class="dt">epochs =</span> 20L)
-<span class="co">#&gt; (76, 580)</span>
-word2vec<span class="op">$</span><span class="kw">init_sims</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; None</span></code></pre></div>
-<p>Now we can explore the model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">most_similar</span>(<span class="dt">positive =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"interface"</span>))
-<span class="co">#&gt; [('graph', 0.13658687472343445), ('user', 0.06763163208961487), ('trees', 0.030550934374332428), ('survey', 0.018609244376420975), ('response', 0.010233333334326744), ('human', -0.0022888006642460823), ('computer', -0.01107935793697834), ('eps', -0.053183361887931824), ('minors', -0.06684885919094086), ('system', -0.08616869151592255)]</span></code></pre></div>
-<p>We expect “trees” to be the odd one out, it is a term that was in a different topic (#2) whereas other terms were in topics #1.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">doesnt_match</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"human"</span>, <span class="st">"interface"</span>, <span class="st">"trees"</span>))
-<span class="co">#&gt; human</span></code></pre></div>
-<p>Test similarity between words.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"human"</span>, <span class="st">"trees"</span>)
-<span class="co">#&gt; -0.12697822</span>
-word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"eps"</span>, <span class="st">"system"</span>)
-<span class="co">#&gt; 0.08428356</span></code></pre></div>
+<span class="co">#&gt; [1] "eps"       "user"      "interface" "system"   </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[4]]</span>
+<span class="co">#&gt; [1] "system" "human"  "system" "eps"   </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[5]]</span>
+<span class="co">#&gt; [1] "user"     "response" "time"    </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[6]]</span>
+<span class="co">#&gt; [1] "trees"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[7]]</span>
+<span class="co">#&gt; [1] "graph" "trees"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[8]]</span>
+<span class="co">#&gt; [1] "graph"  "minors" "trees" </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[9]]</span>
+<span class="co">#&gt; [1] "graph"  "minors" "survey"</span></code></pre></div>
+<div id="preprocess" class="section level2">
+<h2 class="hasAnchor">
+<a href="#preprocess" class="anchor"></a>Preprocess</h2>
+<p>The following are methods that work on lists, character vectors and data.frames. The function <code>preprocess</code> applies all methods below (by default).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/preprocess.html">preprocess</a></span>(corpus)
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; [1] "human"    "machin"   "interfac" "lab"      "abc"      "applic"  </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt; [1] "survei"  "user"    "opinion" "respons" "time"   </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[3]]</span>
+<span class="co">#&gt; [1] "ep"       "user"     "interfac" "manag"   </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[4]]</span>
+<span class="co">#&gt; [1] "human" "engin" "test"  "ep"   </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[5]]</span>
+<span class="co">#&gt; [1] "relat"   "user"    "perceiv" "respons" "time"    "error"   "measur" </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[6]]</span>
+<span class="co">#&gt; [1] "gener"  "random" "binari" "unord"  "tree"  </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[7]]</span>
+<span class="co">#&gt; [1] "intersect" "graph"     "path"      "tree"     </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[8]]</span>
+<span class="co">#&gt; [1] "graph" "minor" "width" "tree"  "quasi" "order"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[9]]</span>
+<span class="co">#&gt; [1] "graph"  "minor"  "survei"</span></code></pre></div>
+</div>
+<div id="remove-stopwords" class="section level2">
+<h2 class="hasAnchor">
+<a href="#remove-stopwords" class="anchor"></a>Remove Stopwords</h2>
+<p>Remove stopwords.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/remove_stopwords.html">remove_stopwords</a></span>(corpus[[<span class="dv">1</span>]])
+<span class="co">#&gt; [1] "Human machine interface lab abc applications"</span></code></pre></div>
+</div>
+<div id="strip-short" class="section level2">
+<h2 class="hasAnchor">
+<a href="#strip-short" class="anchor"></a>Strip Short</h2>
+<p>Remove short words.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/remove_stopwords.html">remove_stopwords</a></span>(corpus[[<span class="dv">2</span>]], <span class="dt">min_len =</span> <span class="dv">3</span>)
+<span class="co">#&gt; [1] "A survey user opinion response time"</span></code></pre></div>
+</div>
+<div id="split-alphanumerics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#split-alphanumerics" class="anchor"></a>Split Alphanumerics</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/split_alphanum.html">split_alphanum</a></span>(<span class="st">"24.0hours7 days365 a1b2c3"</span>)
+<span class="co">#&gt; [1] "24.0 hours 7 days 365 a 1 b 2 c 3"</span></code></pre></div>
+</div>
+<div id="strip-punctuation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#strip-punctuation" class="anchor"></a>Strip Punctuation</h2>
+<p>Replaces punctuation with space.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/strip_punctuation.html">strip_punctuation</a></span>(<span class="st">"A semicolon is a stronger break than a comma, but not as much as a full stop!"</span>)
+<span class="co">#&gt; [1] "A semicolon is a stronger break than a comma  but not as much as a full stop "</span></code></pre></div>
+</div>
+<div id="stem" class="section level2">
+<h2 class="hasAnchor">
+<a href="#stem" class="anchor"></a>Stem</h2>
+<p>Transform to lowercase and stem.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/stem_text.html">stem_text</a></span>(<span class="st">"It is useful to be able to search a large collection of documents almost instantly."</span>)
+<span class="co">#&gt; [1] "it is us to be abl to search a larg collect of document almost instantly."</span></code></pre></div>
+</div>
+<div id="porter-stemmer" class="section level2">
+<h2 class="hasAnchor">
+<a href="#porter-stemmer" class="anchor"></a>Porter Stemmer</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stemmer &lt;-<span class="st"> </span><span class="kw"><a href="../reference/porter_stemmer.html">porter_stemmer</a></span>()
+stemmer<span class="op">$</span><span class="kw">stem_sentence</span>(<span class="st">"Cats and ponies have meeting"</span>)
+<span class="co">#&gt; cat and poni have meet</span>
+stemmer<span class="op">$</span><span class="kw">stem_documents</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Cats and ponies"</span>, <span class="st">"have meeting"</span>))
+<span class="co">#&gt; ['cat and poni', 'have meet']</span></code></pre></div>
 </div>
   </div>
 
@@ -161,7 +230,13 @@ word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">sim
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#preprocessing">Preprocessing</a></li>
+<li><a href="#preprocess">Preprocess</a></li>
+      <li><a href="#remove-stopwords">Remove Stopwords</a></li>
+      <li><a href="#strip-short">Strip Short</a></li>
+      <li><a href="#split-alphanumerics">Split Alphanumerics</a></li>
+      <li><a href="#strip-punctuation">Strip Punctuation</a></li>
+      <li><a href="#stem">Stem</a></li>
+      <li><a href="#porter-stemmer">Porter Stemmer</a></li>
       </ul>
 </div>
       </div>

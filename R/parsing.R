@@ -191,7 +191,7 @@ split_alphanum.data.frame <- function(s, text, ...){
 
 #' Stem
 #' 
-#' Transform s into lowercase and stem a character string.
+#' Transform into lowercase and stem a character string.
 #' 
 #' @param s A Character string or data.frame.
 #' @param text bare name of text column.
@@ -222,7 +222,7 @@ stem_text.list <- function(s, ...){
     unlist()
 }
 
-#' @rdname split_astem_textlphanum
+#' @rdname stem_text
 #' @method stem_text data.frame
 #' @export
 stem_text.data.frame <- function(s, text, ...){
@@ -230,6 +230,51 @@ stem_text.data.frame <- function(s, text, ...){
   s %>% 
     dplyr::pull(!!dplyr::enquo(text)) %>% 
     purrr::map(gensim$parsing$preprocessing$stem_text) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' Strip Punctuation
+#' 
+#' Replace punctuation characters with spaces.
+#' 
+#' @param s A Character string or data.frame.
+#' @param text bare name of text column.
+#' @param ... Any other options.
+#' 
+#' @name strip_punctuation
+#' 
+#' @export
+strip_punctuation <- function(s, ...) UseMethod("strip_punctuation")
+
+#' @rdname strip_punctuation
+#' @method strip_punctuation character
+#' @export
+strip_punctuation.character <- function(s, ...){
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_punctuation) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' @rdname strip_punctuation
+#' @method strip_punctuation list
+#' @export
+strip_punctuation.list <- function(s, ...){
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_punctuation) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' @rdname strip_punctuation
+#' @method strip_punctuation data.frame
+#' @export
+strip_punctuation.data.frame <- function(s, text, ...){
+  assert_that(!missing(text), msg = "Missing `text`")
+  s %>% 
+    dplyr::pull(!!dplyr::enquo(text)) %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_punctuation) %>% 
     purrr::map(reticulate::py_to_r) %>% 
     unlist()
 }

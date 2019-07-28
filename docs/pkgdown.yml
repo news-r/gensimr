@@ -4,6 +4,7 @@ pkgdown_sha: ~
 articles:
   installation: installation.html
   models: models.html
+  preprocessing: preprocessing.html
   sklearn: sklearn.html
   word2vec: word2vec.html
 

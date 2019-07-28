@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Prepare Documents — prepare_documents • gensimr</title>
+<title>Strip Punctuation — strip_punctuation • gensimr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -41,9 +41,9 @@
 
 
 
-<meta property="og:title" content="Prepare Documents — prepare_documents" />
+<meta property="og:title" content="Strip Punctuation — strip_punctuation" />
 
-<meta property="og:description" content="Simple text preprocessor for, namely for example purposes." />
+<meta property="og:description" content="Replace punctuation characters with spaces." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -125,76 +125,44 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Prepare Documents</h1>
+    <h1>Strip Punctuation</h1>
     
-    <div class="hidden name"><code>prepare_documents.Rd</code></div>
+    <div class="hidden name"><code>strip_punctuation.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Simple text preprocessor for, namely for example purposes.</p>
+    <p>Replace punctuation characters with spaces.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>prepare_documents</span>(<span class='no'>data</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for data.frame</span>
-<span class='fu'>prepare_documents</span>(<span class='no'>data</span>, <span class='no'>text</span>, <span class='kw'>doc_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>lexicon</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"SMART"</span>, <span class='st'>"snowball"</span>, <span class='st'>"onix"</span>), <span class='no'>...</span>,
-  <span class='kw'>return_doc_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>strip_punctuation</span>(<span class='no'>s</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for character</span>
-<span class='fu'>prepare_documents</span>(<span class='no'>data</span>, <span class='kw'>doc_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>lexicon</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"SMART"</span>, <span class='st'>"snowball"</span>, <span class='st'>"onix"</span>), <span class='no'>...</span>,
-  <span class='kw'>return_doc_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>strip_punctuation</span>(<span class='no'>s</span>, <span class='no'>...</span>)
 
-<span class='co'># S3 method for factor</span>
-<span class='fu'>prepare_documents</span>(<span class='no'>data</span>, <span class='kw'>doc_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>lexicon</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"SMART"</span>, <span class='st'>"snowball"</span>, <span class='st'>"onix"</span>), <span class='no'>...</span>, <span class='kw'>return_doc_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='co'># S3 method for list</span>
+<span class='fu'>strip_punctuation</span>(<span class='no'>s</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for data.frame</span>
+<span class='fu'>strip_punctuation</span>(<span class='no'>s</span>, <span class='no'>text</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>A <code>data.frame</code> containing <code>text</code> and <code>id</code> 
-where each row represent a document or a <code>character</code> vector of text containing documents.</p></td>
+      <th>s</th>
+      <td><p>A Character string or data.frame.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Any other parameters.</p></td>
+      <td><p>Any other options.</p></td>
     </tr>
     <tr>
       <th>text</th>
-      <td><p>A bare column name or a vector of documents.</p></td>
-    </tr>
-    <tr>
-      <th>doc_id</th>
-      <td><p>Id of documents, if omitted they are created dynamically 
-assuming each element of <code>text</code>.</p></td>
-    </tr>
-    <tr>
-      <th>min_freq</th>
-      <td><p>Minimum term frequency to keep terms in.</p></td>
-    </tr>
-    <tr>
-      <th>lexicon</th>
-      <td><p>Name of a lexicon of stopwords, borrowed from <a href='https://www.rdocumentation.org/packages/tidytext/topics/stop_words'>stop_words</a>.</p></td>
-    </tr>
-    <tr>
-      <th>return_doc_id</th>
-      <td><p>Whether to return document id (named list).</p></td>
+      <td><p>bare name of text column.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A named <code>list</code> of documents where the names are the documents <code>id</code>.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Simply tokenises each document, removes punctuation, stop words, digits,
-and keeps only terms that appear more than <code>min_freq</code> <em>across documents.</em></p>
     
 
   </div>
@@ -202,11 +170,7 @@ and keeps only terms that appear more than <code>min_freq</code> <em>across docu
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

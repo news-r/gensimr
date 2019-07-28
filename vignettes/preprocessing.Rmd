@@ -67,6 +67,14 @@ remove_stopwords(corpus[[2]], min_len = 3)
 split_alphanum("24.0hours7 days365 a1b2c3")
 ```
 
+## Strip Punctuation
+
+Replaces punctuation with space.
+
+```{r}
+strip_punctuation("A semicolon is a stronger break than a comma, but not as much as a full stop!")
+```
+
 ## Stem
 
 Transform to lowercase and stem.
