@@ -112,3 +112,37 @@ summarize.character <- function(corpus, ...){
 #' @method summarize character
 #' @export
 summarize.factor <- summarize.character
+
+#' @rdname summarize
+#' @method summarize python.builtin.tuple
+#' @export
+summarize.python.builtin.tuple <- function(corpus, ...){
+  kw <- corpus  %>% 
+    gensim$summarization$summarize_corpus() %>% 
+    purrr::map(reticulate::py_to_r) 
+  invisible(kw)
+}
+
+
+#' @rdname summarize
+#' @method summarize mm_file
+#' @export
+summarize.mm_file <- function(corpus, ...){
+  corpus <- gensim$corpora$MmCorpus(corpus$file)
+  model <- gensim$summarization$summarize_corpus(corpus, ...) %>% 
+    purrr::map(reticulate::py_to_r) 
+
+  # unlink temp
+  if(corpus$temp && corpus$delete) unlink(corpus$file)
+
+  invisible(model)
+}
+
+#' @rdname summarize
+#' @method summarize mm
+#' @export
+summarize.mm <- function(corpus, ...){
+  model <- gensim$summarization$summarize_corpus(corpus, ...) %>% 
+    purrr::map(reticulate::py_to_r) 
+  invisible(model)
+}

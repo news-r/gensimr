@@ -4,6 +4,9 @@
 \alias{summarize}
 \alias{summarize.character}
 \alias{summarize.factor}
+\alias{summarize.python.builtin.tuple}
+\alias{summarize.mm_file}
+\alias{summarize.mm}
 \title{summarize}
 \usage{
 summarize(corpus, ...)
@@ -11,6 +14,12 @@ summarize(corpus, ...)
 \method{summarize}{character}(corpus, ...)
 
 \method{summarize}{character}(corpus, ...)
+
+\method{summarize}{python.builtin.tuple}(corpus, ...)
+
+\method{summarize}{mm_file}(corpus, ...)
+
+\method{summarize}{mm}(corpus, ...)
 }
 \arguments{
 \item{corpus}{A corpus.}
