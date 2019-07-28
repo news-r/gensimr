@@ -115,6 +115,12 @@
 <li>
   <a href="../articles/summarization.html">summarization</a>
 </li>
+<li>
+  <a href="../articles/API.html">API</a>
+</li>
+<li>
+  <a href="../articles/coherence.html">coherence</a>
+</li>
         
       </ul>
       
@@ -139,12 +145,21 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>common_texts</span>()
+    <pre class="usage"><span class='fu'>common_texts</span>(<span class='kw'>to_r</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>common_corpus</span>()
+<span class='fu'>common_corpus</span>(<span class='kw'>to_r</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>common_dictionary</span>()</pre>
-        
+<span class='fu'>common_dictionary</span>(<span class='kw'>to_r</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>to_r</th>
+      <td><p>Whether to return R data scruture.</p></td>
+    </tr>
+    </table>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>common_texts</span>()</div><div class='output co'>#&gt; [[1]]
@@ -420,6 +435,7 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
             
       <li><a href="#examples">Examples</a></li>
     </ul>

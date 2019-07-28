@@ -78,6 +78,12 @@
 <li>
   <a href="articles/summarization.html">summarization</a>
 </li>
+<li>
+  <a href="articles/API.html">API</a>
+</li>
+<li>
+  <a href="articles/coherence.html">coherence</a>
+</li>
         
       </ul>
 </div>
@@ -107,7 +113,7 @@ Topic Modeling for Humans with gensim.
 <br>
 Large scale efficient topic modeling in R and Python.
 </p>
-<p>
+<br><p>
 <a class="btn btn-primary" href="articles/installation.html" style="margin-bottom: 5px;">
 <i class="fa fa-rocket"></i>
 Installation
@@ -124,10 +130,26 @@ Github
 <a href="#example" class="anchor"></a>Example</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
 
+<span class="co"># latent similarity index</span>
 lsi &lt;-<span class="st"> </span><span class="kw"><a href="reference/model_lsi.html">model_lsi</a></span>(<span class="kw"><a href="reference/utils.html">common_corpus</a></span>(), <span class="dt">id2word =</span> <span class="kw"><a href="reference/utils.html">common_dictionary</a></span>())
 <span class="co">#&gt; ⚠ Low number of topics</span>
-lsi<span class="op">$</span><span class="kw">print_topics</span>()
-<span class="co">#&gt; [(0, '0.644*"system" + 0.404*"user" + 0.301*"eps" + 0.265*"time" + 0.265*"response" + 0.240*"computer" + 0.221*"human" + 0.206*"survey" + 0.198*"interface" + 0.036*"graph"'), (1, '0.623*"graph" + 0.490*"trees" + 0.451*"minors" + 0.274*"survey" + -0.167*"system" + -0.141*"eps" + -0.113*"human" + 0.107*"response" + 0.107*"time" + -0.072*"interface"')]</span></code></pre></div>
+topics &lt;-<span class="st"> </span>lsi<span class="op">$</span><span class="kw">print_topics</span>() <span class="co"># get topics</span></code></pre></div>
+<p>Objects returned by the package are not automatically converted to R data structures, please use <code><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">reticulate::py_to_r</a></code>, as shown below.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>(topics) <span class="co"># convert to R format</span>
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; [[1]][[1]]</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[1]][[2]]</span>
+<span class="co">#&gt; [1] "0.644*\"system\" + 0.404*\"user\" + 0.301*\"eps\" + 0.265*\"time\" + 0.265*\"response\" + 0.240*\"computer\" + 0.221*\"human\" + 0.206*\"survey\" + 0.198*\"interface\" + 0.036*\"graph\""</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt; [[2]][[1]]</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]][[2]]</span>
+<span class="co">#&gt; [1] "0.623*\"graph\" + 0.490*\"trees\" + 0.451*\"minors\" + 0.274*\"survey\" + -0.167*\"system\" + -0.141*\"eps\" + -0.113*\"human\" + 0.107*\"time\" + 0.107*\"response\" + -0.072*\"interface\""</span></code></pre></div>
 </div>
   </div>
 

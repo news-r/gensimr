@@ -1,0 +1,37 @@
+---
+title: "API"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{API}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+reticulate::use_virtualenv("./env")
+```
+
+You can download external datasets to easily build models. External dataset can be found on [RaRe-Technologies/gensim-data](https://github.com/RaRe-Technologies/gensim-data).
+
+```{r, cache=TRUE}
+library(gensimr)
+
+dataset <- "glove-twitter-25"
+
+# model description
+api_info(dataset) %>% 
+  reticulate::py_to_r() %>% 
+  .[["description"]]
+
+# download the model
+model <- api_load(dataset)
+
+# find words most similar to "cat"
+model$most_similar("cat") %>% 
+  reticulate::py_to_r()
+```

@@ -4,6 +4,8 @@
 \alias{model_hdp}
 \alias{model_hdp.mm_file}
 \alias{model_hdp.mm}
+\alias{model_hdp.python.builtin.list}
+\alias{model_hdp.list}
 \title{Hierarchical Dirichlet Process Model}
 \usage{
 model_hdp(corpus, id2word, ...)
@@ -11,6 +13,10 @@ model_hdp(corpus, id2word, ...)
 \method{model_hdp}{mm_file}(corpus, id2word, ...)
 
 \method{model_hdp}{mm}(corpus, id2word, ...)
+
+\method{model_hdp}{python.builtin.list}(corpus, id2word, ...)
+
+\method{model_hdp}{list}(corpus, id2word, ...)
 }
 \arguments{
 \item{corpus}{Model as returned by \code{\link{mmcorpus_serialize}}.}

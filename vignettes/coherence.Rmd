@@ -1,0 +1,40 @@
+---
+title: "coherence"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{coherence}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+reticulate::use_virtualenv("./env")
+```
+
+Create a model and evaluate its coherence.
+
+```{r}
+library(gensimr)
+
+model <- model_lda(common_corpus(), num_topics = 5L, id2word = common_dictionary())
+
+cm <- topic_coherence(model, corpus = common_corpus(), coherence = 'u_mass')
+cm$get_coherence()
+```
+
+Create __multiple__ models and evaluate their coherence.
+
+```{r}
+model3 <- model_lda(common_corpus(), num_topics = 3L, id2word = common_dictionary(), passes = 200L) # 3 topics
+model5 <- model_lda(common_corpus(), num_topics = 5L, id2word = common_dictionary(), passes = 200L) # 5 topics
+
+models <- c(model3, model5)
+
+cm <- topic_coherence(models, common_dictionary(), corpus = common_corpus(), coherence = 'u_mass')
+cm$compare_models(models)
+```

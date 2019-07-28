@@ -31,6 +31,7 @@ div(
       br(),
       "Large scale efficient topic modeling in R and Python."
     ),
+    br(),
     p(
       tags$a(
         tags$i(class = "fa fa-rocket"),
@@ -56,6 +57,13 @@ div(
 ```{r}
 library(gensimr)
 
+# latent similarity index
 lsi <- model_lsi(common_corpus(), id2word = common_dictionary())
-lsi$print_topics()
+topics <- lsi$print_topics() # get topics
+```
+
+Objects returned by the package are not automatically converted to R data structures, please use `reticulate::py_to_r`, as shown below.
+
+```{r}
+reticulate::py_to_r(topics) # convert to R format
 ```

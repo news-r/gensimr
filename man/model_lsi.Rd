@@ -4,6 +4,7 @@
 \alias{model_lsi}
 \alias{model_lsi.wrapped}
 \alias{model_lsi.list}
+\alias{model_lsi.python.builtin.list}
 \title{Latent Semantic Indexing Model}
 \usage{
 model_lsi(corpus, num_topics = 2L, distributed = FALSE, ...)
@@ -13,6 +14,9 @@ model_lsi(corpus, num_topics = 2L, distributed = FALSE, ...)
 
 \method{model_lsi}{list}(corpus, num_topics = 2L, distributed = FALSE,
   ...)
+
+\method{model_lsi}{python.builtin.list}(corpus, num_topics = 2L,
+  distributed = FALSE, ...)
 }
 \arguments{
 \item{corpus}{Model as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.}

@@ -1,0 +1,37 @@
+---
+title: "Document Similarity"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Document Similarity}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+reticulate::use_virtualenv("./env")
+```
+
+Reproducing [tutorial on similarity](https://radimrehurek.com/gensim/tut3.html#similarity-interface).
+
+```{r}
+library(gensimr)
+
+mm <- read_serialized_mmcorpus(corpus_mm)
+
+new_document <- "A human and computer interaction"
+preprocessed_new_document <- preprocess(new_document, min_freq = 0)
+vec_bow <- doc2bow(dictionary, preprocessed_new_document)
+vec_lsi <- wrap(lsi, vec_bow)
+
+wrapped_lsi <- wrap(lsi, mm)
+index <- similarity_matrix(wrapped_lsi)
+
+sims <- wrap(index, vec_lsi)
+
+get_similarity(sims)
+```

@@ -20,3 +20,7 @@ navbar:
       href: "articles/sklearn.html"
     - text: "summarization"
       href: "articles/summarization.html"
+    - text: "API"
+      href: "articles/API.html"
+    - text: "coherence"
+      href: "articles/coherence.html"

@@ -7,11 +7,14 @@
 \alias{common_dictionary}
 \title{Preprocessed Text}
 \usage{
-common_texts()
+common_texts(to_r = TRUE)
 
-common_corpus()
+common_corpus(to_r = TRUE)
 
-common_dictionary()
+common_dictionary(to_r = TRUE)
+}
+\arguments{
+\item{to_r}{Whether to return R data scruture.}
 }
 \description{
 gensim built-in preprocessed texts.

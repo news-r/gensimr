@@ -4,9 +4,13 @@
 \alias{model_lda}
 \alias{model_lda.mm_file}
 \alias{model_lda.mm}
+\alias{model_lda.python.builtin.list}
+\alias{model_lda.list}
 \alias{model_ldamc}
 \alias{model_ldamc.mm_file}
 \alias{model_ldamc.mm}
+\alias{model_ldamc.python.builtin.list}
+\alias{model_ldamc.list}
 \title{Latent Dirichlet Allocation Model}
 \usage{
 model_lda(corpus, ...)
@@ -15,11 +19,19 @@ model_lda(corpus, ...)
 
 \method{model_lda}{mm}(corpus, ...)
 
+\method{model_lda}{python.builtin.list}(corpus, ...)
+
+\method{model_lda}{list}(corpus, ...)
+
 model_ldamc(corpus, ...)
 
 \method{model_ldamc}{mm_file}(corpus, ...)
 
 \method{model_ldamc}{mm}(corpus, ...)
+
+\method{model_ldamc}{python.builtin.list}(corpus, ...)
+
+\method{model_ldamc}{list}(corpus, ...)
 }
 \arguments{
 \item{corpus}{Model as returned by \code{\link{mmcorpus_serialize}}.}
