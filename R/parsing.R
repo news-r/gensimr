@@ -332,46 +332,46 @@ strip_tags.data.frame <- function(s, text, ...){
 #' @param text bare name of text column.
 #' @param ... Any other options.
 #' 
-#' @name strip_numerics
+#' @name strip_numeric
 #' 
 #' @export
-strip_numerics <- function(s, ...) UseMethod("strip_numerics")
+strip_numeric <- function(s, ...) UseMethod("strip_numeric")
 
-#' @rdname strip_numerics
-#' @method strip_numerics character
+#' @rdname strip_numeric
+#' @method strip_numeric character
 #' @export
-strip_numerics.character <- function(s, ...){
+strip_numeric.character <- function(s, ...){
   s %>% 
-    purrr::map(gensim$parsing$preprocessing$strip_numerics) %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_numeric) %>% 
     purrr::map(reticulate::py_to_r) %>% 
     unlist()
 }
 
-#' @rdname strip_numerics
-#' @method strip_numerics list
+#' @rdname strip_numeric
+#' @method strip_numeric list
 #' @export
-strip_numerics.list <- function(s, ...){
+strip_numeric.list <- function(s, ...){
   s %>% 
-    purrr::map(gensim$parsing$preprocessing$strip_numerics) %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_numeric) %>% 
     purrr::map(reticulate::py_to_r) %>% 
     unlist()
 }
 
-#' @rdname strip_numerics
-#' @method strip_numerics data.frame
+#' @rdname strip_numeric
+#' @method strip_numeric data.frame
 #' @export
-strip_numerics.data.frame <- function(s, text, ...){
+strip_numeric.data.frame <- function(s, text, ...){
   assert_that(!missing(text), msg = "Missing `text`")
   s %>% 
     dplyr::pull(!!dplyr::enquo(text)) %>% 
-    purrr::map(gensim$parsing$preprocessing$strip_numerics) %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_numeric) %>% 
     purrr::map(reticulate::py_to_r) %>% 
     unlist()
 }
 
 #' Strip Non Alphanumerics
 #' 
-#' RRemove non-alphabetic characters from character string.
+#' Remove non-alphabetic characters from string.
 #' 
 #' @param s A Character string or data.frame.
 #' @param text bare name of text column.
@@ -410,6 +410,51 @@ strip_non_alphanum.data.frame <- function(s, text, ...){
   s %>% 
     dplyr::pull(!!dplyr::enquo(text)) %>% 
     purrr::map(gensim$parsing$preprocessing$strip_non_alphanum) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' Strip Multiple space
+#' 
+#' Remove repeating whitespace characters (spaces, tabs, line breaks) from s and turns tabs & line breaks into spaces.
+#' 
+#' @param s A Character string or data.frame.
+#' @param text bare name of text column.
+#' @param ... Any other options.
+#' 
+#' @name strip_multiple_spaces
+#' 
+#' @export
+strip_multiple_spaces <- function(s, ...) UseMethod("strip_multiple_spaces")
+
+#' @rdname strip_multiple_spaces
+#' @method strip_multiple_spaces character
+#' @export
+strip_multiple_spaces.character <- function(s, ...){
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_multiple_whitespaces) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' @rdname strip_multiple_spaces
+#' @method strip_multiple_spaces list
+#' @export
+strip_multiple_spaces.list <- function(s, ...){
+  s %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_multiple_whitespaces) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
+}
+
+#' @rdname strip_multiple_spaces
+#' @method strip_multiple_spaces data.frame
+#' @export
+strip_multiple_spaces.data.frame <- function(s, text, ...){
+  assert_that(!missing(text), msg = "Missing `text`")
+  s %>% 
+    dplyr::pull(!!dplyr::enquo(text)) %>% 
+    purrr::map(gensim$parsing$preprocessing$strip_multiple_whitespaces) %>% 
     purrr::map(reticulate::py_to_r) %>% 
     unlist()
 }

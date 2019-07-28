@@ -39,11 +39,22 @@ common_texts()
 
 ## Preprocess
 
-The following are methods that work on lists, character vectors and data.frames. The function `preprocess` applies all methods below (by default).
+The following are methods that work on lists, character vectors and data.frames. 
 
 ```{r}
-preprocess(corpus)
+preprocessed <- preprocess(corpus)
+preprocessed[[1]]
 ```
+
+By default, the function `preprocess` applies the following:
+
+- `strip_tags`
+- `strip_punctuation`
+- `strip_multiple_spaces`
+- `strip_numeric`
+- `remove_stopwords`
+- `strip_short`
+- `stem_text`
 
 ## Remove Stopwords
 
@@ -88,7 +99,7 @@ strip_tags("<i>Hello</i> <b>World</b>!")
 Removes digits.
 
 ```{r}
-strip_numerics("0text24gensim365test")
+strip_numeric("0text24gensim365test")
 ```
 
 ## Strip Non-alphabetics
@@ -97,6 +108,14 @@ Removes non-alphabetic characters.
 
 ```{r}
 strip_non_alphanum("if-you#can%read$this&then@this#method^works")
+```
+
+## Strip Multiple Spaces
+
+Remove repeating whitespace characters (spaces, tabs, line breaks) from s and turns tabs & line breaks into spaces.
+
+```{r}
+strip_multiple_spaces(paste0("salut", '\r', " les", '\n', "         loulous!"))
 ```
 
 ## Stem

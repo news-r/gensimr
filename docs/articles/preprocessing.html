@@ -207,6 +207,34 @@ docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepar
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/strip_punctuation.html">strip_punctuation</a></span>(<span class="st">"A semicolon is a stronger break than a comma, but not as much as a full stop!"</span>)
 <span class="co">#&gt; [1] "A semicolon is a stronger break than a comma  but not as much as a full stop "</span></code></pre></div>
 </div>
+<div id="strip-tags" class="section level2">
+<h2 class="hasAnchor">
+<a href="#strip-tags" class="anchor"></a>Strip Tags</h2>
+<p>Removes tags.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/strip_tags.html">strip_tags</a></span>(<span class="st">"&lt;i&gt;Hello&lt;/i&gt; &lt;b&gt;World&lt;/b&gt;!"</span>)
+<span class="co">#&gt; [1] "Hello World!"</span></code></pre></div>
+</div>
+<div id="strip-numerics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#strip-numerics" class="anchor"></a>Strip Numerics</h2>
+<p>Removes digits.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/strip_numeric.html">strip_numeric</a></span>(<span class="st">"0text24gensim365test"</span>)
+<span class="co">#&gt; [1] "textgensimtest"</span></code></pre></div>
+</div>
+<div id="strip-non-alphabetics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#strip-non-alphabetics" class="anchor"></a>Strip Non-alphabetics</h2>
+<p>Removes non-alphabetic characters.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/strip_non_alphanum.html">strip_non_alphanum</a></span>(<span class="st">"if-you#can%read$this&amp;then@this#method^works"</span>)
+<span class="co">#&gt; [1] "if you can read this then this method works"</span></code></pre></div>
+</div>
+<div id="strip-multiple-spaces" class="section level2">
+<h2 class="hasAnchor">
+<a href="#strip-multiple-spaces" class="anchor"></a>Strip Multiple Spaces</h2>
+<p>Remove repeating whitespace characters (spaces, tabs, line breaks) from s and turns tabs &amp; line breaks into spaces.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/strip_multiple_spaces.html">strip_multiple_spaces</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"salut"</span>, <span class="st">'</span><span class="ch">\r</span><span class="st">'</span>, <span class="st">" les"</span>, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">"         loulous!"</span>))
+<span class="co">#&gt; [1] "salut les loulous!"</span></code></pre></div>
+</div>
 <div id="stem" class="section level2">
 <h2 class="hasAnchor">
 <a href="#stem" class="anchor"></a>Stem</h2>
@@ -235,6 +263,10 @@ stemmer<span class="op">$</span><span class="kw">stem_documents</span>(<span cla
       <li><a href="#strip-short">Strip Short</a></li>
       <li><a href="#split-alphanumerics">Split Alphanumerics</a></li>
       <li><a href="#strip-punctuation">Strip Punctuation</a></li>
+      <li><a href="#strip-tags">Strip Tags</a></li>
+      <li><a href="#strip-numerics">Strip Numerics</a></li>
+      <li><a href="#strip-non-alphabetics">Strip Non-alphabetics</a></li>
+      <li><a href="#strip-multiple-spaces">Strip Multiple Spaces</a></li>
       <li><a href="#stem">Stem</a></li>
       <li><a href="#porter-stemmer">Porter Stemmer</a></li>
       </ul>

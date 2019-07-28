@@ -23,5 +23,5 @@ strip_non_alphanum(s, ...)
 \item{text}{bare name of text column.}
 }
 \description{
-RRemove non-alphabetic characters from character string.
+Remove non-alphabetic characters from string.
 }
