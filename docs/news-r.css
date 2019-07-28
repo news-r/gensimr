@@ -206,3 +206,7 @@ ul.nav li.active a {
   text-decoration: underline !important;
   text-decoration-color: #FF1654 !important;
 }
+
+.icon-bar{
+  background-color: #f9f7f1!important;
+}

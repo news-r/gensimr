@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Latent Semantic Indexing Model — model_lsi • gensimr</title>
+<title>Preprocessed Text — utils • gensimr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -41,9 +41,9 @@
 
 
 
-<meta property="og:title" content="Latent Semantic Indexing Model — model_lsi" />
+<meta property="og:title" content="Preprocessed Text — utils" />
 
-<meta property="og:description" content="Transform into a latent n dimensional space via Latent Semantic Indexing." />
+<meta property="og:description" content="gensim built-in preprocessed texts." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -128,61 +128,301 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Latent Semantic Indexing Model</h1>
+    <h1>Preprocessed Text</h1>
     
-    <div class="hidden name"><code>model_lsi.Rd</code></div>
+    <div class="hidden name"><code>utils.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Transform into a latent n dimensional space via Latent Semantic Indexing.</p>
+    <p>gensim built-in preprocessed texts.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>, <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>common_texts</span>()
 
-<span class='co'># S3 method for wrapped</span>
-<span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
-  <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>common_corpus</span>()
 
-<span class='co'># S3 method for list</span>
-<span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>, <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>corpus</th>
-      <td><p>Model as returned by <code><a href='wrap.html'>wrap</a></code>. A tf-idf/bag-of-words transformation is recommended for LSI.</p></td>
-    </tr>
-    <tr>
-      <th>num_topics</th>
-      <td><p>Number of requested factors (latent dimensions).</p></td>
-    </tr>
-    <tr>
-      <th>distributed</th>
-      <td><p>If <code>TRUE</code> - distributed mode (parallel execution on several machines) will be used.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Any other options, from the <a href='https://radimrehurek.com/gensim/models/lsimodel.html'>official documentation</a>.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+<span class='fu'>common_dictionary</span>()</pre>
+        
 
-    <p>Target dimensionality (<code>num_topics</code>) of 200–500 is recommended as a “golden standard” <a href='https://dl.acm.org/citation.cfm?id=1458105'>https://dl.acm.org/citation.cfm?id=1458105</a>.</p>
-    
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>common_texts</span>()</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] "human"     "interface" "computer" 
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] "survey"   "user"     "computer" "system"   "response" "time"    
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] "eps"       "user"      "interface" "system"   
+#&gt; 
+#&gt; [[4]]
+#&gt; [1] "system" "human"  "system" "eps"   
+#&gt; 
+#&gt; [[5]]
+#&gt; [1] "user"     "response" "time"    
+#&gt; 
+#&gt; [[6]]
+#&gt; [1] "trees"
+#&gt; 
+#&gt; [[7]]
+#&gt; [1] "graph" "trees"
+#&gt; 
+#&gt; [[8]]
+#&gt; [1] "graph"  "minors" "trees" 
+#&gt; 
+#&gt; [[9]]
+#&gt; [1] "graph"  "minors" "survey"
+#&gt; </div><div class='input'><span class='fu'>common_corpus</span>()</div><div class='output co'>#&gt; [[1]]
+#&gt; [[1]][[1]]
+#&gt; [[1]][[1]][[1]]
+#&gt; [1] 0
+#&gt; 
+#&gt; [[1]][[1]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[1]][[2]]
+#&gt; [[1]][[2]][[1]]
+#&gt; [1] 1
+#&gt; 
+#&gt; [[1]][[2]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[1]][[3]]
+#&gt; [[1]][[3]][[1]]
+#&gt; [1] 2
+#&gt; 
+#&gt; [[1]][[3]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; 
+#&gt; [[2]]
+#&gt; [[2]][[1]]
+#&gt; [[2]][[1]][[1]]
+#&gt; [1] 0
+#&gt; 
+#&gt; [[2]][[1]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[2]][[2]]
+#&gt; [[2]][[2]][[1]]
+#&gt; [1] 3
+#&gt; 
+#&gt; [[2]][[2]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[2]][[3]]
+#&gt; [[2]][[3]][[1]]
+#&gt; [1] 4
+#&gt; 
+#&gt; [[2]][[3]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[2]][[4]]
+#&gt; [[2]][[4]][[1]]
+#&gt; [1] 5
+#&gt; 
+#&gt; [[2]][[4]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[2]][[5]]
+#&gt; [[2]][[5]][[1]]
+#&gt; [1] 6
+#&gt; 
+#&gt; [[2]][[5]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[2]][[6]]
+#&gt; [[2]][[6]][[1]]
+#&gt; [1] 7
+#&gt; 
+#&gt; [[2]][[6]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; 
+#&gt; [[3]]
+#&gt; [[3]][[1]]
+#&gt; [[3]][[1]][[1]]
+#&gt; [1] 2
+#&gt; 
+#&gt; [[3]][[1]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[3]][[2]]
+#&gt; [[3]][[2]][[1]]
+#&gt; [1] 5
+#&gt; 
+#&gt; [[3]][[2]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[3]][[3]]
+#&gt; [[3]][[3]][[1]]
+#&gt; [1] 7
+#&gt; 
+#&gt; [[3]][[3]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[3]][[4]]
+#&gt; [[3]][[4]][[1]]
+#&gt; [1] 8
+#&gt; 
+#&gt; [[3]][[4]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; 
+#&gt; [[4]]
+#&gt; [[4]][[1]]
+#&gt; [[4]][[1]][[1]]
+#&gt; [1] 1
+#&gt; 
+#&gt; [[4]][[1]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[4]][[2]]
+#&gt; [[4]][[2]][[1]]
+#&gt; [1] 5
+#&gt; 
+#&gt; [[4]][[2]][[2]]
+#&gt; [1] 2
+#&gt; 
+#&gt; 
+#&gt; [[4]][[3]]
+#&gt; [[4]][[3]][[1]]
+#&gt; [1] 8
+#&gt; 
+#&gt; [[4]][[3]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; 
+#&gt; [[5]]
+#&gt; [[5]][[1]]
+#&gt; [[5]][[1]][[1]]
+#&gt; [1] 3
+#&gt; 
+#&gt; [[5]][[1]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[5]][[2]]
+#&gt; [[5]][[2]][[1]]
+#&gt; [1] 6
+#&gt; 
+#&gt; [[5]][[2]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[5]][[3]]
+#&gt; [[5]][[3]][[1]]
+#&gt; [1] 7
+#&gt; 
+#&gt; [[5]][[3]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; 
+#&gt; [[6]]
+#&gt; [[6]][[1]]
+#&gt; [[6]][[1]][[1]]
+#&gt; [1] 9
+#&gt; 
+#&gt; [[6]][[1]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; 
+#&gt; [[7]]
+#&gt; [[7]][[1]]
+#&gt; [[7]][[1]][[1]]
+#&gt; [1] 9
+#&gt; 
+#&gt; [[7]][[1]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[7]][[2]]
+#&gt; [[7]][[2]][[1]]
+#&gt; [1] 10
+#&gt; 
+#&gt; [[7]][[2]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; 
+#&gt; [[8]]
+#&gt; [[8]][[1]]
+#&gt; [[8]][[1]][[1]]
+#&gt; [1] 9
+#&gt; 
+#&gt; [[8]][[1]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[8]][[2]]
+#&gt; [[8]][[2]][[1]]
+#&gt; [1] 10
+#&gt; 
+#&gt; [[8]][[2]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[8]][[3]]
+#&gt; [[8]][[3]][[1]]
+#&gt; [1] 11
+#&gt; 
+#&gt; [[8]][[3]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; 
+#&gt; [[9]]
+#&gt; [[9]][[1]]
+#&gt; [[9]][[1]][[1]]
+#&gt; [1] 4
+#&gt; 
+#&gt; [[9]][[1]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[9]][[2]]
+#&gt; [[9]][[2]][[1]]
+#&gt; [1] 10
+#&gt; 
+#&gt; [[9]][[2]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; [[9]][[3]]
+#&gt; [[9]][[3]][[1]]
+#&gt; [1] 11
+#&gt; 
+#&gt; [[9]][[3]][[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; 
+#&gt; </div><div class='input'><span class='fu'>common_dictionary</span>()</div><div class='output co'>#&gt; Dictionary(12 unique tokens: ['computer', 'human', 'interface', 'response', 'survey']...)</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-          </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
