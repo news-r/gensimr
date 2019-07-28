@@ -1,0 +1,70 @@
+---
+title: "Preprocessing"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Preprocessing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+reticulate::use_virtualenv("./env")
+```
+
+First we preprocess the corpus using example data, a tiny corpus of 9 documents. Reproducing the tutorial on [corpora and vector spaces](https://radimrehurek.com/gensim/tut1.html).
+
+```{r}
+library(gensimr)
+
+set.seed(42) # rerproducability
+
+# sample data
+data(corpus, package = "gensimr")
+print(corpus)
+
+# preprocess corpus
+docs <- prepare_documents(corpus)
+```
+
+This produces the same output as the built-in prepared documents.
+
+```{r}
+common_texts()
+```
+
+## Preprocess
+
+The following are methods that work on lists, character vectors and data.frames. The function `preprocess` applies all methods below (by default).
+
+```{r}
+preprocess(corpus)
+```
+
+## Remove Stopwords
+
+Remove stopwords.
+
+```{r}
+remove_stopwords(corpus[[1]])
+```
+
+## Strip Short
+
+Remove short words.
+
+```{r}
+remove_stopwords(corpus[[2]], min_len = 3)
+```
+
+## Porter Stemmer
+
+```{r}
+stemmer <- porter_stemmer()
+stemmer$stem_sentence("Cats and ponies have meeting")
+stemmer$stem_documents(c("Cats and ponies", "have meeting"))
+```
