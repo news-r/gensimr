@@ -7,18 +7,18 @@
 \alias{get_bm25_weights.list}
 \title{BM 25}
 \usage{
-get_bm25_weights(mm, ...)
+get_bm25_weights(mm, n_jobs = -1)
 
-\method{get_bm25_weights}{mm_file}(mm, ...)
+\method{get_bm25_weights}{mm_file}(mm, n_jobs = -1)
 
-\method{get_bm25_weights}{mm}(mm, ...)
+\method{get_bm25_weights}{mm}(mm, n_jobs = -1)
 
-\method{get_bm25_weights}{list}(mm, ...)
+\method{get_bm25_weights}{list}(mm, n_jobs = -1)
 }
 \arguments{
-\item{mm}{A matrix market as returned by \code{\link{mmcorpus_serialize}}.}
+\item{mm}{A corpus.}
 
-\item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/summarization/bm25.html}{official documentation}.}
+\item{n_jobs}{The number of processes to use for computing bm25.}
 }
 \description{
 Function to compute rank scores for documents

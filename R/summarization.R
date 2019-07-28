@@ -5,7 +5,6 @@
 #' 
 #' @param mm A corpus.
 #' @param n_jobs The number of processes to use for computing bm25.
-#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/summarization/bm25.html}{official documentation}.
 #' 
 #' @name get_bm25_weights
 #' 
@@ -41,7 +40,75 @@ get_bm25_weights.mm <- function(mm, n_jobs = -1){
 #' @export
 get_bm25_weights.list <- function(mm, n_jobs = -1){
   assert_that(!missing(mm), msg = "Missing `mm`")
-  model <- gensim$summarization$bm25$get_bm25_weights(mm, n_jobs = -1)
-
+  model <- gensim$summarization$bm25$get_bm25_weights(mm, n_jobs = -1) %>% 
+    reticulate::py_to_r()
   invisible(model)
 }
+
+#' Keywords
+#' 
+#' Find keywords from text.
+#' 
+#' @param corpus A corpus.
+#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/summarization/keywords.html}{official documentation}.
+#' 
+#' @name keywords
+#' 
+#' @export
+keywords <- function(corpus, ...) UseMethod("keywords")
+
+#' @rdname keywords
+#' @method keywords character
+#' @export
+keywords.character <- function(corpus, ...){
+  kw <- corpus %>% 
+    purrr::map(gensim$summarization$keywords, ...) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    purrr::map(strsplit, "\n") %>% 
+    purrr::map(function(x) x[[1]])
+  invisible(kw)
+}
+
+#' @rdname keywords
+#' @method keywords character
+#' @export
+keywords.factor <- keywords.character
+
+#' @rdname keywords
+#' @method keywords list
+#' @export
+keywords.list <- function(corpus, ...){
+  kw <- corpus %>% 
+    purrr::map(gensim$summarization$keywords, ...) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    purrr::map(strsplit, "\n") %>% 
+    purrr::map(function(x) x[[1]])
+  invisible(kw)
+}
+
+#' summarize
+#' 
+#' Text summarization.
+#' 
+#' @param corpus A corpus.
+#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/summarization/summariser.html}{official documentation}.
+#' 
+#' @name summarize
+#' 
+#' @export
+summarize <- function(corpus, ...) UseMethod("summarize")
+
+#' @rdname summarize
+#' @method summarize character
+#' @export
+summarize.character <- function(corpus, ...){
+  kw <- corpus %>% 
+    purrr::map(gensim$summarization$summarize, ...) %>% 
+    purrr::map(reticulate::py_to_r) 
+  invisible(kw)
+}
+
+#' @rdname summarize
+#' @method summarize character
+#' @export
+summarize.factor <- summarize.character
