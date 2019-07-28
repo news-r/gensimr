@@ -6,5 +6,6 @@ articles:
   models: models.html
   preprocessing: preprocessing.html
   sklearn: sklearn.html
+  summarization: summarization.html
   word2vec: word2vec.html
 

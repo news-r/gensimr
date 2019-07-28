@@ -75,6 +75,9 @@
 <li>
   <a href="../articles/sklearn.html">sklearn</a>
 </li>
+<li>
+  <a href="../articles/summarization.html">summarization</a>
+</li>
         
       </ul>
 </div>
@@ -129,20 +132,23 @@ docs[[<span class="dv">1</span>]] <span class="co"># print first preprocessed d
 <span class="co">#&gt; [1] "human"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [1] "interface"</span></code></pre></div>
+<span class="co">#&gt; [1] "interface"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[3]]</span>
+<span class="co">#&gt; [1] "computer"</span></code></pre></div>
 <p>Once preprocessed we can build a dictionary.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dictionary &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpora_dictionary.html">corpora_dictionary</a></span>(docs)</code></pre></div>
 <p>A dictionary essentially assigns an integer to each term.</p>
 <p><code>doc2bow</code> simply applies the method of the same name to every documents (see example below); it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># native method to a single document</span>
 dictionary<span class="op">$</span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(docs[[<span class="dv">1</span>]])
-<span class="co">#&gt; [(0, 1), (1, 1)]</span>
+<span class="co">#&gt; [(0, 1), (1, 1), (2, 1)]</span>
 
 <span class="co"># apply to all documents</span>
 corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</code></pre></div>
 <p>Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set <code>auto_delete</code> to <code>FALSE</code> otherwise the corpus is deleted after first use. Note this means you should manually delete it with <code>delete_mmcorpus</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))
-<span class="co">#&gt; ℹ Path: /tmp/RtmppJr6R0/filedc87492832c.mm </span>
+<span class="co">#&gt; ℹ Path: /tmp/RtmpcmAD71/file35c0ac28b7d.mm </span>
 <span class="co">#&gt;  ✔ Temp file</span>
 <span class="co">#&gt;  ✖ Delete after use</span></code></pre></div>
 <p>Then initialise a model, we’re going to use a Latent Similarity Indexing method later on (<code>model_lsi</code>) which requires td-idf.</p>
@@ -172,7 +178,7 @@ atmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/skl
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlink">unlink</a></span>(temp, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
 
 atmodel<span class="op">$</span><span class="kw">fit</span>(corpus_bow)<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(<span class="st">"jack"</span>)
-<span class="co">#&gt; [[0.17010857 0.82989144]]</span></code></pre></div>
+<span class="co">#&gt; [[0.18417327 0.8158267 ]]</span></code></pre></div>
 </div>
 <div id="doc2vec" class="section level2">
 <h2 class="hasAnchor">
@@ -214,7 +220,7 @@ labels &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocu
 
 <span class="co"># How well does our pipeline perform on the training set?</span>
 pipe<span class="op">$</span><span class="kw">fit</span>(corpus_bow, labels)<span class="op">$</span><span class="kw">score</span>(corpus_bow, labels)
-<span class="co">#&gt; 0.6666666666666666</span></code></pre></div>
+<span class="co">#&gt; 0.8888888888888888</span></code></pre></div>
 </div>
 <div id="random-projections" class="section level2">
 <h2 class="hasAnchor">
@@ -281,8 +287,8 @@ w2v_model &lt;-<span class="st"> </span>w2v_model<span class="op">$</span><span 
 
 <span class="co"># What is the vector representation of the word 'graph'?</span>
 w2v_model<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"graph"</span>))
-<span class="co">#&gt; [[ 0.03169689 -0.01487119  0.0345108   0.03294079  0.01455953  0.007198</span>
-<span class="co">#&gt;   -0.01535039 -0.03602023 -0.00028627  0.01223025]]</span></code></pre></div>
+<span class="co">#&gt; [[ 0.03538461  0.04243069 -0.04087928  0.01113478 -0.03177021  0.0333348</span>
+<span class="co">#&gt;    0.01035929  0.00809012 -0.02315364 -0.03790139]]</span></code></pre></div>
 <p>Clean up, delete the corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/mmcorpus_serialize.html">delete_mmcorpus</a></span>(corpus_mm)
 <span class="co">#&gt; ✔ Temp unlinked</span></code></pre></div>

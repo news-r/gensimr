@@ -18,3 +18,5 @@ navbar:
       href: "articles/models.html"
     - text: "sklearn"
       href: "articles/sklearn.html"
+    - text: "summarization"
+      href: "articles/summarization.html"

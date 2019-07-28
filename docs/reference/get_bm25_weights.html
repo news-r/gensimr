@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Latent Semantic Indexing Model — model_lsi • gensimr</title>
+<title>BM 25 — get_bm25_weights • gensimr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -41,9 +41,10 @@
 
 
 
-<meta property="og:title" content="Latent Semantic Indexing Model — model_lsi" />
+<meta property="og:title" content="BM 25 — get_bm25_weights" />
 
-<meta property="og:description" content="Transform into a latent n dimensional space via Latent Semantic Indexing." />
+<meta property="og:description" content="Function to compute rank scores for documents
+in corpus and helper class BM25 used in calculations." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -128,47 +129,41 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Latent Semantic Indexing Model</h1>
+    <h1>BM 25</h1>
     
-    <div class="hidden name"><code>model_lsi.Rd</code></div>
+    <div class="hidden name"><code>get_bm25_weights.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Transform into a latent n dimensional space via Latent Semantic Indexing.</p>
+    <p>Function to compute rank scores for documents
+in corpus and helper class BM25 used in calculations.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>, <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>get_bm25_weights</span>(<span class='no'>mm</span>, <span class='kw'>n_jobs</span> <span class='kw'>=</span> -<span class='fl'>1L</span>)
 
-<span class='co'># S3 method for wrapped</span>
-<span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
-  <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='co'># S3 method for mm_file</span>
+<span class='fu'>get_bm25_weights</span>(<span class='no'>mm</span>, <span class='kw'>n_jobs</span> <span class='kw'>=</span> -<span class='fl'>1L</span>)
+
+<span class='co'># S3 method for mm</span>
+<span class='fu'>get_bm25_weights</span>(<span class='no'>mm</span>, <span class='kw'>n_jobs</span> <span class='kw'>=</span> -<span class='fl'>1L</span>)
+
+<span class='co'># S3 method for list</span>
+<span class='fu'>get_bm25_weights</span>(<span class='no'>mm</span>, <span class='kw'>n_jobs</span> <span class='kw'>=</span> -<span class='fl'>1L</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>corpus</th>
-      <td><p>Model as returned by <code><a href='wrap.html'>wrap</a></code>. A tf-idf/bag-of-words transformation is recommended for LSI.</p></td>
+      <th>mm</th>
+      <td><p>A corpus.</p></td>
     </tr>
     <tr>
-      <th>num_topics</th>
-      <td><p>Number of requested factors (latent dimensions).</p></td>
-    </tr>
-    <tr>
-      <th>distributed</th>
-      <td><p>If <code>TRUE</code> - distributed mode (parallel execution on several machines) will be used.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Any other options, from the <a href='https://radimrehurek.com/gensim/models/lsimodel.html'>official documentation</a>.</p></td>
+      <th>n_jobs</th>
+      <td><p>The number of processes to use for computing bm25.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Target dimensionality (<code>num_topics</code>) of 200–500 is recommended as a “golden standard” <a href='https://dl.acm.org/citation.cfm?id=1458105'>https://dl.acm.org/citation.cfm?id=1458105</a>.</p>
     
 
   </div>
@@ -176,9 +171,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

@@ -114,6 +114,18 @@ model_lsi.wrapped <- function(corpus, num_topics = 2L, distributed = FALSE, ...)
   gensim$models$LsiModel(corpus, num_topics = num_topics, distributed = distributed, ...)
 }
 
+#' @rdname model_lsi
+#' @method model_lsi list
+#' @export
+model_lsi.list <- function(corpus, num_topics = 2L, distributed = FALSE, ...){
+  assert_that(!missing(corpus), msg = "Missing `corpus`")
+  num_topics <- as.integer(num_topics) # enforce integer
+
+  if(num_topics < 200)
+    cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
+  gensim$models$LsiModel(corpus, num_topics = num_topics, distributed = distributed, ...)
+}
+
 #' Random Projections Model
 #' 
 #' Reduce vector space dimensionality. This is a very efficient (both memory- and CPU-friendly) 

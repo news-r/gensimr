@@ -112,6 +112,9 @@
 <li>
   <a href="../articles/sklearn.html">sklearn</a>
 </li>
+<li>
+  <a href="../articles/summarization.html">summarization</a>
+</li>
         
       </ul>
       
@@ -140,15 +143,17 @@
 
 <span class='co'># S3 method for data.frame</span>
 <span class='fu'>prepare_documents</span>(<span class='no'>data</span>, <span class='no'>text</span>, <span class='kw'>doc_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>, <span class='kw'>return_doc_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>lexicon</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"SMART"</span>, <span class='st'>"snowball"</span>, <span class='st'>"onix"</span>), <span class='no'>...</span>,
+  <span class='kw'>return_doc_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for character</span>
 <span class='fu'>prepare_documents</span>(<span class='no'>data</span>, <span class='kw'>doc_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>, <span class='kw'>return_doc_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>lexicon</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"SMART"</span>, <span class='st'>"snowball"</span>, <span class='st'>"onix"</span>), <span class='no'>...</span>,
+  <span class='kw'>return_doc_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for factor</span>
 <span class='fu'>prepare_documents</span>(<span class='no'>data</span>, <span class='kw'>doc_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='no'>...</span>, <span class='kw'>return_doc_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>lexicon</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"SMART"</span>, <span class='st'>"snowball"</span>, <span class='st'>"onix"</span>), <span class='no'>...</span>, <span class='kw'>return_doc_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,6 +179,10 @@ assuming each element of <code>text</code>.</p></td>
     <tr>
       <th>min_freq</th>
       <td><p>Minimum term frequency to keep terms in.</p></td>
+    </tr>
+    <tr>
+      <th>lexicon</th>
+      <td><p>Name of a lexicon of stopwords, borrowed from <a href='https://www.rdocumentation.org/packages/tidytext/topics/stop_words'>stop_words</a>.</p></td>
     </tr>
     <tr>
       <th>return_doc_id</th>

@@ -47,7 +47,7 @@ str <- "Challenges in natural language processing frequently
 (keywords(str))
 ```
 
-## Summarizer
+## Summarize
 
 Text summarisation.
 

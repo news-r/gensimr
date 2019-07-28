@@ -75,6 +75,9 @@
 <li>
   <a href="articles/sklearn.html">sklearn</a>
 </li>
+<li>
+  <a href="articles/summarization.html">summarization</a>
+</li>
         
       </ul>
 </div>
@@ -119,7 +122,12 @@ Github
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
+
+lsi &lt;-<span class="st"> </span><span class="kw"><a href="reference/model_lsi.html">model_lsi</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/gensimr/topics/utils">common_corpus</a></span>(), <span class="dt">id2word =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/gensimr/topics/utils">common_dictionary</a></span>())
+<span class="co">#&gt; ⚠ Low number of topics</span>
+lsi<span class="op">$</span><span class="kw">print_topics</span>()
+<span class="co">#&gt; [(0, '0.644*"system" + 0.404*"user" + 0.301*"eps" + 0.265*"time" + 0.265*"response" + 0.240*"computer" + 0.221*"human" + 0.206*"survey" + 0.198*"interface" + 0.036*"graph"'), (1, '0.623*"graph" + 0.490*"trees" + 0.451*"minors" + 0.274*"survey" + -0.167*"system" + -0.141*"eps" + -0.113*"human" + 0.107*"response" + 0.107*"time" + -0.072*"interface"')]</span></code></pre></div>
 </div>
   </div>
 

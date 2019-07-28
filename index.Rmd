@@ -53,6 +53,9 @@ div(
 
 ## Example
 
-```r
+```{r}
 library(gensimr)
+
+lsi <- model_lsi(common_corpus(), id2word = common_dictionary())
+lsi$print_topics()
 ```

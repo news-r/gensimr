@@ -9,15 +9,15 @@
 #' @name get_bm25_weights
 #' 
 #' @export
-get_bm25_weights <- function(mm, n_jobs = -1) UseMethod("get_bm25_weights")
+get_bm25_weights <- function(mm, n_jobs = -1L) UseMethod("get_bm25_weights")
 
 #' @rdname get_bm25_weights
 #' @method get_bm25_weights mm_file
 #' @export
-get_bm25_weights.mm_file <- function(mm, n_jobs = -1){
+get_bm25_weights.mm_file <- function(mm, n_jobs = -1L){
   assert_that(!missing(mm), msg = "Missing `mm_file`")
   corpus <- gensim$corpora$MmCorpus(mm$file)
-  model <- gensim$summarization$bm25$get_bm25_weights(corpus, n_jobs = -1)
+  model <- gensim$summarization$bm25$get_bm25_weights(corpus, n_jobs = n_jobs)
 
   # unlink temp
   if(mm$temp && mm$delete) unlink(mm$file)
@@ -28,9 +28,9 @@ get_bm25_weights.mm_file <- function(mm, n_jobs = -1){
 #' @rdname get_bm25_weights
 #' @method get_bm25_weights mm
 #' @export
-get_bm25_weights.mm <- function(mm, n_jobs = -1){
+get_bm25_weights.mm <- function(mm, n_jobs = -1L){
   assert_that(!missing(mm), msg = "Missing `mm`")
-  model <- gensim$summarization$bm25$get_bm25_weights(mm, n_jobs = -1)
+  model <- gensim$summarization$bm25$get_bm25_weights(mm, n_jobs = n_jobs)
 
   invisible(model)
 }
@@ -38,9 +38,9 @@ get_bm25_weights.mm <- function(mm, n_jobs = -1){
 #' @rdname get_bm25_weights
 #' @method get_bm25_weights list
 #' @export
-get_bm25_weights.list <- function(mm, n_jobs = -1){
+get_bm25_weights.list <- function(mm, n_jobs = -1L){
   assert_that(!missing(mm), msg = "Missing `mm`")
-  model <- gensim$summarization$bm25$get_bm25_weights(mm, n_jobs = -1) %>% 
+  model <- gensim$summarization$bm25$get_bm25_weights(mm, n_jobs = n_jobs) %>% 
     reticulate::py_to_r()
   invisible(model)
 }

@@ -7,13 +7,13 @@
 \alias{get_bm25_weights.list}
 \title{BM 25}
 \usage{
-get_bm25_weights(mm, n_jobs = -1)
+get_bm25_weights(mm, n_jobs = -1L)
 
-\method{get_bm25_weights}{mm_file}(mm, n_jobs = -1)
+\method{get_bm25_weights}{mm_file}(mm, n_jobs = -1L)
 
-\method{get_bm25_weights}{mm}(mm, n_jobs = -1)
+\method{get_bm25_weights}{mm}(mm, n_jobs = -1L)
 
-\method{get_bm25_weights}{list}(mm, n_jobs = -1)
+\method{get_bm25_weights}{list}(mm, n_jobs = -1L)
 }
 \arguments{
 \item{mm}{A corpus.}

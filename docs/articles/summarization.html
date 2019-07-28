@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>word2vec • gensimr</title>
+<title>Summarization • gensimr</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <link href="../news-r.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="word2vec">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Summarization">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -91,71 +91,70 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>word2vec</h1>
+      <h1>Summarization</h1>
             
       
       
-      <div class="hidden name"><code>word2vec.Rmd</code></div>
+      <div class="hidden name"><code>summarization.Rmd</code></div>
 
     </div>
 
     
     
-<div id="preprocessing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#preprocessing" class="anchor"></a>Preprocessing</h2>
-<p>First we preprocess the corpus using example data, a tiny corpus of 9 documents. Reproducing the tutorial on <a href="https://radimrehurek.com/gensim/tut1.html">corpora and vector spaces</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>) <span class="co"># rerproducability</span>
 
 <span class="co"># sample data</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(corpus, <span class="dt">package =</span> <span class="st">"gensimr"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(corpus)
-<span class="co">#&gt; [1] "Human machine interface for lab abc computer applications"    </span>
-<span class="co">#&gt; [2] "A survey of user opinion of computer system response time"    </span>
-<span class="co">#&gt; [3] "The EPS user interface management system"                     </span>
-<span class="co">#&gt; [4] "System and human system engineering testing of EPS"           </span>
-<span class="co">#&gt; [5] "Relation of user perceived response time to error measurement"</span>
-<span class="co">#&gt; [6] "The generation of random binary unordered trees"              </span>
-<span class="co">#&gt; [7] "The intersection graph of paths in trees"                     </span>
-<span class="co">#&gt; [8] "Graph minors IV Widths of trees and well quasi ordering"      </span>
-<span class="co">#&gt; [9] "Graph minors A survey"</span>
 
 <span class="co"># preprocess corpus</span>
-docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepare_documents.html">prepare_documents</a></span>(corpus)
-<span class="co">#&gt; → Preprocessing 9 documents</span>
-<span class="co">#&gt; ← 9 documents after perprocessing</span>
-
-docs[[<span class="dv">1</span>]] <span class="co"># print first preprocessed document </span>
+docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/preprocess.html">preprocess</a></span>(corpus)</code></pre></div>
+<div id="bm25-weights" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bm25-weights" class="anchor"></a>BM25 Weights</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/get_bm25_weights.html">get_bm25_weights</a></span>(docs)</code></pre></div>
+</div>
+<div id="keywords" class="section level2">
+<h2 class="hasAnchor">
+<a href="#keywords" class="anchor"></a>Keywords</h2>
+<p>Extract keywords.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">str &lt;-<span class="st"> "Challenges in natural language processing frequently </span>
+<span class="st">  speech recognition, natural language understanding, natural language</span>
+<span class="st">  generation (frequently from formal, machine-readable logical forms),</span>
+<span class="st">  connecting language and machine perception, dialog systems, or some</span>
+<span class="st">  combination thereof."</span>
+(<span class="kw"><a href="../reference/keywords.html">keywords</a></span>(str))
 <span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "human"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [1] "interface"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; [1] "computer"</span></code></pre></div>
-<p>Word2vec works somewhat differently. The example below is a reproduction of the Kaggle <a href="https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model">Gensim Word2Vec Tutorial</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># initialise</span>
-word2vec &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_word2vec.html">model_word2vec</a></span>(<span class="dt">size =</span> 100L, <span class="dt">window =</span> 5L, <span class="dt">min_count =</span> 1L)
-word2vec<span class="op">$</span><span class="kw">build_vocab</span>(docs) 
-<span class="co">#&gt; None</span>
-word2vec<span class="op">$</span><span class="kw">train</span>(docs, <span class="dt">total_examples =</span> word2vec<span class="op">$</span>corpus_count, <span class="dt">epochs =</span> 20L)
-<span class="co">#&gt; (76, 580)</span>
-word2vec<span class="op">$</span><span class="kw">init_sims</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; None</span></code></pre></div>
-<p>Now we can explore the model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">most_similar</span>(<span class="dt">positive =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"interface"</span>))
-<span class="co">#&gt; [('user', 0.15789735317230225), ('computer', 0.08884917944669724), ('trees', 0.05106567218899727), ('response', 0.04570407420396805), ('human', 0.017849622294306755), ('time', 0.01674620993435383), ('survey', 0.0003268299624323845), ('minors', -0.00035147927701473236), ('graph', -0.06317191570997238), ('eps', -0.11304488778114319)]</span></code></pre></div>
-<p>We expect “trees” to be the odd one out, it is a term that was in a different topic (#2) whereas other terms were in topics #1.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">doesnt_match</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"human"</span>, <span class="st">"interface"</span>, <span class="st">"trees"</span>))
-<span class="co">#&gt; interface</span></code></pre></div>
-<p>Test similarity between words.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"human"</span>, <span class="st">"trees"</span>)
-<span class="co">#&gt; 0.18123314</span>
-word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"eps"</span>, <span class="st">"system"</span>)
-<span class="co">#&gt; -0.030834831</span></code></pre></div>
+<span class="co">#&gt; [1] "language"   "machine"    "frequently"</span></code></pre></div>
+</div>
+<div id="summarize" class="section level2">
+<h2 class="hasAnchor">
+<a href="#summarize" class="anchor"></a>Summarize</h2>
+<p>Text summarisation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">str &lt;-<span class="st"> "Rice Pudding - Poem by Alan Alexander Milne</span>
+<span class="st">  What is the matter with Mary Jane?</span>
+<span class="st">  She's crying with all her might and main,</span>
+<span class="st">  And she won't eat her dinner - rice pudding again -</span>
+<span class="st">  What is the matter with Mary Jane?</span>
+<span class="st">  What is the matter with Mary Jane?</span>
+<span class="st">  I've promised her dolls and a daisy-chain,</span>
+<span class="st">  And a book about animals - all in vain -</span>
+<span class="st">  What is the matter with Mary Jane?</span>
+<span class="st">  What is the matter with Mary Jane?</span>
+<span class="st">  She's perfectly well, and she hasn't a pain;</span>
+<span class="st">  But, look at her, now she's beginning again! -</span>
+<span class="st">  What is the matter with Mary Jane?</span>
+<span class="st">  What is the matter with Mary Jane?</span>
+<span class="st">  I've promised her sweets and a ride in the train,</span>
+<span class="st">  And I've begged her to stop for a bit and explain -</span>
+<span class="st">  What is the matter with Mary Jane?</span>
+<span class="st">  What is the matter with Mary Jane?</span>
+<span class="st">  She's perfectly well and she hasn't a pain,</span>
+<span class="st">  And it's lovely rice pudding for dinner again!</span>
+<span class="st">  What is the matter with Mary Jane?"</span>
+<span class="kw"><a href="../reference/summarize.html">summarize</a></span>(str) <span class="op">%&gt;%</span><span class="st"> </span>unlist
+<span class="co">#&gt; [1] "And she won't eat her dinner - rice pudding again -\nI've promised her dolls and a daisy-chain,\nI've promised her sweets and a ride in the train,\nAnd it's lovely rice pudding for dinner again!"</span></code></pre></div>
 </div>
   </div>
 
@@ -164,7 +163,9 @@ word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">sim
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#preprocessing">Preprocessing</a></li>
+<li><a href="#bm25-weights">BM25 Weights</a></li>
+      <li><a href="#keywords">Keywords</a></li>
+      <li><a href="#summarize">Summarize</a></li>
       </ul>
 </div>
       </div>
