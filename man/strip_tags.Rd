@@ -4,6 +4,7 @@
 \alias{strip_tags}
 \alias{strip_tags.character}
 \alias{strip_tags.list}
+\alias{strip_tags.data.frame}
 \title{Strip Tags}
 \usage{
 strip_tags(s, ...)
@@ -11,6 +12,8 @@ strip_tags(s, ...)
 \method{strip_tags}{character}(s, ...)
 
 \method{strip_tags}{list}(s, ...)
+
+\method{strip_tags}{data.frame}(s, text, ...)
 }
 \arguments{
 \item{s}{A Character string or data.frame.}

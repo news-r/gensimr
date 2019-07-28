@@ -91,6 +91,14 @@ Removes digits.
 strip_numerics("0text24gensim365test")
 ```
 
+## Strip Non-alphabetics
+
+Removes non-alphabetic characters.
+
+```{r}
+strip_non_alphanum("if-you#can%read$this&then@this#method^works")
+```
+
 ## Stem
 
 Transform to lowercase and stem.
