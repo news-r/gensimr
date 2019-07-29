@@ -5,7 +5,7 @@ cache: packages
 
 before_install:
   - sudo apt-get install python3 -y
-  - sudo pip3 install gensim sklearn
+  - sudo pip install gensim sklearn
 
 addons:
   apt:
