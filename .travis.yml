@@ -4,13 +4,9 @@ language: R
 cache: packages
 
 before_install:
-  - pip install gensim sklearn
+  - sudo apt-get install python3
+  - pip3 install gensim sklearn
 
 addons:
   apt:
-    packages:
-      - python3.6
-      - python-numpy
-      - python-scipy
-      - python-virtualenv
-      - python3-venv
+    update: true
