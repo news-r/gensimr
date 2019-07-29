@@ -5,3 +5,13 @@ cache: packages
 
 before_install:
   - pip install gensim sklearn
+
+addons:
+  apt:
+    packages:
+      - python3.6
+      - python-numpy
+      - python-scipy
+      - python-gensim
+      - python-virtualenv
+      - python3-venv
