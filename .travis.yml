@@ -12,6 +12,5 @@ addons:
       - python3.6
       - python-numpy
       - python-scipy
-      - python-gensim
       - python-virtualenv
       - python3-venv
