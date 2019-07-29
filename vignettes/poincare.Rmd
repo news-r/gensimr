@@ -1,0 +1,45 @@
+---
+title: "poincare"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{poincare}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+reticulate::use_virtualenv("../env")
+```
+
+Reproduction of [examples in official documentation](https://radimrehurek.com/gensim/models/poincare.html).
+
+```{r}
+library(gensimr)
+
+path <- datapath('poincare_hypernyms_large.tsv')
+poincare <- model_poincare(path)
+poincare$train(epochs = 50L)
+
+# What is the distance between the words 'mammal' and 'carnivore'?
+poincare$kv$distance('mammal.n.01', 'carnivore.n.01')
+
+# Check the distances between a word and a list of other words.
+poincare$kv$distances('mammal.n.01', list('carnivore.n.01', 'dog.n.01'))
+
+# Check the distances between a word and every other word in the vocab.
+all_distances <- poincare$kv$distances('mammal.n.01')
+
+# Which words are most similar to 'kangaroo'?
+poincare$kv$most_similar('kangaroo.n.01', topn = 2L)
+
+# What is the similarity between the words 'mammal' and 'carnivore'?
+poincare$kv$similarity('mammal.n.01', 'carnivore.n.01')
+
+# Representation of 'kangaroo'
+poincare$kv$word_vec('kangaroo.n.01')
+```

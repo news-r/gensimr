@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Random Projections Model — model_rp • gensimr</title>
+<title>Data — datapath • gensimr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -41,10 +41,9 @@
 
 
 
-<meta property="og:title" content="Random Projections Model — model_rp" />
+<meta property="og:title" content="Data — datapath" />
 
-<meta property="og:description" content="Reduce vector space dimensionality. This is a very efficient (both memory- and CPU-friendly) 
-approach to approximating TfIdf distances between documents, by throwing in a little randomness." />
+<meta property="og:description" content="Rerturns full path to test files." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -160,42 +159,31 @@ approach to approximating TfIdf distances between documents, by throwing in a li
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Random Projections Model</h1>
+    <h1>Data</h1>
     
-    <div class="hidden name"><code>model_rp.Rd</code></div>
+    <div class="hidden name"><code>datapath.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Reduce vector space dimensionality. This is a very efficient (both memory- and CPU-friendly) 
-approach to approximating TfIdf distances between documents, by throwing in a little randomness.</p>
+    <p>Rerturns full path to test files.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>model_rp</span>(<span class='no'>corpus</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for wrapped</span>
-<span class='fu'>model_rp</span>(<span class='no'>corpus</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for gensim.interfaces.TransformedCorpus</span>
-<span class='fu'>model_rp</span>(<span class='no'>corpus</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>datapath</span>(<span class='no'>file</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>corpus</th>
-      <td><p>Model as returned by <code><a href='wrap.html'>wrap</a></code>. A tf-idf/bag-of-words transformation is recommended for LSI.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Any other options, from the <a href='https://radimrehurek.com/gensim/models/rpmodel.html'>official documentation</a>.</p></td>
+      <th>file</th>
+      <td><p>File name.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Target dimensionality (<code>num_topics</code>) of 200–500 is recommended as a “golden standard” <a href='https://dl.acm.org/citation.cfm?id=1458105'>https://dl.acm.org/citation.cfm?id=1458105</a>.</p>
+    <p>Full path to file.</p>
     
 
   </div>
@@ -204,7 +192,7 @@ approach to approximating TfIdf distances between documents, by throwing in a li
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
+      <li><a href="#value">Value</a></li>
           </ul>
 
   </div>

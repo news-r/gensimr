@@ -86,6 +86,50 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-left">
         <li>
+  <a href="../reference/">Reference</a>
+</li>
+<li>
+  <a href="../articles/installation.html">Installation</a>
+</li>
+<li>
+  <a href="../articles/preprocessing.html">Parsing</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Models
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/models.html">Topic Modeling</a>
+    </li>
+    <li>
+      <a href="../articles/sklearn.html">Scikit-learn</a>
+    </li>
+    <li>
+      <a href="../articles/summarization.html">summarization</a>
+    </li>
+    <li>
+      <a href="../articles/word2vec.html">Word2vec</a>
+    </li>
+    <li>
+      <a href="../articles/poincare.html">Poincaré Embeddings</a>
+    </li>
+    <li>
+      <a href="../articles/similarity.html">Document similarity</a>
+    </li>
+    <li>
+      <a href="../articles/coherence.html">Topic coherence</a>
+    </li>
+    <li>
+      <a href="../articles/API.html">API</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
   <a href="../LICENSE.html">
     <span class="fa fa-balance-scale"></span>
      
@@ -98,41 +142,11 @@
   </a>
 </li>
 <li>
-  <a href="../reference/">
-    <span class="fa fa-code"></span>
+  <a href="https://github.com/news-r/gensimr">
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
-<li>
-  <a href="../articles/installation.html">Install</a>
-</li>
-<li>
-  <a href="../articles/preprocessing.html">parse</a>
-</li>
-<li>
-  <a href="../articles/models.html">models</a>
-</li>
-<li>
-  <a href="../articles/sklearn.html">sklearn</a>
-</li>
-<li>
-  <a href="../articles/summarization.html">summarize</a>
-</li>
-<li>
-  <a href="../articles/coherence.html">coherence</a>
-</li>
-<li>
-  <a href="../articles/word2vec.html">Word2vec</a>
-</li>
-<li>
-  <a href="../articles/similarity.html">similarity</a>
-</li>
-<li>
-  <a href="../articles/API.html">API</a>
-</li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -156,19 +170,16 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>, <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for wrapped</span>
-<span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
-  <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for list</span>
-<span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>, <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>)
+<span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for python.builtin.list</span>
-<span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
-  <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>model_lsi</span>(<span class='no'>corpus</span>, <span class='kw'>distributed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,10 +187,6 @@
     <tr>
       <th>corpus</th>
       <td><p>Model as returned by <code><a href='wrap.html'>wrap</a></code>. A tf-idf/bag-of-words transformation is recommended for LSI.</p></td>
-    </tr>
-    <tr>
-      <th>num_topics</th>
-      <td><p>Number of requested factors (latent dimensions).</p></td>
     </tr>
     <tr>
       <th>distributed</th>
@@ -210,7 +217,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by John Coene for <a href="https://news-r.org" target="_blank">news-r</a>.</p>
+  <p>Developed by <a href='http://john-coene.com'>John Coene</a> for <a href="https://news-r.org" target="_blank">news-r</a>.</p>
 </div>
 
 <a href="https://www.patreon.com/bePatron?u=21257335" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>

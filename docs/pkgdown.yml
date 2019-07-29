@@ -6,6 +6,7 @@ articles:
   coherence: coherence.html
   installation: installation.html
   models: models.html
+  poincare: poincare.html
   preprocessing: preprocessing.html
   similarity: similarity.html
   sklearn: sklearn.html

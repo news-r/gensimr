@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
+par(bg = '#f9f7f1')
 reticulate::use_virtualenv("../env")
 ```
 
@@ -78,7 +78,7 @@ Finally, we can build models, the number of topics of `model_*` functions defaut
 Note that we use the transformed corpus.
 
 ```{r}
-lsi <- model_lsi(corpus_transformed, id2word = dictionary)
+lsi <- model_lsi(corpus_transformed, id2word = dictionary, num_topics = 2L)
 lsi$print_topics()
 ```
 
@@ -95,7 +95,7 @@ plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 Note that we use the transformed corpus.
 
 ```{r}
-rp <- model_rp(corpus_transformed, id2word = dictionary)
+rp <- model_rp(corpus_transformed, id2word = dictionary, num_topics = 2L)
 
 wrapped_corpus <- wrap(rp, corpus_transformed)
 wrapped_corpus_docs <- get_docs_topics(wrapped_corpus)
@@ -107,7 +107,7 @@ plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)
 Note that we use the original, non-transformed corpus.
 
 ```{r}
-lda <- model_lda(corpus_mm, id2word = dictionary, num_topics = 2)
+lda <- model_lda(corpus_mm, id2word = dictionary, num_topics = 2L)
 lda_topics <- lda$get_document_topics(corpus_bow)
 wrapped_corpus_docs <- get_docs_topics(lda_topics)
 plot(wrapped_corpus_docs$dimension_1_y, wrapped_corpus_docs$dimension_2_y)

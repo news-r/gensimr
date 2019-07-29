@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Random Projections Model — model_rp • gensimr</title>
+<title>PoinCare Model — model_poincare • gensimr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -41,10 +41,9 @@
 
 
 
-<meta property="og:title" content="Random Projections Model — model_rp" />
+<meta property="og:title" content="PoinCare Model — model_poincare" />
 
-<meta property="og:description" content="Reduce vector space dimensionality. This is a very efficient (both memory- and CPU-friendly) 
-approach to approximating TfIdf distances between documents, by throwing in a little randomness." />
+<meta property="og:description" content="Implementation of Poincaré Embeddings." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -160,42 +159,46 @@ approach to approximating TfIdf distances between documents, by throwing in a li
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Random Projections Model</h1>
+    <h1>PoinCare Model</h1>
     
-    <div class="hidden name"><code>model_rp.Rd</code></div>
+    <div class="hidden name"><code>model_poincare.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Reduce vector space dimensionality. This is a very efficient (both memory- and CPU-friendly) 
-approach to approximating TfIdf distances between documents, by throwing in a little randomness.</p>
+    <p>Implementation of Poincaré Embeddings.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>model_rp</span>(<span class='no'>corpus</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>model_poincare</span>(<span class='no'>relations</span>, <span class='no'>...</span>)
 
-<span class='co'># S3 method for wrapped</span>
-<span class='fu'>model_rp</span>(<span class='no'>corpus</span>, <span class='no'>...</span>)
+<span class='co'># S3 method for list</span>
+<span class='fu'>model_poincare</span>(<span class='no'>relations</span>, <span class='no'>...</span>)
 
-<span class='co'># S3 method for gensim.interfaces.TransformedCorpus</span>
-<span class='fu'>model_rp</span>(<span class='no'>corpus</span>, <span class='no'>...</span>)</pre>
+<span class='co'># S3 method for python.builtin.tuple</span>
+<span class='fu'>model_poincare</span>(<span class='no'>relations</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for character</span>
+<span class='fu'>model_poincare</span>(<span class='no'>relations</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for python.builtin.str</span>
+<span class='fu'>model_poincare</span>(<span class='no'>relations</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>corpus</th>
-      <td><p>Model as returned by <code><a href='wrap.html'>wrap</a></code>. A tf-idf/bag-of-words transformation is recommended for LSI.</p></td>
+      <th>relations</th>
+      <td><p>Training data. Note that the relations are treated as 
+ordered pairs, i.e. a relation (a, b) does not imply the opposite 
+relation (b, a). In case the relations are symmetric, the data should 
+contain both relations (a, b) and (b, a).</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Any other options, from the <a href='https://radimrehurek.com/gensim/models/rpmodel.html'>official documentation</a>.</p></td>
+      <td><p>Any other options, from the <a href='https://radimrehurek.com/gensim/models/poincare.html'>official documentation</a>.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Target dimensionality (<code>num_topics</code>) of 200–500 is recommended as a “golden standard” <a href='https://dl.acm.org/citation.cfm?id=1458105'>https://dl.acm.org/citation.cfm?id=1458105</a>.</p>
     
 
   </div>
@@ -203,9 +206,7 @@ approach to approximating TfIdf distances between documents, by throwing in a li
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
