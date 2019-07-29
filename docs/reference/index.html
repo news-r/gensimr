@@ -171,8 +171,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-api" class="hasAnchor"><a href="#section-api" class="anchor"></a>API</h2>
+          <p class="section-desc"><p>Download and use pre.trained models or datasets.</p></p>
         </th>
       </tr>
       <tr>
@@ -181,24 +181,20 @@
           <p><code><a href="api.html">api_info()</a></code> <code><a href="api.html">api_load()</a></code> </p>
         </td>
         <td><p>API</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="auth2doc.html">auth2doc()</a></code> </p>
-        </td>
-        <td><p>Author Document Preprocess</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-data" class="hasAnchor"><a href="#section-data" class="anchor"></a>Data</h2>
+          <p class="section-desc"><p>Helper functions and dataset for demonstration purposes.</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
           <p><code><a href="authors.html">authors</a></code> </p>
         </td>
         <td><p>Authors</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="corpora_dictionary.html">corpora_dictionary()</a></code> </p>
-        </td>
-        <td><p>Create a dictionary</p></td>
       </tr><tr>
         
         <td>
@@ -208,16 +204,38 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="utils.html">common_texts()</a></code> <code><a href="utils.html">common_corpus()</a></code> <code><a href="utils.html">common_dictionary()</a></code> </p>
+        </td>
+        <td><p>Preprocessed Text</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="datapath.html">datapath()</a></code> </p>
         </td>
         <td><p>Data</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-dependencies" class="hasAnchor"><a href="#section-dependencies" class="anchor"></a>Dependencies</h2>
+          <p class="section-desc"><p>Install python dependencies</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
           <p><code><a href="dependencies.html">install_dependencies()</a></code> <code><a href="dependencies.html">install_gensim()</a></code> <code><a href="dependencies.html">install_sklearn()</a></code> </p>
         </td>
         <td><p>Install Dependencies</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-corpora" class="hasAnchor"><a href="#section-corpora" class="anchor"></a>Corpora</h2>
+          <p class="section-desc"><p>Transform and clean corpora.</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
           <p><code><a href="doc2bow.html">doc2bow()</a></code> </p>
@@ -226,27 +244,113 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="get_author_topics.html">get_author_topics()</a></code> </p>
+          <p><code><a href="auth2doc.html">auth2doc()</a></code> </p>
         </td>
-        <td><p>Get Author topics</p></td>
+        <td><p>Author Document Preprocess</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="get_bm25_weights.html">get_bm25_weights()</a></code> </p>
+          <p><code><a href="corpora_dictionary.html">corpora_dictionary()</a></code> </p>
         </td>
-        <td><p>BM 25</p></td>
+        <td><p>Create a dictionary</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="get_documents_topics.html">get_docs_topics()</a></code> </p>
+          <p><code><a href="mmcorpus_serialize.html">serialize_mmcorpus()</a></code> <code><a href="mmcorpus_serialize.html">as_serialized_mmcorpus()</a></code> <code><a href="mmcorpus_serialize.html">delete_mmcorpus()</a></code> </p>
         </td>
-        <td><p>Get Document Topics</p></td>
+        <td><p>Serialise Matrix Market Corpus</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="get_similarity.html">get_similarity()</a></code> </p>
+          <p><code><a href="read_serialized_mmcorpus.html">read_serialized_mmcorpus()</a></code> </p>
         </td>
-        <td><p>Get Similarity</p></td>
+        <td><p>Read Serialized Matrix Market</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="strip_multiple_spaces.html">strip_multiple_spaces()</a></code> </p>
+        </td>
+        <td><p>Strip Multiple space</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="strip_non_alphanum.html">strip_non_alphanum()</a></code> </p>
+        </td>
+        <td><p>Strip Non Alphanumerics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="strip_numeric.html">strip_numeric()</a></code> </p>
+        </td>
+        <td><p>Strip Numerics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="strip_punctuation.html">strip_punctuation()</a></code> </p>
+        </td>
+        <td><p>Strip Punctuation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="strip_short.html">strip_short()</a></code> </p>
+        </td>
+        <td><p>Strip Short Words</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="strip_tags.html">strip_tags()</a></code> </p>
+        </td>
+        <td><p>Strip Tags</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="split_alphanum.html">split_alphanum()</a></code> </p>
+        </td>
+        <td><p>Split Alphanumerics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="porter_stemmer.html">porter_stemmer()</a></code> </p>
+        </td>
+        <td><p>Porter Stemmer</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="prepare_documents.html">prepare_documents()</a></code> </p>
+        </td>
+        <td><p>Prepare Documents</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="preprocess.html">preprocess()</a></code> </p>
+        </td>
+        <td><p>Preprocess text</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="remove_stopwords.html">remove_stopwords()</a></code> </p>
+        </td>
+        <td><p>Remove stopwords</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="stem_text.html">stem_text()</a></code> </p>
+        </td>
+        <td><p>Stem</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-models" class="hasAnchor"><a href="#section-models" class="anchor"></a>Models</h2>
+          <p class="section-desc"><p>Available models and utilities.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="wrap.html">wrap()</a></code> </p>
+        </td>
+        <td><p>Wrap</p></td>
       </tr><tr>
         
         <td>
@@ -256,9 +360,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="mmcorpus_serialize.html">serialize_mmcorpus()</a></code> <code><a href="mmcorpus_serialize.html">as_serialized_mmcorpus()</a></code> <code><a href="mmcorpus_serialize.html">delete_mmcorpus()</a></code> </p>
+          <p><code><a href="get_author_topics.html">get_author_topics()</a></code> </p>
         </td>
-        <td><p>Serialise Matrix Market Corpus</p></td>
+        <td><p>Get Author topics</p></td>
       </tr><tr>
         
         <td>
@@ -316,39 +420,35 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="porter_stemmer.html">porter_stemmer()</a></code> </p>
+          <p><code><a href="topics.html">topic_coherence()</a></code> </p>
         </td>
-        <td><p>Porter Stemmer</p></td>
+        <td><p>Topic Coherence</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="prepare_documents.html">prepare_documents()</a></code> </p>
+          <p><code><a href="get_bm25_weights.html">get_bm25_weights()</a></code> </p>
         </td>
-        <td><p>Prepare Documents</p></td>
+        <td><p>BM 25</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="preprocess.html">preprocess()</a></code> </p>
+          <p><code><a href="get_documents_topics.html">get_docs_topics()</a></code> </p>
         </td>
-        <td><p>Preprocess text</p></td>
-      </tr><tr>
+        <td><p>Get Document Topics</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-sklearn" class="hasAnchor"><a href="#section-sklearn" class="anchor"></a>Sklearn</h2>
+          <p class="section-desc"><p>Scikit-learn API.</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
-          <p><code><a href="read_serialized_mmcorpus.html">read_serialized_mmcorpus()</a></code> </p>
+          <p><code><a href="dependencies.html">install_dependencies()</a></code> <code><a href="dependencies.html">install_gensim()</a></code> <code><a href="dependencies.html">install_sklearn()</a></code> </p>
         </td>
-        <td><p>Read Serialized Matrix Market</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="remove_stopwords.html">remove_stopwords()</a></code> </p>
-        </td>
-        <td><p>Remove stopwords</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="similarity_matrix.html">similarity_matrix()</a></code> </p>
-        </td>
-        <td><p>Similarity Matrix</p></td>
+        <td><p>Install Dependencies</p></td>
       </tr><tr>
         
         <td>
@@ -421,78 +521,54 @@
           <p><code><a href="sklearn_word2vec.html">sklearn_word2vec()</a></code> </p>
         </td>
         <td><p>Word2vec Model</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-document-similarity" class="hasAnchor"><a href="#section-document-similarity" class="anchor"></a>Document Similarity</h2>
+          <p class="section-desc"><p>Document similarity-related functions.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="similarity_matrix.html">similarity_matrix()</a></code> </p>
+        </td>
+        <td><p>Similarity Matrix</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="split_alphanum.html">split_alphanum()</a></code> </p>
+          <p><code><a href="get_similarity.html">get_similarity()</a></code> </p>
         </td>
-        <td><p>Split Alphanumerics</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="stem_text.html">stem_text()</a></code> </p>
-        </td>
-        <td><p>Stem</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="strip_multiple_spaces.html">strip_multiple_spaces()</a></code> </p>
-        </td>
-        <td><p>Strip Multiple space</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="strip_non_alphanum.html">strip_non_alphanum()</a></code> </p>
-        </td>
-        <td><p>Strip Non Alphanumerics</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="strip_numeric.html">strip_numeric()</a></code> </p>
-        </td>
-        <td><p>Strip Numerics</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="strip_punctuation.html">strip_punctuation()</a></code> </p>
-        </td>
-        <td><p>Strip Punctuation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="strip_short.html">strip_short()</a></code> </p>
-        </td>
-        <td><p>Strip Short Words</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="strip_tags.html">strip_tags()</a></code> </p>
-        </td>
-        <td><p>Strip Tags</p></td>
-      </tr><tr>
+        <td><p>Get Similarity</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-summarize" class="hasAnchor"><a href="#section-summarize" class="anchor"></a>Summarize</h2>
+          <p class="section-desc"><p>Text summarization-related functions.</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
           <p><code><a href="summarize.html">summarize()</a></code> </p>
         </td>
         <td><p>summarize</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-topic-coherence" class="hasAnchor"><a href="#section-topic-coherence" class="anchor"></a>Topic Coherence</h2>
+          <p class="section-desc"><p>Assess topic coherence.</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
           <p><code><a href="topics.html">topic_coherence()</a></code> </p>
         </td>
         <td><p>Topic Coherence</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="utils.html">common_texts()</a></code> <code><a href="utils.html">common_corpus()</a></code> <code><a href="utils.html">common_dictionary()</a></code> </p>
-        </td>
-        <td><p>Preprocessed Text</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="wrap.html">wrap()</a></code> </p>
-        </td>
-        <td><p>Wrap</p></td>
       </tr>
     </tbody>
     </table>
@@ -501,7 +577,15 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-api">API</a></li>
+      <li><a href="#section-data">Data</a></li>
+      <li><a href="#section-dependencies">Dependencies</a></li>
+      <li><a href="#section-corpora">Corpora</a></li>
+      <li><a href="#section-models">Models</a></li>
+      <li><a href="#section-sklearn">Sklearn</a></li>
+      <li><a href="#section-document-similarity">Document Similarity</a></li>
+      <li><a href="#section-summarize">Summarize</a></li>
+      <li><a href="#section-topic-coherence">Topic Coherence</a></li>
     </ul>
   </div>
 </div>

@@ -36,6 +36,70 @@ navbar:
     - icon: fa-github fa-lg
       href: "https://github.com/news-r/gensimr"
 
+reference:
+  - title: "API"
+    desc: >
+      Download and use pre.trained models or datasets.
+    contents: 
+      - matches("api")
+  - title: "Data"
+    desc: >
+      Helper functions and dataset for demonstration purposes.
+    contents: 
+      - authors
+      - corpus
+      - common_texts
+      - common_corpus
+      - common_dictionary
+      - datapath
+  - title: "Dependencies"
+    desc: >
+      Install python dependencies
+    contents:
+      - install_dependencies
+      - install_gensim
+      - install_sklearn
+  - title: "Corpora"
+    desc: >
+      Transform and clean corpora.
+    contents:
+      - doc2bow
+      - auth2doc
+      - corpora_dictionary
+      - matches("mmcorpus")
+      - matches("strip")
+      - matches("split")
+      - porter_stemmer
+      - prepare_documents
+      - preprocess
+      - remove_stopwords
+      - stem_text
+      - get_bm25_weights
+  - title: "Models"
+    desc: "Available models and utilities."
+    contents:
+      - wrap
+      - keywords
+      - matches("model")
+      - get_documents_topics
+  - title: "Sklearn"
+    desc: "Scikit-learn API."
+    contents:
+      - matches("sklearn")
+  - title: "Document Similarity"
+    desc: "Document similarity-related functions."
+    contents:
+      - similarity_matrix
+      - get_similarity
+  - title: "Summarize"
+    desc: "Text summarization-related functions."
+    contents:
+      - summarize
+  - title: "Topic Coherence"
+    desc: "Assess topic coherence."
+    contents:
+      - topic_coherence
+
 authors:
   John Coene:
     href: http://john-coene.com

@@ -127,6 +127,44 @@ model_lsi.list <- function(corpus, distributed = FALSE, ...){
 #' @export
 model_lsi.python.builtin.list <- model_lsi.list
 
+#' Normalization Model
+#' 
+#' Compute the l1 or l2 normalization by normalizing separately for each document in a corpus.
+#' 
+#' @param corpus Model as returned by \code{\link{wrap}}.
+#' @param norm Norm used to normalize, defaults to \code{l2}.
+#' 
+#' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
+#' 
+#' @name model_norm
+#' 
+#' @export
+model_norm <- function(corpus, norm = c("l2", "l1")) UseMethod("model_norm")
+
+#' @rdname model_norm
+#' @method model_norm wrapped
+#' @export
+model_norm.wrapped <- function(corpus, norm = c("l2", "l1")){
+  nrom <- tolower(norm)
+  norm <- match.arg(norm)
+  gensim$models$normmodel$NormModel(corpus, norm)
+}
+
+#' @rdname model_norm
+#' @method model_norm list
+#' @export
+model_norm.list <- function(corpus, norm = c("l2", "l1")){
+  nrom <- tolower(norm)
+  norm <- match.arg(norm)
+  gensim$models$normmodel$NormModel(corpus, norm)
+}
+
+#' @rdname model_norm
+#' @method model_norm python.builtin.list
+#' @export
+model_norm.python.builtin.list <- model_norm.list
+
+
 #' Random Projections Model
 #' 
 #' Reduce vector space dimensionality. This is a very efficient (both memory- and CPU-friendly) 
