@@ -3,14 +3,12 @@ warnings_are_errors: false
 cache: packages
 
 before_install:
-  - sudo pip install gensim sklearn
+  - R -e "install.package('reticulate')"
+  - R -e "reticulate::py_install('gensim')"
 
 env:
  global:
    - CRAN: http://cran.rstudio.com
-
-r_packages:
-   - reticulate
 
 notifications:
   email:
