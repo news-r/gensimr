@@ -1,12 +1,20 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
 language: R
+warnings_are_errors: false
+sudo: required
+dist: trusty
 cache: packages
 
 before_install:
-  - sudo apt-get install python3 -y
-  - sudo pip install gensim sklearn
+  - pip install gensim sklearn
 
-addons:
-  apt:
-    update: true
+env:
+ global:
+   - CRAN: http://cran.rstudio.com
+
+r_packages:
+   - testthat
+   - reticulate
+
+notifications:
+  email:
+    on_failure: change
