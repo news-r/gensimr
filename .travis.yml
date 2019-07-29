@@ -1,18 +1,15 @@
 language: R
 warnings_are_errors: false
-sudo: required
-dist: trusty
 cache: packages
 
 before_install:
-  - pip install gensim sklearn
+  - sudo pip install gensim sklearn
 
 env:
  global:
    - CRAN: http://cran.rstudio.com
 
 r_packages:
-   - testthat
    - reticulate
 
 notifications:
