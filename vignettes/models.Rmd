@@ -120,6 +120,22 @@ hdp <- model_hdp(corpus_mm, id2word = dictionary)
 reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 ```
 
+## Fasttext
+
+```{r}
+ft <- model_fasttext(size = 4L, window = 3L, min_count = 1L)
+ft$build_vocab(sentences = unname(docs))
+ft$train(sentences = unname(docs), total_examples = length(docs), epochs = 10L)
+
+# most similar
+ft$wv$most_similar(positive = c('computer', 'human'), negative = c('interface'))
+
+# odd one out
+ft$wv$doesnt_match(c("human", "computer", "interface", "tree"))
+
+# similarity score
+ft$wv$similarity('computer', 'human')
+```
 
 ## Author-topic model
 

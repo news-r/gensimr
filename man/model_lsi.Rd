@@ -16,7 +16,7 @@ model_lsi(corpus, distributed = FALSE, ...)
 \method{model_lsi}{python.builtin.list}(corpus, distributed = FALSE, ...)
 }
 \arguments{
-\item{corpus}{Model as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.}
+\item{corpus}{Corpus as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.}
 
 \item{distributed}{If \code{TRUE} - distributed mode (parallel execution on several machines) will be used.}
 

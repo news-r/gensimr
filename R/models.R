@@ -95,7 +95,7 @@ model_tfidf.python.builtin.list <- model_tfidf.mm
 #' 
 #' Transform into a latent n dimensional space via Latent Semantic Indexing.
 #' 
-#' @param corpus Model as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.
+#' @param corpus Corpus as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.
 #' @param distributed If \code{TRUE} - distributed mode (parallel execution on several machines) will be used.
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/lsimodel.html}{official documentation}.
 #' 
@@ -164,13 +164,26 @@ model_norm.list <- function(corpus, norm = c("l2", "l1")){
 #' @export
 model_norm.python.builtin.list <- model_norm.list
 
+#' Fasttext Model
+#' 
+#' Train word embeddings from a training corpus with the additional 
+#' ability to obtain word vectors for out-of-vocabulary words.
+#' 
+#' @param ... Any option, from the \href{https://radimrehurek.com/gensim/models/fasttext.html}{official documentation}.
+#' 
+#' @name model_fasttext
+#' 
+#' @export
+model_fasttext <- function(...){
+  gensim$models$fasttext$FastText(...)
+}
 
 #' Random Projections Model
 #' 
 #' Reduce vector space dimensionality. This is a very efficient (both memory- and CPU-friendly) 
 #' approach to approximating TfIdf distances between documents, by throwing in a little randomness.
 #' 
-#' @param corpus Model as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.
+#' @param corpus Corpus as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/rpmodel.html}{official documentation}.
 #' 
 #' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.

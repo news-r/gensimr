@@ -13,7 +13,7 @@ model_rp(corpus, ...)
 \method{model_rp}{gensim.interfaces.TransformedCorpus}(corpus, ...)
 }
 \arguments{
-\item{corpus}{Model as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.}
+\item{corpus}{Corpus as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.}
 
 \item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/rpmodel.html}{official documentation}.}
 }
