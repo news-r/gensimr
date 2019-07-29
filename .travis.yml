@@ -4,4 +4,4 @@ language: R
 cache: packages
 
 before_install:
-  - sudo pip install gensim sklearn
+  - pip install gensim sklearn

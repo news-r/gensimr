@@ -10,15 +10,13 @@
 prepare_documents(data, ...)
 
 \method{prepare_documents}{data.frame}(data, text, doc_id = NULL,
-  min_freq = 1, lexicon = c("SMART", "snowball", "onix"), ...,
-  return_doc_id = FALSE)
+  min_freq = 1, remove_stopwords = TRUE, ..., return_doc_id = FALSE)
 
 \method{prepare_documents}{character}(data, doc_id = NULL,
-  min_freq = 1, lexicon = c("SMART", "snowball", "onix"), ...,
-  return_doc_id = FALSE)
+  min_freq = 1, remove_stopwords = TRUE, ..., return_doc_id = FALSE)
 
 \method{prepare_documents}{factor}(data, doc_id = NULL, min_freq = 1,
-  lexicon = c("SMART", "snowball", "onix"), ..., return_doc_id = FALSE)
+  remove_stopwords = TRUE, ..., return_doc_id = FALSE)
 }
 \arguments{
 \item{data}{A \code{data.frame} containing \code{text} and \code{id} 
@@ -33,7 +31,7 @@ assuming each element of \code{text}.}
 
 \item{min_freq}{Minimum term frequency to keep terms in.}
 
-\item{lexicon}{Name of a lexicon of stopwords, borrowed from \link[tidytext]{stop_words}.}
+\item{remove_stopwords}{Whether to remove stopwords using \code{\link{remove_stopwords}}.}
 
 \item{return_doc_id}{Whether to return document id (named list).}
 }
@@ -46,4 +44,8 @@ Simple text preprocessor for, namely for example purposes.
 \details{
 Simply tokenises each document, removes punctuation, stop words, digits,
 and keeps only terms that appear more than \code{min_freq} \emph{across documents.}
+}
+\examples{
+prepare_documents(corpus)
+
 }

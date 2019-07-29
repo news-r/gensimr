@@ -9,19 +9,19 @@
 \usage{
 preprocess(s, ..., filters = c("strip_tags", "strip_punctuation",
   "strip_multiple_spaces", "strip_numeric", "remove_stopwords",
-  "strip_short", "stem_text"))
+  "strip_short", "stem_text"), to_lower = TRUE)
 
 \method{preprocess}{character}(s, ..., filters = c("strip_tags",
   "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
-  "remove_stopwords", "strip_short", "stem_text"))
+  "remove_stopwords", "strip_short", "stem_text"), to_lower = TRUE)
 
 \method{preprocess}{list}(s, ..., filters = c("strip_tags",
   "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
-  "remove_stopwords", "strip_short", "stem_text"))
+  "remove_stopwords", "strip_short", "stem_text"), to_lower = TRUE)
 
 \method{preprocess}{data.frame}(s, text, ..., filters = c("strip_tags",
   "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
-  "remove_stopwords", "strip_short", "stem_text"))
+  "remove_stopwords", "strip_short", "stem_text"), to_lower = TRUE)
 }
 \arguments{
 \item{s}{A Character string or data.frame.}
@@ -29,6 +29,8 @@ preprocess(s, ..., filters = c("strip_tags", "strip_punctuation",
 \item{...}{Any other options.}
 
 \item{filters}{Filters to apply, see filter section.}
+
+\item{to_lower}{Whether to convert to lowercase before processing.}
 
 \item{text}{bare name of text column.}
 }

@@ -111,6 +111,7 @@ strip_short.data.frame <- function(s, min_len = 5, text, ...){
 #' @param s A Character string or data.frame.
 #' @param text bare name of text column.
 #' @param filters Filters to apply, see filter section.
+#' @param to_lower Whether to convert to lowercase before processing.
 #' @param ... Any other options.
 #' 
 #' @section Filters:
@@ -129,16 +130,19 @@ strip_short.data.frame <- function(s, min_len = 5, text, ...){
 #' @export
 preprocess <- function(s, ..., 
   filters = c("strip_tags", "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
-    "remove_stopwords", "strip_short", "stem_text")) UseMethod("preprocess")
+    "remove_stopwords", "strip_short", "stem_text"), to_lower = TRUE) UseMethod("preprocess")
 
 #' @rdname preprocess
 #' @method preprocess character
 #' @export
 preprocess.character <- function(s, ...,
   filters = c("strip_tags", "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
-    "remove_stopwords", "strip_short", "stem_text")){
+    "remove_stopwords", "strip_short", "stem_text"), to_lower = TRUE){
 
   custom_filters <- .custom_filters(filters) 
+
+  if(to_lower)
+    s <- tolower(s)
 
   s %>% 
     purrr::map(gensim$parsing$preprocessing$preprocess_string, custom_filters) %>% 
@@ -148,32 +152,71 @@ preprocess.character <- function(s, ...,
 #' @rdname preprocess
 #' @method preprocess list
 #' @export
-preprocess.list <- function(s, ...,
-  filters = c("strip_tags", "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
-    "remove_stopwords", "strip_short", "stem_text")){
-
-  custom_filters <- .custom_filters(filters) 
-
-  s %>% 
-    purrr::map(gensim$parsing$preprocessing$preprocess_string, custom_filters) %>% 
-    purrr::map(reticulate::py_to_r)
-}
+preprocess.list <- preprocess.character
 
 #' @rdname preprocess
 #' @method preprocess data.frame
 #' @export
 preprocess.data.frame <- function(s, text, ...,
   filters = c("strip_tags", "strip_punctuation", "strip_multiple_spaces", "strip_numeric",
-    "remove_stopwords", "strip_short", "stem_text")){
+    "remove_stopwords", "strip_short", "stem_text"), to_lower = TRUE){
   assert_that(!missing(text), msg = "Missing `text`")
 
   custom_filters <- .custom_filters(filters) 
+
+  if(to_lower)
+    s <- tolower(s)
 
   s %>% 
     dplyr::pull(!!dplyr::enquo(text)) %>% 
     purrr::map(gensim$parsing$preprocessing$preprocess_string, custom_filters) %>% 
     purrr::map(reticulate::py_to_r)
 }
+
+#' Filter Rarely
+#' 
+#' Filter rarely appearing keywords from documents.
+#' 
+#' @param s A Character string or a list.
+#' @param min_freq Minimum term frequency to keep terms in. 
+#' 
+#' @name filter_rare
+#' 
+#' @export
+filter_rare <- function(s, min_freq = 1) UseMethod("filter_rare")
+
+#' @rdname filter_rare
+#' @method filter_rare character
+#' @export
+filter_rare.character <- function(s, min_freq = 1){
+  assert_that(min_freq >= 0)
+
+  # count
+  tf <- tibble::tibble(
+    word = unlist(s)
+  ) %>% 
+    dplyr::count(word) %>% 
+    dplyr::filter(n > min_freq) %>% 
+    dplyr::pull(word)
+
+  # predicate
+  .keep <- function(x){
+    x %in% tf
+  }
+
+  # map over lists
+  purrr::map(
+    s,
+    function(x){
+      purrr::keep(x, .keep)
+    }
+  )
+}
+
+#' @rdname filter_rare
+#' @method filter_rare list
+#' @export
+filter_rare.list <- filter_rare.character
 
 .availabale_filters <- function(){
   tibble::tibble(

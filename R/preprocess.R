@@ -8,7 +8,7 @@
 #' @param doc_id Id of documents, if omitted they are created dynamically 
 #' assuming each element of \code{text}.
 #' @param min_freq Minimum term frequency to keep terms in. 
-#' @param lexicon Name of a lexicon of stopwords, borrowed from \link[tidytext]{stop_words}.
+#' @param remove_stopwords Whether to remove stopwords using \code{\link{remove_stopwords}}.
 #' @param ... Any other parameters.
 #' @param return_doc_id Whether to return document id (named list).
 #' 
@@ -16,6 +16,9 @@
 #' 
 #' @details Simply tokenises each document, removes punctuation, stop words, digits,
 #' and keeps only terms that appear more than \code{min_freq} \emph{across documents.} 
+#' 
+#' @examples
+#' prepare_documents(corpus)
 #' 
 #' @name prepare_documents
 #' @export
@@ -25,7 +28,7 @@ prepare_documents <- function(data, ...) UseMethod("prepare_documents")
 #' @method prepare_documents data.frame
 #' @export
 prepare_documents.data.frame <- function(data, text, doc_id = NULL, min_freq = 1, 
-  lexicon = c("SMART", "snowball", "onix"), ..., return_doc_id = FALSE){
+  remove_stopwords = TRUE, ..., return_doc_id = FALSE){
 
   assert_that(!missing(data), msg = "Missing `data`")
   assert_that(!missing(text), msg = "Missing `text`")
@@ -44,14 +47,19 @@ prepare_documents.data.frame <- function(data, text, doc_id = NULL, min_freq = 1
   if(!"id" %in% names(tokens))
     tokens <- dplyr::mutate(tokens, id = 1:dplyr::n())
 
-  .get_tokens(tokens, min_freq, lexicon = lexicon, return_doc_id = return_doc_id)
+  .get_tokens(
+    tokens, 
+    min_freq, 
+    remove_stopwords = remove_stopwords, 
+    return_doc_id = return_doc_id
+  )
 }
 
 #' @rdname prepare_documents
 #' @method prepare_documents character
 #' @export
 prepare_documents.character <- function(data, doc_id = NULL, min_freq = 1, 
-  lexicon = c("SMART", "snowball", "onix"), ..., return_doc_id = FALSE){
+  remove_stopwords = TRUE, ..., return_doc_id = FALSE){
 
   cat(crayon::yellow(cli::symbol$arrow_right), "Preprocessing", crayon::blue(length(data)), "documents\n")
 
@@ -63,7 +71,12 @@ prepare_documents.character <- function(data, doc_id = NULL, min_freq = 1,
     id = doc_id
   )
 
-  .get_tokens(tokens, min_freq, lexicon = lexicon, return_doc_id = return_doc_id)
+  .get_tokens(
+    tokens, 
+    min_freq, 
+    remove_stopwords = remove_stopwords, 
+    return_doc_id = return_doc_id
+  )
 }
 
 #' @rdname prepare_documents
@@ -71,16 +84,16 @@ prepare_documents.character <- function(data, doc_id = NULL, min_freq = 1,
 #' @export
 prepare_documents.factor <- prepare_documents.character
 
-.get_tokens <- function(tokens, min_freq = 1, lexicon = c("SMART", "snowball", "onix"), return_doc_id = return_doc_id){
+.get_tokens <- function(tokens, min_freq = 1, remove_stopwords = TRUE, return_doc_id = return_doc_id){
 
   assert_that(min_freq >= 0)
-  lexicon <- match.arg(lexicon)
 
-  sw <- tidytext::stop_words %>% 
-    dplyr::filter(lexicon == lexicon)
+  tokens$text <- tolower(tokens$text)
 
-  tokens <- tidytext::unnest_tokens(tokens, word, text) %>% 
-    dplyr::anti_join(sw, by = "word")
+  if(remove_stopwords)
+    tokens$text <- remove_stopwords(tokens$text)
+
+  tokens <- tidytext::unnest_tokens(tokens, word, text) 
 
   token_count <- dplyr::count(tokens, word) %>% 
     dplyr::filter(n > min_freq)
