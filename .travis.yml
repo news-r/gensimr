@@ -3,7 +3,7 @@ warnings_are_errors: false
 cache: packages
 
 before_install:
-  - R -e "install.package('reticulate')"
+  - R -e "install.packages('reticulate')"
   - R -e "reticulate::py_install('gensim')"
 
 env:
