@@ -5,3 +5,4 @@ cache: packages
 
 before_install:
   - sudo pip install gensim
+  - sudo R -e "gensimr::install_dependencies()"

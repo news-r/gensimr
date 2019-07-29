@@ -41,3 +41,15 @@ common_dictionary <- function(to_r = TRUE) {
   
   return(data)
 }
+
+#' Data
+#' 
+#' Rerturns full path to test files.
+#' 
+#' @param file File name.
+#' 
+#' @export
+datapath <- function(file){
+  assert_that(!missing(file), msg = "Missing `file`")
+  gensim$test$utils$datapath(file)
+}
