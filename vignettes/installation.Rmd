@@ -32,7 +32,7 @@ Make sure you have a C compiler before __installing the dependencies__, to use t
 gensimr::install_dependencies()
 ```
 
-Ideally one should use a virtual environment and pass it to `install_dependencies`, _only do this once_.
+Ideally one should use a virtual environment and pass it to `install_dependencies`, _only create the environment once_.
 
 ```r
 # replace with path of your choice
@@ -41,6 +41,13 @@ my_env <- "./env"
 # run this (works on unix)
 args <- paste("-m venv", my_env)
 system2("python3", args) # create environment
-reticulate::use_virtualenv(my_env) # force reticulate to use env
+ # force reticulate to use env
 gensimr::install_dependencies(my_env) # install gensim & scikit-learn in environment
+```
+
+In future sessions, simply specify the environment before calling gensimr.
+
+```r
+my_env <- "./env"
+reticulate::use_virtualenv(my_env)
 ```

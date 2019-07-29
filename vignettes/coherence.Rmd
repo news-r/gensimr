@@ -1,8 +1,8 @@
 ---
-title: "coherence"
+title: "Topic Coherence"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{coherence}
+  %\VignetteIndexEntry{Topic Coherence}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,15 +13,19 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-reticulate::use_virtualenv("./env")
+reticulate::use_virtualenv("../env", required = TRUE)
 ```
 
-Create a model and evaluate its coherence.
+Create a model and evaluate its coherence. Below we use example datasets, see [preprocessing vignette](/articles/preprocessing) to see how to obtain those.
 
 ```{r}
 library(gensimr)
 
-model <- model_lda(common_corpus(), num_topics = 5L, id2word = common_dictionary())
+# Example data
+corp <- common_corpus(to_r = FALSE)
+dict <- common_dictionary(to_r = FALSE)
+
+model <- model_lda(corp, num_topics = 5L, id2word = dict)
 
 cm <- topic_coherence(model, corpus = common_corpus(), coherence = 'u_mass')
 cm$get_coherence()
@@ -30,10 +34,10 @@ cm$get_coherence()
 Create __multiple__ models and evaluate their coherence.
 
 ```{r}
-model3 <- model_lda(common_corpus(), num_topics = 3L, id2word = common_dictionary(), passes = 200L) # 3 topics
-model5 <- model_lda(common_corpus(), num_topics = 5L, id2word = common_dictionary(), passes = 200L) # 5 topics
+model2 <- model_lda(corp, num_topics = 2L, id2word = dict, passes = 200L) # 3 topics
+model5 <- model_lda(corp, num_topics = 5L, id2word = dict, passes = 200L) # 5 topics
 
-models <- c(model3, model5)
+models <- c(model2, model5)
 
 cm <- topic_coherence(models, common_dictionary(), corpus = common_corpus(), coherence = 'u_mass')
 cm$compare_models(models)

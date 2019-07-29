@@ -4,7 +4,6 @@
 \alias{model_at}
 \alias{model_at.mm_file}
 \alias{model_at.mm}
-\alias{model_at.list}
 \title{Author-topic Model}
 \usage{
 model_at(corpus, ...)
@@ -12,8 +11,6 @@ model_at(corpus, ...)
 \method{model_at}{mm_file}(corpus, ...)
 
 \method{model_at}{mm}(corpus, ...)
-
-\method{model_at}{list}(corpus, ...)
 }
 \arguments{
 \item{corpus}{Model as returned by \code{\link{mmcorpus_serialize}}.}

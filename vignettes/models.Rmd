@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-reticulate::use_virtualenv("./env")
+reticulate::use_virtualenv("../env")
 ```
 
 ## Preprocessing
@@ -155,26 +155,6 @@ atmodel$get_author_topics("jack") # native for single author
 
 # apply to all authors
 get_author_topics(atmodel)
-```
-
-## External Data & Models
-
-You can download external datasets to easily build models. External dataset can be found on [RaRe-Technologies/gensim-data](https://github.com/RaRe-Technologies/gensim-data).
-
-```{r, cache=TRUE}
-dataset <- "glove-twitter-25"
-
-# model description
-downloader_info(dataset) %>% 
-  reticulate::py_to_r() %>% 
-  .[["description"]]
-
-# download the model
-model <- downloader_load(dataset)
-
-# find words most similar to "cat"
-model$most_similar("cat") %>% 
-  reticulate::py_to_r()
 ```
 
 ## Log Entropy

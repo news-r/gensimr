@@ -47,7 +47,7 @@
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-left">
 <li>
   <a href="LICENSE.html">
     <span class="fa fa-balance-scale"></span>
@@ -61,13 +61,16 @@
   </a>
 </li>
 <li>
-  <a href="reference/">Reference</a>
+  <a href="reference/">
+    <span class="fa fa-code"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="articles/installation.html">Installation</a>
+  <a href="articles/installation.html">Install</a>
 </li>
 <li>
-  <a href="articles/preprocessing.html">parsing</a>
+  <a href="articles/preprocessing.html">parse</a>
 </li>
 <li>
   <a href="articles/models.html">models</a>
@@ -76,16 +79,22 @@
   <a href="articles/sklearn.html">sklearn</a>
 </li>
 <li>
-  <a href="articles/summarization.html">summarization</a>
-</li>
-<li>
-  <a href="articles/API.html">API</a>
+  <a href="articles/summarization.html">summarize</a>
 </li>
 <li>
   <a href="articles/coherence.html">coherence</a>
 </li>
-        
+<li>
+  <a href="articles/word2vec.html">Word2vec</a>
+</li>
+<li>
+  <a href="articles/similarity.html">similarity</a>
+</li>
+<li>
+  <a href="articles/API.html">API</a>
+</li>
       </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -118,8 +127,8 @@ Large scale efficient topic modeling in R and Python.
 <i class="fa fa-rocket"></i>
 Installation
 </a>
-<a class="btn btn-default" href="https://github.com/news-r/gensim" style="margin-bottom: 5px;">
-<i class="fa fa-paint-brush"></i>
+<a class="btn btn-default" href="https://github.com/news-r/gensimr" style="margin-bottom: 5px;">
+<i class="fa fa-github"></i>
 Github
 </a>
 </p>
@@ -128,28 +137,28 @@ Github
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
-
-<span class="co"># latent similarity index</span>
-lsi &lt;-<span class="st"> </span><span class="kw"><a href="reference/model_lsi.html">model_lsi</a></span>(<span class="kw"><a href="reference/utils.html">common_corpus</a></span>(), <span class="dt">id2word =</span> <span class="kw"><a href="reference/utils.html">common_dictionary</a></span>())
-<span class="co">#&gt; ⚠ Low number of topics</span>
-topics &lt;-<span class="st"> </span>lsi<span class="op">$</span><span class="kw">print_topics</span>() <span class="co"># get topics</span></code></pre></div>
-<p>Objects returned by the package are not automatically converted to R data structures, please use <code><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">reticulate::py_to_r</a></code>, as shown below.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>(topics) <span class="co"># convert to R format</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [[1]][[1]]</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[1]][[2]]</span>
-<span class="co">#&gt; [1] "0.644*\"system\" + 0.404*\"user\" + 0.301*\"eps\" + 0.265*\"time\" + 0.265*\"response\" + 0.240*\"computer\" + 0.221*\"human\" + 0.206*\"survey\" + 0.198*\"interface\" + 0.036*\"graph\""</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [[2]][[1]]</span>
-<span class="co">#&gt; [1] 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]][[2]]</span>
-<span class="co">#&gt; [1] "0.623*\"graph\" + 0.490*\"trees\" + 0.451*\"minors\" + 0.274*\"survey\" + -0.167*\"system\" + -0.141*\"eps\" + -0.113*\"human\" + 0.107*\"time\" + 0.107*\"response\" + -0.072*\"interface\""</span></code></pre></div>
+<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># latent similarity index</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">lsi &lt;-<span class="st"> </span><span class="kw"><a href="reference/model_lsi.html">model_lsi</a></span>(<span class="kw"><a href="reference/utils.html">common_corpus</a></span>(), <span class="dt">id2word =</span> <span class="kw"><a href="reference/utils.html">common_dictionary</a></span>())</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; ⚠ Low number of topics</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">topics &lt;-<span class="st"> </span>lsi<span class="op">$</span><span class="kw">print_topics</span>() <span class="co"># get topics</span></a></code></pre>
+<p>Objects returned by the package are not automatically converted to R data structures, please use <code><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">reticulate::py_to_r</a></code> as shown below.</p>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>(topics) <span class="co"># convert to R format</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; [[1]][[1]]</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; [1] 0</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; [[1]][[2]]</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; [1] "0.644*\"system\" + 0.404*\"user\" + 0.301*\"eps\" + 0.265*\"time\" + 0.265*\"response\" + 0.240*\"computer\" + 0.221*\"human\" + 0.206*\"survey\" + 0.198*\"interface\" + 0.036*\"graph\""</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; [[2]]</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; [[2]][[1]]</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; [1] 1</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; [[2]][[2]]</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; [1] "-0.623*\"graph\" + -0.490*\"trees\" + -0.451*\"minors\" + -0.274*\"survey\" + 0.167*\"system\" + 0.141*\"eps\" + 0.113*\"human\" + -0.107*\"time\" + -0.107*\"response\" + 0.072*\"interface\""</span></a></code></pre>
 </div>
   </div>
 

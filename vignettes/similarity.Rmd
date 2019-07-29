@@ -13,13 +13,72 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-reticulate::use_virtualenv("./env")
+reticulate::use_virtualenv("../env")
 ```
 
 Reproducing [tutorial on similarity](https://radimrehurek.com/gensim/tut3.html#similarity-interface).
 
+## Preprocess
+
+First preprocess the corpus.
+
 ```{r}
 library(gensimr)
+
+set.seed(42) # rerproducability
+
+# sample data
+data(corpus, package = "gensimr")
+print(corpus)
+
+# preprocess corpus
+docs <- prepare_documents(corpus)
+
+docs[[1]] # print first preprocessed document 
+```
+
+Once preprocessed we can build a dictionary.
+
+```{r}
+dictionary <- corpora_dictionary(docs)
+```
+
+A dictionary essentially assigns an integer to each term.
+
+`doc2bow` simply applies the method of the same name to every documents (see example below); it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector. 
+
+```{r}
+# native method to a single document
+dictionary$doc2bow(docs[[1]])
+
+# apply to all documents
+corpus_bow <- doc2bow(dictionary, docs)
+```
+
+Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set `auto_delete` to `FALSE` otherwise the corpus is deleted after first use. Note this means you should manually delete it with `delete_mmcorpus`.
+
+```{r}
+(corpus_mm <- serialize_mmcorpus(corpus_bow, auto_delete = FALSE))
+```
+
+Then initialise a model, we're going to use a Latent Similarity Indexing method later on (`model_lsi`) which requires td-idf.
+
+```{r}
+tfidf <- model_tfidf(corpus_mm)
+```
+
+We can then use the model to transform our original corpus.
+
+```{r}
+corpus_transformed <- wrap(tfidf, corpus_bow)
+```
+
+## Similarity
+
+Now we can compare similarity between our preprocessed corpus and a new document.
+
+```{r}
+lsi <- model_lsi(corpus_transformed, id2word = dictionary)
 
 mm <- read_serialized_mmcorpus(corpus_mm)
 
@@ -34,4 +93,10 @@ index <- similarity_matrix(wrapped_lsi)
 sims <- wrap(index, vec_lsi)
 
 get_similarity(sims)
+```
+
+Clean up, delete the corpus.
+
+```{r}
+delete_mmcorpus(corpus_mm)
 ```

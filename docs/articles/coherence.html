@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>coherence • gensimr</title>
+<title>Topic Coherence • gensimr</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <link href="../news-r.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="coherence">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Topic Coherence">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -47,7 +47,7 @@
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-left">
 <li>
   <a href="../LICENSE.html">
     <span class="fa fa-balance-scale"></span>
@@ -61,13 +61,16 @@
   </a>
 </li>
 <li>
-  <a href="../reference/">Reference</a>
+  <a href="../reference/">
+    <span class="fa fa-code"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/installation.html">Installation</a>
+  <a href="../articles/installation.html">Install</a>
 </li>
 <li>
-  <a href="../articles/preprocessing.html">parsing</a>
+  <a href="../articles/preprocessing.html">parse</a>
 </li>
 <li>
   <a href="../articles/models.html">models</a>
@@ -76,16 +79,22 @@
   <a href="../articles/sklearn.html">sklearn</a>
 </li>
 <li>
-  <a href="../articles/summarization.html">summarization</a>
-</li>
-<li>
-  <a href="../articles/API.html">API</a>
+  <a href="../articles/summarization.html">summarize</a>
 </li>
 <li>
   <a href="../articles/coherence.html">coherence</a>
 </li>
-        
+<li>
+  <a href="../articles/word2vec.html">Word2vec</a>
+</li>
+<li>
+  <a href="../articles/similarity.html">similarity</a>
+</li>
+<li>
+  <a href="../articles/API.html">API</a>
+</li>
       </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -97,7 +106,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>coherence</h1>
+      <h1>Topic Coherence</h1>
             
       
       
@@ -107,24 +116,28 @@
 
     
     
-<p>Create a model and evaluate its coherence.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
-
-model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(<span class="kw"><a href="../reference/utils.html">common_corpus</a></span>(), <span class="dt">num_topics =</span> 5L, <span class="dt">id2word =</span> <span class="kw"><a href="../reference/utils.html">common_dictionary</a></span>())
-
-cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">topic_coherence</a></span>(model, <span class="dt">corpus =</span> <span class="kw"><a href="../reference/utils.html">common_corpus</a></span>(), <span class="dt">coherence =</span> <span class="st">'u_mass'</span>)
-cm<span class="op">$</span><span class="kw">get_coherence</span>()
-<span class="co">#&gt; -14.6879719618176</span></code></pre></div>
+<p>Create a model and evaluate its coherence. Below we use example datasets, see <a href="/articles/preprocessing">preprocessing vignette</a> to see how to obtain those.</p>
+<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># Example data</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">corp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/utils.html">common_corpus</a></span>(<span class="dt">to_r =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">dict &lt;-<span class="st"> </span><span class="kw"><a href="../reference/utils.html">common_dictionary</a></span>(<span class="dt">to_r =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(corp, <span class="dt">num_topics =</span> 5L, <span class="dt">id2word =</span> dict)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">topic_coherence</a></span>(model, <span class="dt">corpus =</span> <span class="kw"><a href="../reference/utils.html">common_corpus</a></span>(), <span class="dt">coherence =</span> <span class="st">'u_mass'</span>)</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; -14.68182855108869</span></a></code></pre>
 <p>Create <strong>multiple</strong> models and evaluate their coherence.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(<span class="kw"><a href="../reference/utils.html">common_corpus</a></span>(), <span class="dt">num_topics =</span> 3L, <span class="dt">id2word =</span> <span class="kw"><a href="../reference/utils.html">common_dictionary</a></span>(), <span class="dt">passes =</span> 200L) <span class="co"># 3 topics</span>
-model5 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(<span class="kw"><a href="../reference/utils.html">common_corpus</a></span>(), <span class="dt">num_topics =</span> 5L, <span class="dt">id2word =</span> <span class="kw"><a href="../reference/utils.html">common_dictionary</a></span>(), <span class="dt">passes =</span> 200L) <span class="co"># 5 topics</span>
-
-models &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(model3, model5)
-
-cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">topic_coherence</a></span>(models, <span class="kw"><a href="../reference/utils.html">common_dictionary</a></span>(), <span class="dt">corpus =</span> <span class="kw"><a href="../reference/utils.html">common_corpus</a></span>(), <span class="dt">coherence =</span> <span class="st">'u_mass'</span>)
-cm<span class="op">$</span><span class="kw">compare_models</span>(models)
-<span class="co">#&gt; [(array([-10.68678158, -15.01887234, -10.74172934]), -12.149127749232093), (array([-15.05634308, -13.69250228, -15.03774138, -15.03774138,</span>
-<span class="co">#&gt;        -11.90169261]), -14.14520414740226)]</span></code></pre></div>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">model2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(corp, <span class="dt">num_topics =</span> 2L, <span class="dt">id2word =</span> dict, <span class="dt">passes =</span> 200L) <span class="co"># 3 topics</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">model5 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(corp, <span class="dt">num_topics =</span> 5L, <span class="dt">id2word =</span> dict, <span class="dt">passes =</span> 200L) <span class="co"># 5 topics</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">models &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(model2, model5)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">topic_coherence</a></span>(models, <span class="kw"><a href="../reference/utils.html">common_dictionary</a></span>(), <span class="dt">corpus =</span> <span class="kw"><a href="../reference/utils.html">common_corpus</a></span>(), <span class="dt">coherence =</span> <span class="st">'u_mass'</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">cm<span class="op">$</span><span class="kw">compare_models</span>(models)</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; [(array([-11.3236755 , -15.00351381]), -13.163594652484473), (array([-10.09981669, -14.31571734, -15.61829551, -14.37934552,</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;        -15.53202041]), -13.989039095861076)]</span></a></code></pre>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

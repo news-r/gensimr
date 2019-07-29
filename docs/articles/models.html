@@ -47,7 +47,7 @@
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-left">
 <li>
   <a href="../LICENSE.html">
     <span class="fa fa-balance-scale"></span>
@@ -61,13 +61,16 @@
   </a>
 </li>
 <li>
-  <a href="../reference/">Reference</a>
+  <a href="../reference/">
+    <span class="fa fa-code"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/installation.html">Installation</a>
+  <a href="../articles/installation.html">Install</a>
 </li>
 <li>
-  <a href="../articles/preprocessing.html">parsing</a>
+  <a href="../articles/preprocessing.html">parse</a>
 </li>
 <li>
   <a href="../articles/models.html">models</a>
@@ -76,10 +79,22 @@
   <a href="../articles/sklearn.html">sklearn</a>
 </li>
 <li>
-  <a href="../articles/summarization.html">summarization</a>
+  <a href="../articles/summarization.html">summarize</a>
 </li>
-        
+<li>
+  <a href="../articles/coherence.html">coherence</a>
+</li>
+<li>
+  <a href="../articles/word2vec.html">Word2vec</a>
+</li>
+<li>
+  <a href="../articles/similarity.html">similarity</a>
+</li>
+<li>
+  <a href="../articles/API.html">API</a>
+</li>
       </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -105,293 +120,196 @@
 <h2 class="hasAnchor">
 <a href="#preprocessing" class="anchor"></a>Preprocessing</h2>
 <p>First we preprocess the corpus using example data, a tiny corpus of 9 documents. Reproducing the tutorial on <a href="https://radimrehurek.com/gensim/tut1.html">corpora and vector spaces</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>) <span class="co"># rerproducability</span>
-
-<span class="co"># sample data</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(corpus, <span class="dt">package =</span> <span class="st">"gensimr"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(corpus)
-<span class="co">#&gt; [1] "Human machine interface for lab abc computer applications"    </span>
-<span class="co">#&gt; [2] "A survey of user opinion of computer system response time"    </span>
-<span class="co">#&gt; [3] "The EPS user interface management system"                     </span>
-<span class="co">#&gt; [4] "System and human system engineering testing of EPS"           </span>
-<span class="co">#&gt; [5] "Relation of user perceived response time to error measurement"</span>
-<span class="co">#&gt; [6] "The generation of random binary unordered trees"              </span>
-<span class="co">#&gt; [7] "The intersection graph of paths in trees"                     </span>
-<span class="co">#&gt; [8] "Graph minors IV Widths of trees and well quasi ordering"      </span>
-<span class="co">#&gt; [9] "Graph minors A survey"</span>
-
-<span class="co"># preprocess corpus</span>
-docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepare_documents.html">prepare_documents</a></span>(corpus)
-<span class="co">#&gt; → Preprocessing 9 documents</span>
-<span class="co">#&gt; ← 9 documents after perprocessing</span>
-
-docs[[<span class="dv">1</span>]] <span class="co"># print first preprocessed document </span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "human"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [1] "interface"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; [1] "computer"</span></code></pre></div>
+<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>) <span class="co"># rerproducability</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># sample data</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(corpus, <span class="dt">package =</span> <span class="st">"gensimr"</span>)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(corpus)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; [1] "Human machine interface for lab abc computer applications"    </span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; [2] "A survey of user opinion of computer system response time"    </span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; [3] "The EPS user interface management system"                     </span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; [4] "System and human system engineering testing of EPS"           </span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; [5] "Relation of user perceived response time to error measurement"</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt; [6] "The generation of random binary unordered trees"              </span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt; [7] "The intersection graph of paths in trees"                     </span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; [8] "Graph minors IV Widths of trees and well quasi ordering"      </span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; [9] "Graph minors A survey"</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co"># preprocess corpus</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepare_documents.html">prepare_documents</a></span>(corpus)</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; → Preprocessing 9 documents</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; ← 9 documents after perprocessing</span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">docs[[<span class="dv">1</span>]] <span class="co"># print first preprocessed document </span></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co">#&gt; [1] "human"</span></a>
+<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="co">#&gt; [[2]]</span></a>
+<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="co">#&gt; [1] "interface"</span></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="co">#&gt; [[3]]</span></a>
+<a class="sourceLine" id="cb1-31" data-line-number="31"><span class="co">#&gt; [1] "computer"</span></a></code></pre>
 <p>Once preprocessed we can build a dictionary.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dictionary &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpora_dictionary.html">corpora_dictionary</a></span>(docs)</code></pre></div>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">dictionary &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpora_dictionary.html">corpora_dictionary</a></span>(docs)</a></code></pre>
 <p>A dictionary essentially assigns an integer to each term.</p>
 <p><code>doc2bow</code> simply applies the method of the same name to every documents (see example below); it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># native method to a single document</span>
-dictionary<span class="op">$</span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(docs[[<span class="dv">1</span>]])
-<span class="co">#&gt; [(0, 1), (1, 1), (2, 1)]</span>
-
-<span class="co"># apply to all documents</span>
-corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</code></pre></div>
+<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># native method to a single document</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">dictionary<span class="op">$</span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(docs[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; [(0, 1), (1, 1), (2, 1)]</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co"># apply to all documents</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</a></code></pre>
 <p>Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set <code>auto_delete</code> to <code>FALSE</code> otherwise the corpus is deleted after first use. Note this means you should manually delete it with <code>delete_mmcorpus</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))
-<span class="co">#&gt; ℹ Path: /tmp/RtmpX2eD21/file3e7354a279d4.mm </span>
-<span class="co">#&gt;  ✔ Temp file</span>
-<span class="co">#&gt;  ✖ Delete after use</span></code></pre></div>
+<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpdfzICl/file160b759c607d.mm </span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;  ✔ Temp file</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;  ✖ Delete after use</span></a></code></pre>
 <p>Then initialise a model, we’re going to use a Latent Similarity Indexing method later on (<code>model_lsi</code>) which requires td-idf.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_tfidf.html">model_tfidf</a></span>(corpus_mm)</code></pre></div>
+<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_tfidf.html">model_tfidf</a></span>(corpus_mm)</a></code></pre>
 <p>We can then use the model to transform our original corpus.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corpus_transformed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(tfidf, corpus_bow)</code></pre></div>
+<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">corpus_transformed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(tfidf, corpus_bow)</a></code></pre>
 <p>Finally, we can build models, the number of topics of <code>model_*</code> functions defautls to 2, which is too low for what we generally would do with gensimr but works for the low number of documents we have. Below we reproduce bits and bobs of the <a href="https://radimrehurek.com/gensim/tut2.html">topics and transformation</a>.</p>
 </div>
 <div id="latent-similarity-index" class="section level2">
 <h2 class="hasAnchor">
 <a href="#latent-similarity-index" class="anchor"></a>Latent Similarity Index</h2>
 <p>Note that we use the transformed corpus.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lsi &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lsi.html">model_lsi</a></span>(corpus_transformed, <span class="dt">id2word =</span> dictionary)
-<span class="co">#&gt; ⚠ Low number of topics</span>
-lsi<span class="op">$</span><span class="kw">print_topics</span>()
-<span class="co">#&gt; [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]</span></code></pre></div>
+<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">lsi &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lsi.html">model_lsi</a></span>(corpus_transformed, <span class="dt">id2word =</span> dictionary)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; ⚠ Low number of topics</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">lsi<span class="op">$</span><span class="kw">print_topics</span>()</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]</span></a></code></pre>
 <p>We can then wrap the model around the corpus to extract further information, below we extract how each document contribute to each dimension (topic).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wrapped_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(lsi, corpus_transformed)
-(wrapped_corpus_docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_documents_topics.html">get_docs_topics</a></span>(wrapped_corpus))
-<span class="co">#&gt; # A tibble: 9 x 4</span>
-<span class="co">#&gt;   dimension_1_x dimension_1_y dimension_2_x dimension_2_y</span>
-<span class="co">#&gt;           &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt; 1             0        0.0660             1       -0.520 </span>
-<span class="co">#&gt; 2             0        0.197              1       -0.761 </span>
-<span class="co">#&gt; 3             0        0.0899             1       -0.724 </span>
-<span class="co">#&gt; 4             0        0.0759             1       -0.632 </span>
-<span class="co">#&gt; 5             0        0.102              1       -0.574 </span>
-<span class="co">#&gt; 6             0        0.703              1        0.161 </span>
-<span class="co">#&gt; 7             0        0.877              1        0.168 </span>
-<span class="co">#&gt; 8             0        0.910              1        0.141 </span>
-<span class="co">#&gt; 9             0        0.617              1       -0.0539</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(wrapped_corpus_docs<span class="op">$</span>dimension_<span class="dv">1</span>_y, wrapped_corpus_docs<span class="op">$</span>dimension_<span class="dv">2</span>_y)</code></pre></div>
+<pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">wrapped_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(lsi, corpus_transformed)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">(wrapped_corpus_docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_documents_topics.html">get_docs_topics</a></span>(wrapped_corpus))</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; # A tibble: 9 x 4</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;   dimension_1_x dimension_1_y dimension_2_x dimension_2_y</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;           &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; 1             0        0.0660             1       -0.520 </span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; 2             0        0.197              1       -0.761 </span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; 3             0        0.0899             1       -0.724 </span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; 4             0        0.0759             1       -0.632 </span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt; 5             0        0.102              1       -0.574 </span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; 6             0        0.703              1        0.161 </span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; 7             0        0.877              1        0.168 </span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt; 8             0        0.910              1        0.141 </span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; 9             0        0.617              1       -0.0539</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(wrapped_corpus_docs<span class="op">$</span>dimension_<span class="dv">1</span>_y, wrapped_corpus_docs<span class="op">$</span>dimension_<span class="dv">2</span>_y)</a></code></pre>
 <p><img src="models_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
 <div id="random-projections" class="section level2">
 <h2 class="hasAnchor">
 <a href="#random-projections" class="anchor"></a>Random Projections</h2>
 <p>Note that we use the transformed corpus.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_rp.html">model_rp</a></span>(corpus_transformed, <span class="dt">id2word =</span> dictionary)
-<span class="co">#&gt; ⚠ Low number of topics</span>
-
-wrapped_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(rp, corpus_transformed)
-wrapped_corpus_docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_documents_topics.html">get_docs_topics</a></span>(wrapped_corpus)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(wrapped_corpus_docs<span class="op">$</span>dimension_<span class="dv">1</span>_y, wrapped_corpus_docs<span class="op">$</span>dimension_<span class="dv">2</span>_y)</code></pre></div>
+<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">rp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_rp.html">model_rp</a></span>(corpus_transformed, <span class="dt">id2word =</span> dictionary)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; ⚠ Low number of topics</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">wrapped_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(rp, corpus_transformed)</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">wrapped_corpus_docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_documents_topics.html">get_docs_topics</a></span>(wrapped_corpus)</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(wrapped_corpus_docs<span class="op">$</span>dimension_<span class="dv">1</span>_y, wrapped_corpus_docs<span class="op">$</span>dimension_<span class="dv">2</span>_y)</a></code></pre>
 <p><img src="models_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 </div>
 <div id="latent-dirichlet-allocation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#latent-dirichlet-allocation" class="anchor"></a>Latent Dirichlet Allocation</h2>
 <p>Note that we use the original, non-transformed corpus.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lda &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(corpus_mm, <span class="dt">id2word =</span> dictionary, <span class="dt">num_topics =</span> <span class="dv">2</span>)
-lda_topics &lt;-<span class="st"> </span>lda<span class="op">$</span><span class="kw">get_document_topics</span>(corpus_bow)
-wrapped_corpus_docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_documents_topics.html">get_docs_topics</a></span>(lda_topics)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(wrapped_corpus_docs<span class="op">$</span>dimension_<span class="dv">1</span>_y, wrapped_corpus_docs<span class="op">$</span>dimension_<span class="dv">2</span>_y)</code></pre></div>
+<pre class="sourceCode r" id="cb10"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">lda &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(corpus_mm, <span class="dt">id2word =</span> dictionary, <span class="dt">num_topics =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">lda_topics &lt;-<span class="st"> </span>lda<span class="op">$</span><span class="kw">get_document_topics</span>(corpus_bow)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">wrapped_corpus_docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_documents_topics.html">get_docs_topics</a></span>(lda_topics)</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(wrapped_corpus_docs<span class="op">$</span>dimension_<span class="dv">1</span>_y, wrapped_corpus_docs<span class="op">$</span>dimension_<span class="dv">2</span>_y)</a></code></pre>
 <p><img src="models_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 </div>
 <div id="hierarchical-dirichlet-process" class="section level2">
 <h2 class="hasAnchor">
 <a href="#hierarchical-dirichlet-process" class="anchor"></a>Hierarchical Dirichlet Process</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hdp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_hdp.html">model_hdp</a></span>(corpus_mm, <span class="dt">id2word =</span> dictionary)
-reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>(hdp<span class="op">$</span><span class="kw">show_topic</span>(<span class="dt">topic_id =</span> 1L, <span class="dt">topn =</span> 5L))
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [[1]][[1]]</span>
-<span class="co">#&gt; [1] "minors"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[1]][[2]]</span>
-<span class="co">#&gt; [1] 0.2829016</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [[2]][[1]]</span>
-<span class="co">#&gt; [1] "computer"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]][[2]]</span>
-<span class="co">#&gt; [1] 0.1894074</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; [[3]][[1]]</span>
-<span class="co">#&gt; [1] "survey"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]][[2]]</span>
-<span class="co">#&gt; [1] 0.1456054</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[4]]</span>
-<span class="co">#&gt; [[4]][[1]]</span>
-<span class="co">#&gt; [1] "time"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[4]][[2]]</span>
-<span class="co">#&gt; [1] 0.1027765</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[5]]</span>
-<span class="co">#&gt; [[5]][[1]]</span>
-<span class="co">#&gt; [1] "human"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[5]][[2]]</span>
-<span class="co">#&gt; [1] 0.07340041</span></code></pre></div>
+<pre class="sourceCode r" id="cb11"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">hdp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_hdp.html">model_hdp</a></span>(corpus_mm, <span class="dt">id2word =</span> dictionary)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>(hdp<span class="op">$</span><span class="kw">show_topic</span>(<span class="dt">topic_id =</span> 1L, <span class="dt">topn =</span> 5L))</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; [[1]][[1]]</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; [1] "interface"</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; [[1]][[2]]</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; [1] 0.1763441</span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt; [[2]]</span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt; [[2]][[1]]</span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; [1] "response"</span></a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt; [[2]][[2]]</span></a>
+<a class="sourceLine" id="cb11-16" data-line-number="16"><span class="co">#&gt; [1] 0.1450724</span></a>
+<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="co">#&gt; [[3]]</span></a>
+<a class="sourceLine" id="cb11-20" data-line-number="20"><span class="co">#&gt; [[3]][[1]]</span></a>
+<a class="sourceLine" id="cb11-21" data-line-number="21"><span class="co">#&gt; [1] "survey"</span></a>
+<a class="sourceLine" id="cb11-22" data-line-number="22"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-23" data-line-number="23"><span class="co">#&gt; [[3]][[2]]</span></a>
+<a class="sourceLine" id="cb11-24" data-line-number="24"><span class="co">#&gt; [1] 0.1201604</span></a>
+<a class="sourceLine" id="cb11-25" data-line-number="25"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-26" data-line-number="26"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-27" data-line-number="27"><span class="co">#&gt; [[4]]</span></a>
+<a class="sourceLine" id="cb11-28" data-line-number="28"><span class="co">#&gt; [[4]][[1]]</span></a>
+<a class="sourceLine" id="cb11-29" data-line-number="29"><span class="co">#&gt; [1] "eps"</span></a>
+<a class="sourceLine" id="cb11-30" data-line-number="30"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-31" data-line-number="31"><span class="co">#&gt; [[4]][[2]]</span></a>
+<a class="sourceLine" id="cb11-32" data-line-number="32"><span class="co">#&gt; [1] 0.1161934</span></a>
+<a class="sourceLine" id="cb11-33" data-line-number="33"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-34" data-line-number="34"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-35" data-line-number="35"><span class="co">#&gt; [[5]]</span></a>
+<a class="sourceLine" id="cb11-36" data-line-number="36"><span class="co">#&gt; [[5]][[1]]</span></a>
+<a class="sourceLine" id="cb11-37" data-line-number="37"><span class="co">#&gt; [1] "human"</span></a>
+<a class="sourceLine" id="cb11-38" data-line-number="38"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-39" data-line-number="39"><span class="co">#&gt; [[5]][[2]]</span></a>
+<a class="sourceLine" id="cb11-40" data-line-number="40"><span class="co">#&gt; [1] 0.1161255</span></a></code></pre>
 </div>
 <div id="author-topic-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#author-topic-model" class="anchor"></a>Author-topic model</h2>
 <p>First we build the model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># authors of corpus</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"authors"</span>, <span class="dt">package =</span> <span class="st">"gensimr"</span>)
-
-auth2doc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/auth2doc.html">auth2doc</a></span>(authors, name, document)
-
-<span class="co"># create temp to hold serialized data</span>
-temp &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>(<span class="st">"serialized"</span>)
-
-<span class="co"># build model</span>
-atmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_at.html">model_at</a></span>(
-  corpus_mm, 
-  <span class="dt">id2word =</span> dictionary, 
-  <span class="dt">author2doc =</span> auth2doc, 
-  <span class="dt">num_topics =</span> 2L, 
-  <span class="dt">serialized =</span> <span class="ot">TRUE</span>,
-  <span class="dt">serialization_path =</span> temp
-)
-
-<span class="co"># delete temp</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlink">unlink</a></span>(temp, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre class="sourceCode r" id="cb12"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># authors of corpus</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"authors"</span>, <span class="dt">package =</span> <span class="st">"gensimr"</span>)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">auth2doc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/auth2doc.html">auth2doc</a></span>(authors, name, document)</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co"># create temp to hold serialized data</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">temp &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>(<span class="st">"serialized"</span>)</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co"># build model</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10">atmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_at.html">model_at</a></span>(</a>
+<a class="sourceLine" id="cb12-11" data-line-number="11">  corpus_mm, </a>
+<a class="sourceLine" id="cb12-12" data-line-number="12">  <span class="dt">id2word =</span> dictionary, </a>
+<a class="sourceLine" id="cb12-13" data-line-number="13">  <span class="dt">author2doc =</span> auth2doc, </a>
+<a class="sourceLine" id="cb12-14" data-line-number="14">  <span class="dt">num_topics =</span> 2L, </a>
+<a class="sourceLine" id="cb12-15" data-line-number="15">  <span class="dt">serialized =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb12-16" data-line-number="16">  <span class="dt">serialization_path =</span> temp</a>
+<a class="sourceLine" id="cb12-17" data-line-number="17">)</a>
+<a class="sourceLine" id="cb12-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co"># delete temp</span></a>
+<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlink">unlink</a></span>(temp, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)</a></code></pre>
 <p>Then extract the topics for each author.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">atmodel<span class="op">$</span><span class="kw"><a href="../reference/get_author_topics.html">get_author_topics</a></span>(<span class="st">"jack"</span>) <span class="co"># native for single author </span>
-<span class="co">#&gt; [(0, 0.3482338369136195), (1, 0.6517661630863806)]</span>
-
-<span class="co"># apply to all authors</span>
-<span class="kw"><a href="../reference/get_author_topics.html">get_author_topics</a></span>(atmodel)
-<span class="co">#&gt; # A tibble: 3 x 5</span>
-<span class="co">#&gt;   authors dimension_1_x dimension_1_y dimension_2_x dimension_2_y</span>
-<span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 jack                0         0.348             1         0.652</span>
-<span class="co">#&gt; 2 jane                0         0.328             1         0.672</span>
-<span class="co">#&gt; 3 john                0         0.176             1         0.824</span></code></pre></div>
-</div>
-<div id="external-data-models" class="section level2">
-<h2 class="hasAnchor">
-<a href="#external-data-models" class="anchor"></a>External Data &amp; Models</h2>
-<p>You can download external datasets to easily build models. External dataset can be found on <a href="https://github.com/RaRe-Technologies/gensim-data">RaRe-Technologies/gensim-data</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dataset &lt;-<span class="st"> "glove-twitter-25"</span>
-
-<span class="co"># model description</span>
-<span class="kw"><a href="../reference/downloader.html">downloader_info</a></span>(dataset) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>.[[<span class="st">"description"</span>]]
-<span class="co">#&gt; [1] "Pre-trained vectors based on 2B tweets, 27B tokens, 1.2M vocab, uncased (https://nlp.stanford.edu/projects/glove/)."</span>
-
-<span class="co"># download the model</span>
-model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/downloader.html">downloader_load</a></span>(dataset)
-
-<span class="co"># find words most similar to "cat"</span>
-model<span class="op">$</span><span class="kw">most_similar</span>(<span class="st">"cat"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>()
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [[1]][[1]]</span>
-<span class="co">#&gt; [1] "dog"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[1]][[2]]</span>
-<span class="co">#&gt; [1] 0.9590821</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [[2]][[1]]</span>
-<span class="co">#&gt; [1] "monkey"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]][[2]]</span>
-<span class="co">#&gt; [1] 0.9203579</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; [[3]][[1]]</span>
-<span class="co">#&gt; [1] "bear"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]][[2]]</span>
-<span class="co">#&gt; [1] 0.9143137</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[4]]</span>
-<span class="co">#&gt; [[4]][[1]]</span>
-<span class="co">#&gt; [1] "pet"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[4]][[2]]</span>
-<span class="co">#&gt; [1] 0.9108031</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[5]]</span>
-<span class="co">#&gt; [[5]][[1]]</span>
-<span class="co">#&gt; [1] "girl"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[5]][[2]]</span>
-<span class="co">#&gt; [1] 0.888063</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[6]]</span>
-<span class="co">#&gt; [[6]][[1]]</span>
-<span class="co">#&gt; [1] "horse"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[6]][[2]]</span>
-<span class="co">#&gt; [1] 0.8872728</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[7]]</span>
-<span class="co">#&gt; [[7]][[1]]</span>
-<span class="co">#&gt; [1] "kitty"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[7]][[2]]</span>
-<span class="co">#&gt; [1] 0.8870541</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[8]]</span>
-<span class="co">#&gt; [[8]][[1]]</span>
-<span class="co">#&gt; [1] "puppy"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[8]][[2]]</span>
-<span class="co">#&gt; [1] 0.8867698</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[9]]</span>
-<span class="co">#&gt; [[9]][[1]]</span>
-<span class="co">#&gt; [1] "hot"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[9]][[2]]</span>
-<span class="co">#&gt; [1] 0.8865256</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[10]]</span>
-<span class="co">#&gt; [[10]][[1]]</span>
-<span class="co">#&gt; [1] "lady"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[10]][[2]]</span>
-<span class="co">#&gt; [1] 0.8845519</span></code></pre></div>
+<pre class="sourceCode r" id="cb13"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">atmodel<span class="op">$</span><span class="kw"><a href="../reference/get_author_topics.html">get_author_topics</a></span>(<span class="st">"jack"</span>) <span class="co"># native for single author </span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; [(0, 0.43699444931324305), (1, 0.5630055506867571)]</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co"># apply to all authors</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="kw"><a href="../reference/get_author_topics.html">get_author_topics</a></span>(atmodel)</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; # A tibble: 3 x 5</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt;   authors dimension_1_x dimension_1_y dimension_2_x dimension_2_y</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; 1 jack                0         0.437             1         0.563</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt; 2 jane                0         0.541             1         0.459</span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; 3 john                0         0.175             1         0.825</span></a></code></pre>
 </div>
 <div id="log-entropy" class="section level2">
 <h2 class="hasAnchor">
 <a href="#log-entropy" class="anchor"></a>Log Entropy</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">log_entropy &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_logentropy.html">model_logentropy</a></span>(corpus_bow)
-<span class="kw"><a href="../reference/wrap.html">wrap</a></span>(log_entropy, corpus_bow)
-<span class="co">#&gt; &lt;gensim.interfaces.TransformedCorpus&gt;</span></code></pre></div>
+<pre class="sourceCode r" id="cb14"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">log_entropy &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_logentropy.html">model_logentropy</a></span>(corpus_bow)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(log_entropy, corpus_bow)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; &lt;gensim.interfaces.TransformedCorpus&gt;</span></a></code></pre>
 <p>Clean up, delete the corpus.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/mmcorpus_serialize.html">delete_mmcorpus</a></span>(corpus_mm)
-<span class="co">#&gt; ✔ Temp unlinked</span></code></pre></div>
+<pre class="sourceCode r" id="cb15"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="../reference/mmcorpus_serialize.html">delete_mmcorpus</a></span>(corpus_mm)</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co">#&gt; ✔ Temp unlinked</span></a></code></pre>
 </div>
   </div>
 
@@ -406,7 +324,6 @@ model<span class="op">$</span><span class="kw">most_similar</span>(<span class="
       <li><a href="#latent-dirichlet-allocation">Latent Dirichlet Allocation</a></li>
       <li><a href="#hierarchical-dirichlet-process">Hierarchical Dirichlet Process</a></li>
       <li><a href="#author-topic-model">Author-topic model</a></li>
-      <li><a href="#external-data-models">External Data &amp; Models</a></li>
       <li><a href="#log-entropy">Log Entropy</a></li>
       </ul>
 </div>

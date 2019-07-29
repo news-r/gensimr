@@ -47,7 +47,7 @@
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-left">
 <li>
   <a href="../LICENSE.html">
     <span class="fa fa-balance-scale"></span>
@@ -61,13 +61,16 @@
   </a>
 </li>
 <li>
-  <a href="../reference/">Reference</a>
+  <a href="../reference/">
+    <span class="fa fa-code"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/installation.html">Installation</a>
+  <a href="../articles/installation.html">Install</a>
 </li>
 <li>
-  <a href="../articles/preprocessing.html">parsing</a>
+  <a href="../articles/preprocessing.html">parse</a>
 </li>
 <li>
   <a href="../articles/models.html">models</a>
@@ -76,16 +79,22 @@
   <a href="../articles/sklearn.html">sklearn</a>
 </li>
 <li>
-  <a href="../articles/summarization.html">summarization</a>
-</li>
-<li>
-  <a href="../articles/API.html">API</a>
+  <a href="../articles/summarization.html">summarize</a>
 </li>
 <li>
   <a href="../articles/coherence.html">coherence</a>
 </li>
-        
+<li>
+  <a href="../articles/word2vec.html">Word2vec</a>
+</li>
+<li>
+  <a href="../articles/similarity.html">similarity</a>
+</li>
+<li>
+  <a href="../articles/API.html">API</a>
+</li>
       </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -108,24 +117,27 @@
     
     
 <p>Install the R package.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("remotes")</span>
-remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"news-r/gensimr"</span>)</code></pre></div>
+<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"news-r/gensimr"</span>)</a></code></pre>
 <p>The install the python dependencies:</p>
 <ul>
 <li>gensim</li>
 <li>scikit-learn</li>
 </ul>
 <p>Make sure you have a C compiler before <strong>installing the dependencies</strong>, to use the optimized word2vec routines (70x speedup compared to plain NumPy implementation).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gensimr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/gensimr/topics/dependencies">install_dependencies</a></span>()</code></pre></div>
-<p>Ideally one should use a virtual environment and pass it to <code>install_dependencies</code>, <em>only do this once</em>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># replace with path of your choice</span>
-my_env &lt;-<span class="st"> "./env"</span>
-
-<span class="co"># run this (works on unix)</span>
-args &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"-m venv"</span>, my_env)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system2">system2</a></span>(<span class="st">"python3"</span>, args) <span class="co"># create environment</span>
-reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/use_python">use_virtualenv</a></span>(my_env) <span class="co"># force reticulate to use env</span>
-gensimr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/gensimr/topics/dependencies">install_dependencies</a></span>(my_env) <span class="co"># install gensim &amp; scikit-learn in environment</span></code></pre></div>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">gensimr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/gensimr/topics/dependencies">install_dependencies</a></span>()</a></code></pre>
+<p>Ideally one should use a virtual environment and pass it to <code>install_dependencies</code>, <em>only create the environment once</em>.</p>
+<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># replace with path of your choice</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">my_env &lt;-<span class="st"> "./env"</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># run this (works on unix)</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">args &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"-m venv"</span>, my_env)</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system2">system2</a></span>(<span class="st">"python3"</span>, args) <span class="co"># create environment</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"> <span class="co"># force reticulate to use env</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">gensimr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/gensimr/topics/dependencies">install_dependencies</a></span>(my_env) <span class="co"># install gensim &amp; scikit-learn in environment</span></a></code></pre>
+<p>In future sessions, simply specify the environment before calling gensimr.</p>
+<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">my_env &lt;-<span class="st"> "./env"</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/use_python">use_virtualenv</a></span>(my_env)</a></code></pre>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

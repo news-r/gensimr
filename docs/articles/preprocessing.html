@@ -47,7 +47,7 @@
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-left">
 <li>
   <a href="../LICENSE.html">
     <span class="fa fa-balance-scale"></span>
@@ -61,13 +61,16 @@
   </a>
 </li>
 <li>
-  <a href="../reference/">Reference</a>
+  <a href="../reference/">
+    <span class="fa fa-code"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/installation.html">Installation</a>
+  <a href="../articles/installation.html">Install</a>
 </li>
 <li>
-  <a href="../articles/preprocessing.html">parsing</a>
+  <a href="../articles/preprocessing.html">parse</a>
 </li>
 <li>
   <a href="../articles/models.html">models</a>
@@ -76,10 +79,22 @@
   <a href="../articles/sklearn.html">sklearn</a>
 </li>
 <li>
-  <a href="../articles/summarization.html">summarization</a>
+  <a href="../articles/summarization.html">summarize</a>
 </li>
-        
+<li>
+  <a href="../articles/coherence.html">coherence</a>
+</li>
+<li>
+  <a href="../articles/word2vec.html">Word2vec</a>
+</li>
+<li>
+  <a href="../articles/similarity.html">similarity</a>
+</li>
+<li>
+  <a href="../articles/API.html">API</a>
+</li>
       </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -102,62 +117,62 @@
     
     
 <p>First we preprocess the corpus using example data, a tiny corpus of 9 documents. Reproducing the tutorial on <a href="https://radimrehurek.com/gensim/tut1.html">corpora and vector spaces</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>) <span class="co"># rerproducability</span>
-
-<span class="co"># sample data</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(corpus, <span class="dt">package =</span> <span class="st">"gensimr"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(corpus)
-<span class="co">#&gt; [1] "Human machine interface for lab abc computer applications"    </span>
-<span class="co">#&gt; [2] "A survey of user opinion of computer system response time"    </span>
-<span class="co">#&gt; [3] "The EPS user interface management system"                     </span>
-<span class="co">#&gt; [4] "System and human system engineering testing of EPS"           </span>
-<span class="co">#&gt; [5] "Relation of user perceived response time to error measurement"</span>
-<span class="co">#&gt; [6] "The generation of random binary unordered trees"              </span>
-<span class="co">#&gt; [7] "The intersection graph of paths in trees"                     </span>
-<span class="co">#&gt; [8] "Graph minors IV Widths of trees and well quasi ordering"      </span>
-<span class="co">#&gt; [9] "Graph minors A survey"</span>
-
-<span class="co"># preprocess corpus</span>
-docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepare_documents.html">prepare_documents</a></span>(corpus)
-<span class="co">#&gt; → Preprocessing 9 documents</span>
-<span class="co">#&gt; ← 9 documents after perprocessing</span></code></pre></div>
+<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>) <span class="co"># rerproducability</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># sample data</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(corpus, <span class="dt">package =</span> <span class="st">"gensimr"</span>)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(corpus)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; [1] "Human machine interface for lab abc computer applications"    </span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; [2] "A survey of user opinion of computer system response time"    </span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; [3] "The EPS user interface management system"                     </span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; [4] "System and human system engineering testing of EPS"           </span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; [5] "Relation of user perceived response time to error measurement"</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt; [6] "The generation of random binary unordered trees"              </span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt; [7] "The intersection graph of paths in trees"                     </span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; [8] "Graph minors IV Widths of trees and well quasi ordering"      </span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; [9] "Graph minors A survey"</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co"># preprocess corpus</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepare_documents.html">prepare_documents</a></span>(corpus)</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; → Preprocessing 9 documents</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; ← 9 documents after perprocessing</span></a></code></pre>
 <p>This produces the same output as the built-in prepared documents.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/utils.html">common_texts</a></span>()
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "human"     "interface" "computer" </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [1] "survey"   "user"     "computer" "system"   "response" "time"    </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; [1] "eps"       "user"      "interface" "system"   </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[4]]</span>
-<span class="co">#&gt; [1] "system" "human"  "system" "eps"   </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[5]]</span>
-<span class="co">#&gt; [1] "user"     "response" "time"    </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[6]]</span>
-<span class="co">#&gt; [1] "trees"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[7]]</span>
-<span class="co">#&gt; [1] "graph" "trees"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[8]]</span>
-<span class="co">#&gt; [1] "graph"  "minors" "trees" </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[9]]</span>
-<span class="co">#&gt; [1] "graph"  "minors" "survey"</span></code></pre></div>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/utils.html">common_texts</a></span>()</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; [1] "human"     "interface" "computer" </span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; [[2]]</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; [1] "survey"   "user"     "computer" "system"   "response" "time"    </span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; [[3]]</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; [1] "eps"       "user"      "interface" "system"   </span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; [[4]]</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; [1] "system" "human"  "system" "eps"   </span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; [[5]]</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; [1] "user"     "response" "time"    </span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; [[6]]</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; [1] "trees"</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; [[7]]</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt; [1] "graph" "trees"</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; [[8]]</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt; [1] "graph"  "minors" "trees" </span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; [[9]]</span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt; [1] "graph"  "minors" "survey"</span></a></code></pre>
 <div id="preprocess" class="section level2">
 <h2 class="hasAnchor">
 <a href="#preprocess" class="anchor"></a>Preprocess</h2>
 <p>The following are methods that work on lists, character vectors and data.frames.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preprocessed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/preprocess.html">preprocess</a></span>(corpus)
-preprocessed[[<span class="dv">1</span>]]
-<span class="co">#&gt; [1] "human"    "machin"   "interfac" "lab"      "abc"      "applic"</span></code></pre></div>
+<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">preprocessed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/preprocess.html">preprocess</a></span>(corpus)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">preprocessed[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; [1] "human"    "machin"   "interfac" "lab"      "abc"      "applic"</span></a></code></pre>
 <p>By default, the function <code>preprocess</code> applies the following:</p>
 <ul>
 <li><code>strip_tags</code></li>
@@ -168,82 +183,82 @@ preprocessed[[<span class="dv">1</span>]]
 <li><code>strip_short</code></li>
 <li><code>stem_text</code></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preprocessed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/preprocess.html">preprocess</a></span>(corpus, <span class="dt">filters =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"strip_tags"</span>, <span class="st">"strip_punctuation"</span>, <span class="st">"strip_multiple_spaces"</span>, <span class="st">"strip_numeric"</span>,
-    <span class="st">"remove_stopwords"</span>))
-preprocessed[[<span class="dv">1</span>]]
-<span class="co">#&gt; [1] "Human"        "machine"      "interface"    "lab"         </span>
-<span class="co">#&gt; [5] "abc"          "applications"</span></code></pre></div>
+<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">preprocessed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/preprocess.html">preprocess</a></span>(corpus, <span class="dt">filters =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"strip_tags"</span>, <span class="st">"strip_punctuation"</span>, <span class="st">"strip_multiple_spaces"</span>, <span class="st">"strip_numeric"</span>,</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">    <span class="st">"remove_stopwords"</span>))</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">preprocessed[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; [1] "Human"        "machine"      "interface"    "lab"         </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; [5] "abc"          "applications"</span></a></code></pre>
 </div>
 <div id="remove-stopwords" class="section level2">
 <h2 class="hasAnchor">
 <a href="#remove-stopwords" class="anchor"></a>Remove Stopwords</h2>
 <p>Remove stopwords.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/remove_stopwords.html">remove_stopwords</a></span>(corpus[[<span class="dv">1</span>]])
-<span class="co">#&gt; [1] "Human machine interface lab abc applications"</span></code></pre></div>
+<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/remove_stopwords.html">remove_stopwords</a></span>(corpus[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; [1] "Human machine interface lab abc applications"</span></a></code></pre>
 </div>
 <div id="strip-short" class="section level2">
 <h2 class="hasAnchor">
 <a href="#strip-short" class="anchor"></a>Strip Short</h2>
 <p>Remove short words.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/remove_stopwords.html">remove_stopwords</a></span>(corpus[[<span class="dv">2</span>]], <span class="dt">min_len =</span> <span class="dv">3</span>)
-<span class="co">#&gt; [1] "A survey user opinion response time"</span></code></pre></div>
+<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/remove_stopwords.html">remove_stopwords</a></span>(corpus[[<span class="dv">2</span>]], <span class="dt">min_len =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; [1] "A survey user opinion response time"</span></a></code></pre>
 </div>
 <div id="split-alphanumerics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#split-alphanumerics" class="anchor"></a>Split Alphanumerics</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/split_alphanum.html">split_alphanum</a></span>(<span class="st">"24.0hours7 days365 a1b2c3"</span>)
-<span class="co">#&gt; [1] "24.0 hours 7 days 365 a 1 b 2 c 3"</span></code></pre></div>
+<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/split_alphanum.html">split_alphanum</a></span>(<span class="st">"24.0hours7 days365 a1b2c3"</span>)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; [1] "24.0 hours 7 days 365 a 1 b 2 c 3"</span></a></code></pre>
 </div>
 <div id="strip-punctuation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#strip-punctuation" class="anchor"></a>Strip Punctuation</h2>
 <p>Replaces punctuation with space.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/strip_punctuation.html">strip_punctuation</a></span>(<span class="st">"A semicolon is a stronger break than a comma, but not as much as a full stop!"</span>)
-<span class="co">#&gt; [1] "A semicolon is a stronger break than a comma  but not as much as a full stop "</span></code></pre></div>
+<pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/strip_punctuation.html">strip_punctuation</a></span>(<span class="st">"A semicolon is a stronger break than a comma, but not as much as a full stop!"</span>)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; [1] "A semicolon is a stronger break than a comma  but not as much as a full stop "</span></a></code></pre>
 </div>
 <div id="strip-tags" class="section level2">
 <h2 class="hasAnchor">
 <a href="#strip-tags" class="anchor"></a>Strip Tags</h2>
 <p>Removes tags.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/strip_tags.html">strip_tags</a></span>(<span class="st">"&lt;i&gt;Hello&lt;/i&gt; &lt;b&gt;World&lt;/b&gt;!"</span>)
-<span class="co">#&gt; [1] "Hello World!"</span></code></pre></div>
+<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/strip_tags.html">strip_tags</a></span>(<span class="st">"&lt;i&gt;Hello&lt;/i&gt; &lt;b&gt;World&lt;/b&gt;!"</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; [1] "Hello World!"</span></a></code></pre>
 </div>
 <div id="strip-numerics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#strip-numerics" class="anchor"></a>Strip Numerics</h2>
 <p>Removes digits.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/strip_numeric.html">strip_numeric</a></span>(<span class="st">"0text24gensim365test"</span>)
-<span class="co">#&gt; [1] "textgensimtest"</span></code></pre></div>
+<pre class="sourceCode r" id="cb10"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/strip_numeric.html">strip_numeric</a></span>(<span class="st">"0text24gensim365test"</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; [1] "textgensimtest"</span></a></code></pre>
 </div>
 <div id="strip-non-alphabetics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#strip-non-alphabetics" class="anchor"></a>Strip Non-alphabetics</h2>
 <p>Removes non-alphabetic characters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/strip_non_alphanum.html">strip_non_alphanum</a></span>(<span class="st">"if-you#can%read$this&amp;then@this#method^works"</span>)
-<span class="co">#&gt; [1] "if you can read this then this method works"</span></code></pre></div>
+<pre class="sourceCode r" id="cb11"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/strip_non_alphanum.html">strip_non_alphanum</a></span>(<span class="st">"if-you#can%read$this&amp;then@this#method^works"</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; [1] "if you can read this then this method works"</span></a></code></pre>
 </div>
 <div id="strip-multiple-spaces" class="section level2">
 <h2 class="hasAnchor">
 <a href="#strip-multiple-spaces" class="anchor"></a>Strip Multiple Spaces</h2>
 <p>Remove repeating whitespace characters (spaces, tabs, line breaks) from s and turns tabs &amp; line breaks into spaces.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/strip_multiple_spaces.html">strip_multiple_spaces</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"salut"</span>, <span class="st">'</span><span class="ch">\r</span><span class="st">'</span>, <span class="st">" les"</span>, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">"         loulous!"</span>))
-<span class="co">#&gt; [1] "salut les loulous!"</span></code></pre></div>
+<pre class="sourceCode r" id="cb12"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/strip_multiple_spaces.html">strip_multiple_spaces</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"salut"</span>, <span class="st">'</span><span class="ch">\r</span><span class="st">'</span>, <span class="st">" les"</span>, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">"         loulous!"</span>))</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; [1] "salut les loulous!"</span></a></code></pre>
 </div>
 <div id="stem" class="section level2">
 <h2 class="hasAnchor">
 <a href="#stem" class="anchor"></a>Stem</h2>
 <p>Transform to lowercase and stem.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/stem_text.html">stem_text</a></span>(<span class="st">"It is useful to be able to search a large collection of documents almost instantly."</span>)
-<span class="co">#&gt; [1] "it is us to be abl to search a larg collect of document almost instantly."</span></code></pre></div>
+<pre class="sourceCode r" id="cb13"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/stem_text.html">stem_text</a></span>(<span class="st">"It is useful to be able to search a large collection of documents almost instantly."</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; [1] "it is us to be abl to search a larg collect of document almost instantly."</span></a></code></pre>
 </div>
 <div id="porter-stemmer" class="section level2">
 <h2 class="hasAnchor">
 <a href="#porter-stemmer" class="anchor"></a>Porter Stemmer</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stemmer &lt;-<span class="st"> </span><span class="kw"><a href="../reference/porter_stemmer.html">porter_stemmer</a></span>()
-stemmer<span class="op">$</span><span class="kw">stem_sentence</span>(<span class="st">"Cats and ponies have meeting"</span>)
-<span class="co">#&gt; cat and poni have meet</span>
-stemmer<span class="op">$</span><span class="kw">stem_documents</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Cats and ponies"</span>, <span class="st">"have meeting"</span>))
-<span class="co">#&gt; ['cat and poni', 'have meet']</span></code></pre></div>
+<pre class="sourceCode r" id="cb14"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">stemmer &lt;-<span class="st"> </span><span class="kw"><a href="../reference/porter_stemmer.html">porter_stemmer</a></span>()</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">stemmer<span class="op">$</span><span class="kw">stem_sentence</span>(<span class="st">"Cats and ponies have meeting"</span>)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; cat and poni have meet</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">stemmer<span class="op">$</span><span class="kw">stem_documents</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Cats and ponies"</span>, <span class="st">"have meeting"</span>))</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; ['cat and poni', 'have meet']</span></a></code></pre>
 </div>
   </div>
 

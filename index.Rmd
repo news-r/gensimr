@@ -9,6 +9,7 @@ knitr::opts_chunk$set(
 )
 
 library(htmltools)
+reticulate::use_virtualenv("./env")
 ```
 
 ```{r, echo=FALSE}
@@ -41,9 +42,9 @@ div(
         "Installation"
       ),
       tags$a(
-        tags$i(class = "fa fa-paint-brush"),
+        tags$i(class = "fa fa-github"),
         class = "btn btn-default",
-        href = "https://github.com/news-r/gensim",
+        href = "https://github.com/news-r/gensimr",
         style = "margin-bottom: 5px;",
         "Github"
       )
@@ -62,7 +63,7 @@ lsi <- model_lsi(common_corpus(), id2word = common_dictionary())
 topics <- lsi$print_topics() # get topics
 ```
 
-Objects returned by the package are not automatically converted to R data structures, please use `reticulate::py_to_r`, as shown below.
+Objects returned by the package are not automatically converted to R data structures, please use `reticulate::py_to_r` as shown below.
 
 ```{r}
 reticulate::py_to_r(topics) # convert to R format

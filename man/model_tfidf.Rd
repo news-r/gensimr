@@ -5,7 +5,6 @@
 \alias{model_tfidf.mm_file}
 \alias{model_tfidf.mm}
 \alias{model_tfidf.python.builtin.list}
-\alias{model_tfidf.list}
 \title{Tf-idf Model}
 \usage{
 model_tfidf(mm, normalize = FALSE, smart = "nfc", pivot = NULL,
@@ -19,9 +18,6 @@ model_tfidf(mm, normalize = FALSE, smart = "nfc", pivot = NULL,
 
 \method{model_tfidf}{python.builtin.list}(mm, normalize = FALSE,
   smart = "nfc", pivot = NULL, slope = 0.25, ...)
-
-\method{model_tfidf}{list}(mm, normalize = FALSE, smart = "nfc",
-  pivot = NULL, slope = 0.25, ...)
 }
 \arguments{
 \item{mm}{A matrix market as returned by \code{\link{mmcorpus_serialize}}.}

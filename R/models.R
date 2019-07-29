@@ -91,11 +91,6 @@ model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, s
 #' @export
 model_tfidf.python.builtin.list <- model_tfidf.mm
 
-#' @rdname model_tfidf
-#' @method model_tfidf list
-#' @export
-model_tfidf.list <- model_tfidf.mm
-
 #' Latent Semantic Indexing Model
 #' 
 #' Transform into a latent n dimensional space via Latent Semantic Indexing.
@@ -226,11 +221,6 @@ model_lda.mm <- function(corpus, ...){
 model_lda.python.builtin.list <- model_lda.mm
 
 #' @rdname model_lda
-#' @method model_lda list
-#' @export
-model_lda.list <- model_lda.mm
-
-#' @rdname model_lda
 #' @export
 model_ldamc <- function(corpus, ...) UseMethod("model_ldamc")
 
@@ -262,11 +252,6 @@ model_ldamc.mm <- function(corpus,...){
 #' @method model_ldamc python.builtin.list
 #' @export
 model_ldamc.python.builtin.list <- model_ldamc.mm
-
-#' @rdname model_lda
-#' @method model_ldamc list
-#' @export
-model_ldamc.list <- model_ldamc.mm
 
 #' Log Entropy Model
 #' 
@@ -349,11 +334,6 @@ model_hdp.mm <- function(corpus, id2word, ...){
 #' @method model_hdp python.builtin.list
 #' @export
 model_hdp.python.builtin.list <- model_hdp.mm
-
-#' @rdname model_hdp
-#' @method model_hdp list
-#' @export
-model_hdp.list <- model_hdp.mm
 
 #' Word2Vec Model
 #' 
@@ -452,11 +432,6 @@ model_at.mm <- function(corpus,...){
   model <- gensim$models$AuthorTopicModel(corpus, ...)
   invisible(model)
 }
-
-#' @rdname model_at
-#' @method model_at list
-#' @export
-model_at.list <- model_at.mm
 
 #' Get Author topics
 #' 
