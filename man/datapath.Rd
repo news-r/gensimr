@@ -9,6 +9,9 @@ datapath(file)
 \arguments{
 \item{file}{File name.}
 }
+\value{
+Full path to file.
+}
 \description{
 Rerturns full path to test files.
 }

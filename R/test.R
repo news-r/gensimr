@@ -48,8 +48,11 @@ common_dictionary <- function(to_r = TRUE) {
 #' 
 #' @param file File name.
 #' 
+#' @return Full path to file.
+#' 
 #' @export
 datapath <- function(file){
   assert_that(!missing(file), msg = "Missing `file`")
-  gensim$test$utils$datapath(file)
+  gensim$test$utils$datapath(file) %>% 
+    reticulate::py_to_r()
 }

@@ -35,18 +35,18 @@ div(
     br(),
     p(
       tags$a(
-        tags$i(class = "fa fa-rocket"),
+        tags$i(class = "fa fa-level-down-alt"),
         class = "btn btn-primary",
         href = "articles/installation.html",
         style = "margin-bottom: 5px;",
         "Installation"
       ),
       tags$a(
-        tags$i(class = "fa fa-github"),
+        tags$i(class = "fa fa-terminal"),
         class = "btn btn-default",
-        href = "https://github.com/news-r/gensimr",
+        href = "reference",
         style = "margin-bottom: 5px;",
-        "Github"
+        "Reference"
       )
     )
   )
@@ -55,16 +55,29 @@ div(
 
 ## Example
 
+Below we build a _very basic_ Latent Dirichlet Allocation model aiming for 2 latent dimensions using example data.
+
 ```{r}
 library(gensimr)
 
+# example data
+corpus <- common_corpus(to_r = FALSE)
+dict <- common_dictionary(to_r = FALSE)
+
 # latent similarity index
-lsi <- model_lsi(common_corpus(), id2word = common_dictionary())
-topics <- lsi$print_topics() # get topics
+lda <- model_lda(corpus, id2word = dict, num_topics = 2L)
+topics <- lda$print_topics() # get topics
 ```
 
 Objects returned by the package are not automatically converted to R data structures, please use `reticulate::py_to_r` as shown below.
 
 ```{r}
 reticulate::py_to_r(topics) # convert to R format
+```
+
+We can then use our model to transform our corpus and then the document topic matrix.
+
+```{r}
+corpus_wrapped <- wrap(lda, corpus)
+get_docs_topics(corpus_wrapped)
 ```

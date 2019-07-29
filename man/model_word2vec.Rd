@@ -12,6 +12,3 @@ model_word2vec(...)
 \description{
 The word2vec algorithms include skip-gram and CBOW models, using either hierarchical softmax or negative sampling.
 }
-\details{
-This is a non-parametric bayesian method: notice the lack of \code{num_topics} argument.
-}

@@ -96,7 +96,6 @@ model_tfidf.python.builtin.list <- model_tfidf.mm
 #' Transform into a latent n dimensional space via Latent Semantic Indexing.
 #' 
 #' @param corpus Model as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.
-#' @param num_topics Number of requested factors (latent dimensions).
 #' @param distributed If \code{TRUE} - distributed mode (parallel execution on several machines) will be used.
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/lsimodel.html}{official documentation}.
 #' 
@@ -105,30 +104,22 @@ model_tfidf.python.builtin.list <- model_tfidf.mm
 #' @name model_lsi
 #' 
 #' @export
-model_lsi <- function(corpus, num_topics = 2L, distributed = FALSE, ...) UseMethod("model_lsi")
+model_lsi <- function(corpus, distributed = FALSE, ...) UseMethod("model_lsi")
 
 #' @rdname model_lsi
 #' @method model_lsi wrapped
 #' @export
-model_lsi.wrapped <- function(corpus, num_topics = 2L, distributed = FALSE, ...){
+model_lsi.wrapped <- function(corpus, distributed = FALSE, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
-  num_topics <- as.integer(num_topics) # enforce integer
-
-  if(num_topics < 200)
-    cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
-  gensim$models$LsiModel(corpus, num_topics = num_topics, distributed = distributed, ...)
+  gensim$models$LsiModel(corpus, distributed = distributed, ...)
 }
 
 #' @rdname model_lsi
 #' @method model_lsi list
 #' @export
-model_lsi.list <- function(corpus, num_topics = 2L, distributed = FALSE, ...){
+model_lsi.list <- function(corpus, distributed = FALSE, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
-  num_topics <- as.integer(num_topics) # enforce integer
-
-  if(num_topics < 200)
-    cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
-  gensim$models$LsiModel(corpus, num_topics = num_topics, distributed = distributed, ...)
+  gensim$models$LsiModel(corpus, distributed = distributed, ...)
 }
 
 #' @rdname model_lsi
@@ -142,7 +133,6 @@ model_lsi.python.builtin.list <- model_lsi.list
 #' approach to approximating TfIdf distances between documents, by throwing in a little randomness.
 #' 
 #' @param corpus Model as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.
-#' @param num_topics Number of requested factors (latent dimensions).
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/rpmodel.html}{official documentation}.
 #' 
 #' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
@@ -150,19 +140,20 @@ model_lsi.python.builtin.list <- model_lsi.list
 #' @name model_rp
 #' 
 #' @export
-model_rp <- function(corpus, num_topics = 2L, ...) UseMethod("model_rp")
+model_rp <- function(corpus, ...) UseMethod("model_rp")
 
 #' @rdname model_rp
 #' @method model_rp wrapped
 #' @export
-model_rp.wrapped <- function(corpus, num_topics = 2L, ...){
+model_rp.wrapped <- function(corpus, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
-  num_topics <- as.integer(num_topics) # enforce integer
-
-  if(num_topics < 200)
-    cat(crayon::yellow(cli::symbol$warning), "Low number of topics\n")
-  gensim$models$RpModel(corpus, num_topics = num_topics, ...)
+  gensim$models$RpModel(corpus, ...)
 }
+
+#' @rdname model_rp
+#' @method model_rp gensim.interfaces.TransformedCorpus
+#' @export
+model_rp.gensim.interfaces.TransformedCorpus <- model_rp.wrapped
 
 #' Latent Dirichlet Allocation Model
 #' 
@@ -209,9 +200,7 @@ model_lda.mm_file <- function(corpus, ...){
 #' @export
 model_lda.mm <- function(corpus, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
-  
   model <- gensim$models$LdaModel(corpus, ...)
-  
   invisible(model)
 }
 
@@ -219,6 +208,16 @@ model_lda.mm <- function(corpus, ...){
 #' @method model_lda python.builtin.list
 #' @export
 model_lda.python.builtin.list <- model_lda.mm
+
+#' @rdname model_lda
+#' @method model_lda wrapped
+#' @export
+model_lda.wrapped <- model_lda.mm
+
+#' @rdname model_lda
+#' @method model_lda gensim.interfaces.TransformedCorpus
+#' @export
+model_lda.gensim.interfaces.TransformedCorpus <- model_lda.mm
 
 #' @rdname model_lda
 #' @export
@@ -340,8 +339,6 @@ model_hdp.python.builtin.list <- model_hdp.mm
 #' The word2vec algorithms include skip-gram and CBOW models, using either hierarchical softmax or negative sampling.
 #' 
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/word2vec.html}{official documentation}.
-#' 
-#' @details This is a non-parametric bayesian method: notice the lack of \code{num_topics} argument.
 #' 
 #' @name model_word2vec
 #' 

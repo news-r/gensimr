@@ -5,6 +5,8 @@
 \alias{model_lda.mm_file}
 \alias{model_lda.mm}
 \alias{model_lda.python.builtin.list}
+\alias{model_lda.wrapped}
+\alias{model_lda.gensim.interfaces.TransformedCorpus}
 \alias{model_ldamc}
 \alias{model_ldamc.mm_file}
 \alias{model_ldamc.mm}
@@ -18,6 +20,10 @@ model_lda(corpus, ...)
 \method{model_lda}{mm}(corpus, ...)
 
 \method{model_lda}{python.builtin.list}(corpus, ...)
+
+\method{model_lda}{wrapped}(corpus, ...)
+
+\method{model_lda}{gensim.interfaces.TransformedCorpus}(corpus, ...)
 
 model_ldamc(corpus, ...)
 

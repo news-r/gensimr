@@ -4,27 +4,38 @@ template:
 navbar:
   title: "gensimr"
   left:
+    - text: "Reference"
+      href: "reference/"
+    - text: "Installation"
+      href: "articles/installation.html"
+    - text: "Parsing"
+      href: "articles/preprocessing.html"
+    - text: "Models"
+      menu:
+        - text: "Topic Modeling"
+          href: "articles/models.html"
+        - text: "Scikit-learn"
+          href: "articles/sklearn.html"
+        - text: "summarization"
+          href: "articles/summarization.html"
+        - text: "Word2vec"
+          href: "articles/word2vec.html"
+        - text: "Poincaré Embeddings"
+          href: "articles/poincare.html"
+        - text: "Document similarity"
+          href: "articles/similarity.html"
+        - text: "Topic coherence"
+          href: "articles/coherence.html"
+        - text: "API"
+          href: "articles/API.html"
+  right:
     - icon: fa-balance-scale
       href: LICENSE.html
     - icon: fa-newspaper-o
       href: news/index.html
-    - icon: fa-code
-      href: "reference/"
-    - text: "Install"
-      href: "articles/installation.html"
-    - text: "parse"
-      href: "articles/preprocessing.html"
-    - text: "models"
-      href: "articles/models.html"
-    - text: "sklearn"
-      href: "articles/sklearn.html"
-    - text: "summarize"
-      href: "articles/summarization.html"
-    - text: "coherence"
-      href: "articles/coherence.html"
-    - text: "Word2vec"
-      href: "articles/word2vec.html"
-    - text: "similarity"
-      href: "articles/similarity.html"
-    - text: "API"
-      href: "articles/API.html"
+    - icon: fa-github fa-lg
+      href: "https://github.com/news-r/gensimr"
+
+authors:
+  John Coene:
+    href: http://john-coene.com

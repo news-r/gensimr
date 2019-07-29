@@ -3,16 +3,17 @@
 \name{model_rp}
 \alias{model_rp}
 \alias{model_rp.wrapped}
+\alias{model_rp.gensim.interfaces.TransformedCorpus}
 \title{Random Projections Model}
 \usage{
-model_rp(corpus, num_topics = 2L, ...)
+model_rp(corpus, ...)
 
-\method{model_rp}{wrapped}(corpus, num_topics = 2L, ...)
+\method{model_rp}{wrapped}(corpus, ...)
+
+\method{model_rp}{gensim.interfaces.TransformedCorpus}(corpus, ...)
 }
 \arguments{
 \item{corpus}{Model as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.}
-
-\item{num_topics}{Number of requested factors (latent dimensions).}
 
 \item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/rpmodel.html}{official documentation}.}
 }
