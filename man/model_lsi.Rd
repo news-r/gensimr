@@ -5,6 +5,8 @@
 \alias{model_lsi.wrapped}
 \alias{model_lsi.list}
 \alias{model_lsi.python.builtin.list}
+\alias{model_lsi.python.builtin.tuple}
+\alias{load_lsi}
 \title{Latent Semantic Indexing Model}
 \usage{
 model_lsi(corpus, distributed = FALSE, ...)
@@ -14,6 +16,11 @@ model_lsi(corpus, distributed = FALSE, ...)
 \method{model_lsi}{list}(corpus, distributed = FALSE, ...)
 
 \method{model_lsi}{python.builtin.list}(corpus, distributed = FALSE, ...)
+
+\method{model_lsi}{python.builtin.tuple}(corpus, distributed = FALSE,
+  ...)
+
+load_lsi(file)
 }
 \arguments{
 \item{corpus}{Corpus as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.}
@@ -21,6 +28,8 @@ model_lsi(corpus, distributed = FALSE, ...)
 \item{distributed}{If \code{TRUE} - distributed mode (parallel execution on several machines) will be used.}
 
 \item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/lsimodel.html}{official documentation}.}
+
+\item{file}{Path to a saved model.}
 }
 \description{
 Transform into a latent n dimensional space via Latent Semantic Indexing.

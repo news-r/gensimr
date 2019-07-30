@@ -3,18 +3,23 @@
 \name{model_logentropy}
 \alias{model_logentropy}
 \alias{model_logentropy.python.builtin.tuple}
+\alias{load_logentropy}
 \title{Log Entropy Model}
 \usage{
 model_logentropy(corpus, normalize = FALSE)
 
 \method{model_logentropy}{python.builtin.tuple}(corpus,
   normalize = FALSE)
+
+load_logentropy(file)
 }
 \arguments{
 \item{corpus}{Model as returned by \code{\link{doc2bow}}.}
 
 \item{normalize}{If \code{TRUE}, the resulted log entropy weighted 
 vector will be normalized to length of 1, If \code{FALSE} - do nothing.}
+
+\item{file}{Path to a saved model.}
 }
 \description{
 This module allows simple Bag of Words (BoW) represented corpus 

@@ -5,6 +5,7 @@
 \alias{model_hdp.mm_file}
 \alias{model_hdp.mm}
 \alias{model_hdp.python.builtin.list}
+\alias{load_hdp}
 \title{Hierarchical Dirichlet Process Model}
 \usage{
 model_hdp(corpus, id2word, ...)
@@ -14,6 +15,8 @@ model_hdp(corpus, id2word, ...)
 \method{model_hdp}{mm}(corpus, id2word, ...)
 
 \method{model_hdp}{python.builtin.list}(corpus, id2word, ...)
+
+load_hdp(file)
 }
 \arguments{
 \item{corpus}{Model as returned by \code{\link{mmcorpus_serialize}}.}
@@ -21,6 +24,8 @@ model_hdp(corpus, id2word, ...)
 \item{id2word}{Dictionary for the input corpus, as returned by \code{\link{corpora_dictionary}}.}
 
 \item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/hdpmodel.html}{official documentation}.}
+
+\item{file}{Path to a saved model.}
 }
 \description{
 Hierarchical Dirichlet process (HDP) is a powerful mixed-membership model 

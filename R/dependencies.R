@@ -10,8 +10,10 @@
 #' @param conda Path to conda executable (or "auto" to find conda using the
 #' \code{PATH} and other conventional install locations).
 #' 
+#' @details \code{\link{install_dependencies}} is a wrapper to install all dependencies at once.
+#' 
 #' @examples
-#' \dontrun{install_gensim()}
+#' \dontrun{install_dependencies()}
 #' 
 #' @import assertthat
 #' 
@@ -20,6 +22,7 @@
 install_dependencies <- function(envname = NULL, method = "auto", conda = "auto") {
   install_gensim(envname = envname, method = method, conda = conda)
   install_sklearn(envname = envname, method = method, conda = conda)
+  install_ldavis(envname = envname, method = method, conda = conda)
 }
 
 #' @rdname dependencies
@@ -32,4 +35,10 @@ install_gensim <- function(envname = NULL, method = "auto", conda = "auto") {
 #' @export
 install_sklearn <- function(envname = NULL, method = "auto", conda = "auto") {
   reticulate::py_install("sklearn", envname = envname, method = method, conda = conda)
+}
+
+#' @rdname dependencies
+#' @export
+install_ldavis <- function(envname = NULL, method = "auto", conda = "auto") {
+  reticulate::py_install("pyLDAvis", envname = envname, method = method, conda = conda)
 }

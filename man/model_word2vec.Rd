@@ -2,12 +2,17 @@
 % Please edit documentation in R/models.R
 \name{model_word2vec}
 \alias{model_word2vec}
+\alias{load_word2vec}
 \title{Word2Vec Model}
 \usage{
 model_word2vec(...)
+
+load_word2vec(file)
 }
 \arguments{
 \item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/word2vec.html}{official documentation}.}
+
+\item{file}{Path to a saved model.}
 }
 \description{
 The word2vec algorithms include skip-gram and CBOW models, using either hierarchical softmax or negative sampling.

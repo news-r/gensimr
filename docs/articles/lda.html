@@ -1,0 +1,41 @@
+
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/bmabey/pyLDAvis/files/ldavis.v1.0.0.css">
+
+
+<div id="ldavis_el825348899559282518888206"></div>
+<script type="text/javascript">
+
+var ldavis_el825348899559282518888206_data = {"mdsDat": {"x": [0.026315391063690186, -0.026315391063690186], "y": [0.0, 0.0], "topics": [1, 2], "cluster": [1, 1], "Freq": [51.15926742553711, 48.84073257446289]}, "tinfo": {"Category": ["Default", "Default", "Default", "Default", "Default", "Default", "Default", "Default", "Default", "Default", "Topic1", "Topic1", "Topic1", "Topic1", "Topic1", "Topic1", "Topic1", "Topic1", "Topic1", "Topic1", "Topic2", "Topic2", "Topic2", "Topic2", "Topic2", "Topic2", "Topic2", "Topic2", "Topic2", "Topic2"], "Freq": [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 1.6872326135635376, 1.3898648023605347, 1.7985103130340576, 1.3488274812698364, 1.1232893466949463, 1.0995482206344604, 1.4115267992019653, 0.6236079931259155, 0.6213953495025635, 0.6628293991088867, 1.970977544784546, 1.379040002822876, 1.377274751663208, 1.373377799987793, 0.9973862171173096, 0.9784369468688965, 0.798414945602417, 1.0644944906234741, 0.7656598687171936, 0.5283061265945435], "Term": ["user", "human", "response", "time", "minors", "graph", "interface", "trees", "eps", "survey", "human", "minors", "graph", "interface", "eps", "survey", "trees", "time", "response", "user", "user", "response", "time", "trees", "survey", "eps", "interface", "graph", "minors", "human"], "Total": [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.215538740158081, 2.155524730682373, 2.863004684448242, 2.147242546081543, 2.1017262935638428, 2.0969343185424805, 2.7849044799804688, 2.000882625579834, 2.0004353523254395, 2.6338069438934326, 2.6338069438934326, 2.0004353523254395, 2.000882625579834, 2.7849044799804688, 2.0969343185424805, 2.1017262935638428, 2.147242546081543, 2.863004684448242, 2.155524730682373, 2.215538740158081], "loglift": [10.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0, 0.3977999985218048, 0.2313999980688095, 0.2053000032901764, 0.2053000032901764, 0.043699998408555984, 0.02459999918937683, -0.00930000003427267, -0.49559998512268066, -0.49889999628067017, -0.7093999981880188, 0.42669999599456787, 0.34459999203681946, 0.34310001134872437, 0.009700000286102295, -0.026499999687075615, -0.04800000041723251, -0.2727000117301941, -0.2727999985218048, -0.31839999556541443, -0.7170000076293945], "logprob": [10.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0, -1.942199945449829, -2.1361000537872314, -1.8782999515533447, -2.1659998893737793, -2.3489999771118164, -2.3703999519348145, -2.1205999851226807, -2.9375, -2.9410998821258545, -2.876499891281128, -1.740399956703186, -2.0975000858306885, -2.09879994392395, -2.101599931716919, -2.4214999675750732, -2.440700054168701, -2.6440000534057617, -2.3564000129699707, -2.6858999729156494, -3.056999921798706]}, "token.table": {"Topic": [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2], "Freq": [0.4757993519306183, 0.4757993519306183, 0.6985667943954468, 0.3492833971977234, 0.9027149677276611, 0.45135748386383057, 0.4657135605812073, 0.4657135605812073, 0.4639241695404053, 0.4639241695404053, 0.4998911917209625, 0.4998911917209625, 0.47688665986061096, 0.47688665986061096, 0.49977943301200867, 0.49977943301200867, 0.3590787351131439, 0.3590787351131439, 0.37967854738235474, 0.7593570947647095], "Term": ["eps", "eps", "graph", "graph", "human", "human", "interface", "interface", "minors", "minors", "response", "response", "survey", "survey", "time", "time", "trees", "trees", "user", "user"]}, "R": 10, "lambda.step": 0.01, "plot.opts": {"xlab": "PC1", "ylab": "PC2"}, "topic.order": [1, 2]};
+
+function LDAvis_load_lib(url, callback){
+  var s = document.createElement('script');
+  s.src = url;
+  s.async = true;
+  s.onreadystatechange = s.onload = callback;
+  s.onerror = function(){console.warn("failed to load library " + url);};
+  document.getElementsByTagName("head")[0].appendChild(s);
+}
+
+if(typeof(LDAvis) !== "undefined"){
+   // already loaded: just create the visualization
+   !function(LDAvis){
+       new LDAvis("#" + "ldavis_el825348899559282518888206", ldavis_el825348899559282518888206_data);
+   }(LDAvis);
+}else if(typeof define === "function" && define.amd){
+   // require.js is available: use it to load d3/LDAvis
+   require.config({paths: {d3: "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min"}});
+   require(["d3"], function(d3){
+      window.d3 = d3;
+      LDAvis_load_lib("https://cdn.rawgit.com/bmabey/pyLDAvis/files/ldavis.v1.0.0.js", function(){
+        new LDAvis("#" + "ldavis_el825348899559282518888206", ldavis_el825348899559282518888206_data);
+      });
+    });
+}else{
+    // require.js not available: dynamically load d3 & LDAvis
+    LDAvis_load_lib("https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js", function(){
+         LDAvis_load_lib("https://cdn.rawgit.com/bmabey/pyLDAvis/files/ldavis.v1.0.0.js", function(){
+                 new LDAvis("#" + "ldavis_el825348899559282518888206", ldavis_el825348899559282518888206_data);
+            })
+         });
+}
+</script>

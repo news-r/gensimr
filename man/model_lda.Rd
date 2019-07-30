@@ -7,10 +7,13 @@
 \alias{model_lda.python.builtin.list}
 \alias{model_lda.wrapped}
 \alias{model_lda.gensim.interfaces.TransformedCorpus}
+\alias{model_lda.python.builtin.tuple}
+\alias{load_lda}
 \alias{model_ldamc}
 \alias{model_ldamc.mm_file}
 \alias{model_ldamc.mm}
 \alias{model_ldamc.python.builtin.list}
+\alias{load_ldamc}
 \title{Latent Dirichlet Allocation Model}
 \usage{
 model_lda(corpus, ...)
@@ -25,6 +28,12 @@ model_lda(corpus, ...)
 
 \method{model_lda}{gensim.interfaces.TransformedCorpus}(corpus, ...)
 
+\method{model_lda}{python.builtin.tuple}(corpus, ...)
+
+\method{model_lda}{python.builtin.tuple}(corpus, ...)
+
+load_lda(file)
+
 model_ldamc(corpus, ...)
 
 \method{model_ldamc}{mm_file}(corpus, ...)
@@ -32,12 +41,16 @@ model_ldamc(corpus, ...)
 \method{model_ldamc}{mm}(corpus, ...)
 
 \method{model_ldamc}{python.builtin.list}(corpus, ...)
+
+load_ldamc(file)
 }
 \arguments{
 \item{corpus}{Model as returned by \code{\link{mmcorpus_serialize}}.}
 
 \item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/ldamodel.html}{official documentation of \code{model_lda}} or
 the \href{https://radimrehurek.com/gensim/models/ldamulticore.html}{official documentation of \code{model_ldamc}}.}
+
+\item{file}{Path to a saved model.}
 }
 \description{
 Transformation from bag-of-words counts into a topic space of lower dimensionality. 

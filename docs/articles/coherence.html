@@ -132,31 +132,133 @@
 
     
     
-<p>Create a model and evaluate its coherence. Below we use example datasets, see <a href="/articles/preprocessing">preprocessing vignette</a> to see how to obtain those.</p>
+<p>This is a reproduction of the official tutorial on <a href="https://github.com/RaRe-Technologies/gensim/blob/develop/docs/notebooks/topic_coherence_tutorial.ipynb">Topic coherence</a>.</p>
+<p>We will be using the <code>u_mass</code> and <code>c_v</code> coherence for two different LDA models: a “good” and a “bad” LDA model. The good LDA model will be trained over 50 iterations and the bad one for 1 iteration. Hence in theory, the good LDA model will be able come up with better or more human-understandable topics. Therefore the coherence measure output for the good LDA model should be more (better) than that for the bad LDA model. This is because, simply, the good LDA model usually comes up with better topics that are more human interpretable.</p>
+<div id="preprocess" class="section level2">
+<h2 class="hasAnchor">
+<a href="#preprocess" class="anchor"></a>Preprocess</h2>
+<p>As stated in table 2 from <a href="http://www.cs.bham.ac.uk/~pxt/IDA/lsa_ind.pdf">this paper</a>, this corpus essentially has two classes of documents. First five are about human-computer interaction and the other four are about graphs. We will be setting up two LDA models. One with 50 iterations of training and the other with just 1. Hence the one with 50 iterations (“better” model) should be able to capture this underlying pattern of the corpus better than the “bad” LDA model. Therefore, in theory, our topic coherence for the good LDA model should be greater than the one for the bad LDA model.</p>
 <pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># Example data</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">corp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/utils.html">common_corpus</a></span>(<span class="dt">to_r =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">dict &lt;-<span class="st"> </span><span class="kw"><a href="../reference/utils.html">common_dictionary</a></span>(<span class="dt">to_r =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(corp, <span class="dt">num_topics =</span> 5L, <span class="dt">id2word =</span> dict)</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">topic_coherence</a></span>(model, <span class="dt">corpus =</span> <span class="kw"><a href="../reference/utils.html">common_corpus</a></span>(), <span class="dt">coherence =</span> <span class="st">'u_mass'</span>)</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; -14.671999093922432</span></a></code></pre>
-<p>Create <strong>multiple</strong> models and evaluate their coherence.</p>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">model2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(corp, <span class="dt">num_topics =</span> 2L, <span class="dt">id2word =</span> dict, <span class="dt">passes =</span> 200L) <span class="co"># 3 topics</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">model5 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(corp, <span class="dt">num_topics =</span> 5L, <span class="dt">id2word =</span> dict, <span class="dt">passes =</span> 200L) <span class="co"># 5 topics</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">models &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(model2, model5)</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">topic_coherence</a></span>(models, <span class="kw"><a href="../reference/utils.html">common_dictionary</a></span>(), <span class="dt">corpus =</span> <span class="kw"><a href="../reference/utils.html">common_corpus</a></span>(), <span class="dt">coherence =</span> <span class="st">'u_mass'</span>)</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">cm<span class="op">$</span><span class="kw">compare_models</span>(models)</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; [(array([-15.00351381, -11.3236755 ]), -13.163594652484473), (array([-14.94532287, -15.01580063, -10.11868574, -13.77921619,</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;        -14.33222085]), -13.63824925579869)]</span></a></code></pre>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"corpus"</span>, <span class="dt">package =</span> <span class="st">"gensimr"</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">texts &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepare_documents.html">prepare_documents</a></span>(corpus)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; → Preprocessing 9 documents</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; ← 9 documents after perprocessing</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">dictionary &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpora_dictionary.html">corpora_dictionary</a></span>(texts)</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">corpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, texts)</a></code></pre>
+</div>
+<div id="set-up-two-topic-models" class="section level2">
+<h2 class="hasAnchor">
+<a href="#set-up-two-topic-models" class="anchor"></a>Set up two topic models</h2>
+<p>We’ll be setting up two different LDA Topic models. A good one and bad one. To build a “good” topic model, we’ll simply train it using more iterations than the bad one. Therefore the u_mass coherence should in theory be better for the good model than the bad one since it would be producing more “human-interpretable” topics.</p>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">good_lda_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(<span class="dt">corpus =</span> corpus, <span class="dt">id2word =</span> dictionary, <span class="dt">iterations =</span> 50L, <span class="dt">num_topics =</span> 2L)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">bad_lda_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(<span class="dt">corpus =</span> corpus, <span class="dt">id2word =</span> dictionary, <span class="dt">iterations =</span> 1L, <span class="dt">num_topics =</span> 2L)</a></code></pre>
+</div>
+<div id="interpreting-the-topics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#interpreting-the-topics" class="anchor"></a>Interpreting the topics</h2>
+<p>As we will see below using LDA visualization, the better model comes up with two topics composed of the following words:</p>
+<p><strong>good_lda_model:</strong></p>
+<ul>
+<li>Topic 1: More weightage assigned to words such as “system”, “user”, “eps”, “interface” etc which captures the first set of documents.</li>
+<li>Topic 2: More weightage assigned to words such as “graph”, “trees”, “survey” which captures the topic in the second set of documents.</li>
+</ul>
+<p><strong>bad_lda_model:</strong></p>
+<ul>
+<li>Topic 1: More weightage assigned to words such as “system”, “user”, “trees”, “graph” which doesn’t make the topic clear enough.</li>
+<li>Topic 2: More weightage assigned to words such as “system”, “trees”, “graph”, “user” which is similar to the first topic. Hence both topics are not human-interpretable.</li>
+</ul>
+<p>Therefore, the topic coherence for the <code>good\_lda\_model</code> should be greater for this than the <code>bad\_lda\_model</code> since the topics it comes up with are more human-interpretable. We will see this using <code>u_mass</code> and <code>c_v</code> topic coherence measures.</p>
+</div>
+<div id="u_mass-coherence" class="section level2">
+<h2 class="hasAnchor">
+<a href="#u_mass-coherence" class="anchor"></a>U_Mass Coherence</h2>
+<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">good_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> good_lda_model, <span class="dt">corpus =</span> corpus, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'u_mass'</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">bad_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> bad_lda_model, <span class="dt">corpus =</span> corpus, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'u_mass'</span>)</a></code></pre>
+</div>
+<div id="visualise" class="section level2">
+<h2 class="hasAnchor">
+<a href="#visualise" class="anchor"></a>Visualise</h2>
+<p>From the R console once can use the <code>plot</code> function to interactively open the visualisation.</p>
+<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">vis &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ldavis.html">prepare_ldavis</a></span>(good_lda_model, corpus, dictionary)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># plot(vis)</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="../reference/ldavis_save.html">save_ldavis_html</a></span>(vis, <span class="st">"lda.html"</span>)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">htmltools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/htmltools/topics/include">includeHTML</a></span>(<span class="st">"lda.html"</span>)</a></code></pre>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/bmabey/pyLDAvis/files/ldavis.v1.0.0.css">
+<div id="ldavis_el825348899559282518888206"></div>
+<script type="text/javascript">
+
+var ldavis_el825348899559282518888206_data = {"mdsDat": {"x": [0.026315391063690186, -0.026315391063690186], "y": [0.0, 0.0], "topics": [1, 2], "cluster": [1, 1], "Freq": [51.15926742553711, 48.84073257446289]}, "tinfo": {"Category": ["Default", "Default", "Default", "Default", "Default", "Default", "Default", "Default", "Default", "Default", "Topic1", "Topic1", "Topic1", "Topic1", "Topic1", "Topic1", "Topic1", "Topic1", "Topic1", "Topic1", "Topic2", "Topic2", "Topic2", "Topic2", "Topic2", "Topic2", "Topic2", "Topic2", "Topic2", "Topic2"], "Freq": [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 1.6872326135635376, 1.3898648023605347, 1.7985103130340576, 1.3488274812698364, 1.1232893466949463, 1.0995482206344604, 1.4115267992019653, 0.6236079931259155, 0.6213953495025635, 0.6628293991088867, 1.970977544784546, 1.379040002822876, 1.377274751663208, 1.373377799987793, 0.9973862171173096, 0.9784369468688965, 0.798414945602417, 1.0644944906234741, 0.7656598687171936, 0.5283061265945435], "Term": ["user", "human", "response", "time", "minors", "graph", "interface", "trees", "eps", "survey", "human", "minors", "graph", "interface", "eps", "survey", "trees", "time", "response", "user", "user", "response", "time", "trees", "survey", "eps", "interface", "graph", "minors", "human"], "Total": [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.215538740158081, 2.155524730682373, 2.863004684448242, 2.147242546081543, 2.1017262935638428, 2.0969343185424805, 2.7849044799804688, 2.000882625579834, 2.0004353523254395, 2.6338069438934326, 2.6338069438934326, 2.0004353523254395, 2.000882625579834, 2.7849044799804688, 2.0969343185424805, 2.1017262935638428, 2.147242546081543, 2.863004684448242, 2.155524730682373, 2.215538740158081], "loglift": [10.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0, 0.3977999985218048, 0.2313999980688095, 0.2053000032901764, 0.2053000032901764, 0.043699998408555984, 0.02459999918937683, -0.00930000003427267, -0.49559998512268066, -0.49889999628067017, -0.7093999981880188, 0.42669999599456787, 0.34459999203681946, 0.34310001134872437, 0.009700000286102295, -0.026499999687075615, -0.04800000041723251, -0.2727000117301941, -0.2727999985218048, -0.31839999556541443, -0.7170000076293945], "logprob": [10.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0, -1.942199945449829, -2.1361000537872314, -1.8782999515533447, -2.1659998893737793, -2.3489999771118164, -2.3703999519348145, -2.1205999851226807, -2.9375, -2.9410998821258545, -2.876499891281128, -1.740399956703186, -2.0975000858306885, -2.09879994392395, -2.101599931716919, -2.4214999675750732, -2.440700054168701, -2.6440000534057617, -2.3564000129699707, -2.6858999729156494, -3.056999921798706]}, "token.table": {"Topic": [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2], "Freq": [0.4757993519306183, 0.4757993519306183, 0.6985667943954468, 0.3492833971977234, 0.9027149677276611, 0.45135748386383057, 0.4657135605812073, 0.4657135605812073, 0.4639241695404053, 0.4639241695404053, 0.4998911917209625, 0.4998911917209625, 0.47688665986061096, 0.47688665986061096, 0.49977943301200867, 0.49977943301200867, 0.3590787351131439, 0.3590787351131439, 0.37967854738235474, 0.7593570947647095], "Term": ["eps", "eps", "graph", "graph", "human", "human", "interface", "interface", "minors", "minors", "response", "response", "survey", "survey", "time", "time", "trees", "trees", "user", "user"]}, "R": 10, "lambda.step": 0.01, "plot.opts": {"xlab": "PC1", "ylab": "PC2"}, "topic.order": [1, 2]};
+
+function LDAvis_load_lib(url, callback){
+  var s = document.createElement('script');
+  s.src = url;
+  s.async = true;
+  s.onreadystatechange = s.onload = callback;
+  s.onerror = function(){console.warn("failed to load library " + url);};
+  document.getElementsByTagName("head")[0].appendChild(s);
+}
+
+if(typeof(LDAvis) !== "undefined"){
+   // already loaded: just create the visualization
+   !function(LDAvis){
+       new LDAvis("#" + "ldavis_el825348899559282518888206", ldavis_el825348899559282518888206_data);
+   }(LDAvis);
+}else if(typeof define === "function" && define.amd){
+   // require.js is available: use it to load d3/LDAvis
+   require.config({paths: {d3: "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min"}});
+   require(["d3"], function(d3){
+      window.d3 = d3;
+      LDAvis_load_lib("https://cdn.rawgit.com/bmabey/pyLDAvis/files/ldavis.v1.0.0.js", function(){
+        new LDAvis("#" + "ldavis_el825348899559282518888206", ldavis_el825348899559282518888206_data);
+      });
+    });
+}else{
+    // require.js not available: dynamically load d3 & LDAvis
+    LDAvis_load_lib("https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js", function(){
+         LDAvis_load_lib("https://cdn.rawgit.com/bmabey/pyLDAvis/files/ldavis.v1.0.0.js", function(){
+                 new LDAvis("#" + "ldavis_el825348899559282518888206", ldavis_el825348899559282518888206_data);
+            })
+         });
+}
+</script><pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; -17.164480582963257</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; -17.223047765245546</span></a></code></pre>
+</div>
+<div id="using-c_v-coherence" class="section level2">
+<h2 class="hasAnchor">
+<a href="#using-c_v-coherence" class="anchor"></a>Using C_V coherence</h2>
+<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">good_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> good_lda_model, <span class="dt">texts =</span> texts, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'c_v'</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">bad_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> bad_lda_model, <span class="dt">texts =</span> texts, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'c_v'</span>)</a></code></pre>
+<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; 0.3886537599820318</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; 0.3886537599820318</span></a></code></pre>
+</div>
+<div id="conclusion" class="section level2">
+<h2 class="hasAnchor">
+<a href="#conclusion" class="anchor"></a>Conclusion</h2>
+<p>Hence as we can see, the <code>u_mass</code> and <code>c_v</code> coherence for the good LDA model is much more (better) than that for the bad LDA model. This is because, simply, the good LDA model usually comes up with better topics that are more human interpretable. The <code>bad_lda_model</code> however fails to decipher between these two topics and comes up with topics which are not clear to a human. The <code>u_mass</code> and <code>c_v</code> topic coherences capture this wonderfully by giving the interpretability of these topics a number as we can see above. Hence this coherence measure can be used to compare difference topic models based on their human-interpretability.</p>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+        <div id="tocnav">
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li><a href="#preprocess">Preprocess</a></li>
+      <li><a href="#set-up-two-topic-models">Set up two topic models</a></li>
+      <li><a href="#interpreting-the-topics">Interpreting the topics</a></li>
+      <li><a href="#u_mass-coherence">U_Mass Coherence</a></li>
+      <li><a href="#visualise">Visualise</a></li>
+      <li><a href="#using-c_v-coherence">Using C_V coherence</a></li>
+      <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+</div>
       </div>
 
 </div>

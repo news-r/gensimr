@@ -2,24 +2,22 @@
 % Please edit documentation in R/coherence.R
 \name{topics}
 \alias{topics}
-\alias{topic_coherence}
-\alias{topic_coherence.gensim.models.basemodel.BaseTopicModel}
-\alias{topic_coherence.list}
+\alias{model_coherence}
+\alias{model_coherence.gensim.models.basemodel.BaseTopicModel}
+\alias{model_coherence.list}
 \title{Topic Coherence}
 \usage{
-topic_coherence(models, ...)
+model_coherence(models, ...)
 
-\method{topic_coherence}{gensim.models.basemodel.BaseTopicModel}(models,
+\method{model_coherence}{gensim.models.basemodel.BaseTopicModel}(models,
   ...)
 
-\method{topic_coherence}{list}(models, dictionary, ...)
+\method{model_coherence}{list}(models, ...)
 }
 \arguments{
 \item{models}{A model, i.e.: LDA or LSI, or a \code{list} of the latter.}
 
 \item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/coherencemodel.html}{official documentation}.}
-
-\item{dictionary}{A dictionary as returned by \code{\link{corpora_dictionary}}.}
 }
 \description{
 Calculate topic coherence for topic models.

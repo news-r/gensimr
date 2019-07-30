@@ -25,6 +25,7 @@ The install the python dependencies:
 
 - gensim
 - scikit-learn
+- pyLDAvis
 
 Make sure you have a C compiler before __installing the dependencies__, to use the optimized word2vec routines (70x speedup compared to plain NumPy implementation).
 

@@ -5,6 +5,7 @@
 \alias{model_tfidf.mm_file}
 \alias{model_tfidf.mm}
 \alias{model_tfidf.python.builtin.list}
+\alias{load_tfidf}
 \title{Tf-idf Model}
 \usage{
 model_tfidf(mm, normalize = FALSE, smart = "nfc", pivot = NULL,
@@ -18,6 +19,8 @@ model_tfidf(mm, normalize = FALSE, smart = "nfc", pivot = NULL,
 
 \method{model_tfidf}{python.builtin.list}(mm, normalize = FALSE,
   smart = "nfc", pivot = NULL, slope = 0.25, ...)
+
+load_tfidf(file)
 }
 \arguments{
 \item{mm}{A matrix market as returned by \code{\link{mmcorpus_serialize}}.}
@@ -39,6 +42,8 @@ If pivot is \code{NULL} and you don’t follow steps 1 and 2, then pivoted docum
 document length normalization. Singhal [2] suggests setting the slope between 0.2 and 0.3 for best results.}
 
 \item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/tfidfmodel.html}{official documentation}.}
+
+\item{file}{Path to a saved model.}
 }
 \description{
 Initialise a model based on the document frequencies of all its features.

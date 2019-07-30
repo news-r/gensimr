@@ -178,18 +178,24 @@ approach to approximating TfIdf distances between documents, by throwing in a li
 <span class='fu'>model_rp</span>(<span class='no'>corpus</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for gensim.interfaces.TransformedCorpus</span>
-<span class='fu'>model_rp</span>(<span class='no'>corpus</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>model_rp</span>(<span class='no'>corpus</span>, <span class='no'>...</span>)
+
+<span class='fu'>load_rp</span>(<span class='no'>file</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>corpus</th>
-      <td><p>Model as returned by <code><a href='wrap.html'>wrap</a></code>. A tf-idf/bag-of-words transformation is recommended for LSI.</p></td>
+      <td><p>Corpus as returned by <code><a href='wrap.html'>wrap</a></code>. A tf-idf/bag-of-words transformation is recommended for LSI.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Any other options, from the <a href='https://radimrehurek.com/gensim/models/rpmodel.html'>official documentation</a>.</p></td>
+    </tr>
+    <tr>
+      <th>file</th>
+      <td><p>Path to a saved model.</p></td>
     </tr>
     </table>
     

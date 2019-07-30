@@ -4,6 +4,7 @@
 \alias{model_rp}
 \alias{model_rp.wrapped}
 \alias{model_rp.gensim.interfaces.TransformedCorpus}
+\alias{load_rp}
 \title{Random Projections Model}
 \usage{
 model_rp(corpus, ...)
@@ -11,11 +12,15 @@ model_rp(corpus, ...)
 \method{model_rp}{wrapped}(corpus, ...)
 
 \method{model_rp}{gensim.interfaces.TransformedCorpus}(corpus, ...)
+
+load_rp(file)
 }
 \arguments{
 \item{corpus}{Corpus as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.}
 
 \item{...}{Any other options, from the \href{https://radimrehurek.com/gensim/models/rpmodel.html}{official documentation}.}
+
+\item{file}{Path to a saved model.}
 }
 \description{
 Reduce vector space dimensionality. This is a very efficient (both memory- and CPU-friendly) 

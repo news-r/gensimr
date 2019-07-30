@@ -183,7 +183,9 @@
 
 <span class='co'># S3 method for python.builtin.list</span>
 <span class='fu'>model_tfidf</span>(<span class='no'>mm</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>smart</span> <span class='kw'>=</span> <span class='st'>"nfc"</span>, <span class='kw'>pivot</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>slope</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>smart</span> <span class='kw'>=</span> <span class='st'>"nfc"</span>, <span class='kw'>pivot</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>slope</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='no'>...</span>)
+
+<span class='fu'>load_tfidf</span>(<span class='no'>file</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -219,6 +221,10 @@ document length normalization. Singhal [2] suggests setting the slope between 0.
     <tr>
       <th>...</th>
       <td><p>Any other options, from the <a href='https://radimrehurek.com/gensim/models/tfidfmodel.html'>official documentation</a>.</p></td>
+    </tr>
+    <tr>
+      <th>file</th>
+      <td><p>Path to a saved model.</p></td>
     </tr>
     </table>
     

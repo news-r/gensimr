@@ -2,12 +2,17 @@
 % Please edit documentation in R/models.R
 \name{model_fasttext}
 \alias{model_fasttext}
+\alias{load_fasttext}
 \title{Fasttext Model}
 \usage{
 model_fasttext(...)
+
+load_fasttext(file)
 }
 \arguments{
 \item{...}{Any option, from the \href{https://radimrehurek.com/gensim/models/fasttext.html}{official documentation}.}
+
+\item{file}{Path to a saved model.}
 }
 \description{
 Train word embeddings from a training corpus with the additional 

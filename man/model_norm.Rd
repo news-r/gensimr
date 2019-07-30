@@ -5,6 +5,7 @@
 \alias{model_norm.wrapped}
 \alias{model_norm.list}
 \alias{model_norm.python.builtin.list}
+\alias{load_norm}
 \title{Normalization Model}
 \usage{
 model_norm(corpus, norm = c("l2", "l1"))
@@ -14,11 +15,15 @@ model_norm(corpus, norm = c("l2", "l1"))
 \method{model_norm}{list}(corpus, norm = c("l2", "l1"))
 
 \method{model_norm}{python.builtin.list}(corpus, norm = c("l2", "l1"))
+
+load_norm(file)
 }
 \arguments{
 \item{corpus}{Model as returned by \code{\link{wrap}}.}
 
 \item{norm}{Norm used to normalize, defaults to \code{l2}.}
+
+\item{file}{Path to a saved model.}
 }
 \description{
 Compute the l1 or l2 normalization by normalizing separately for each document in a corpus.

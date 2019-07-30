@@ -82,6 +82,11 @@ reference:
       - keywords
       - matches("model")
       - get_documents_topics
+      - starts_with("load")
+  - title: "Visualisation"
+    desc: "Functions to visualise model outputs, embeddding, etc."
+    contents:
+      - matches("ldavis")
   - title: "Sklearn"
     desc: "Scikit-learn API."
     contents:
@@ -95,10 +100,6 @@ reference:
     desc: "Text summarization-related functions."
     contents:
       - summarize
-  - title: "Topic Coherence"
-    desc: "Assess topic coherence."
-    contents:
-      - topic_coherence
 
 authors:
   John Coene:

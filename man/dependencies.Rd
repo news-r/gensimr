@@ -5,6 +5,7 @@
 \alias{install_dependencies}
 \alias{install_gensim}
 \alias{install_sklearn}
+\alias{install_ldavis}
 \title{Install Dependencies}
 \usage{
 install_dependencies(envname = NULL, method = "auto", conda = "auto")
@@ -12,6 +13,8 @@ install_dependencies(envname = NULL, method = "auto", conda = "auto")
 install_gensim(envname = NULL, method = "auto", conda = "auto")
 
 install_sklearn(envname = NULL, method = "auto", conda = "auto")
+
+install_ldavis(envname = NULL, method = "auto", conda = "auto")
 }
 \arguments{
 \item{envname}{Name of environment to install packages into}
@@ -27,7 +30,10 @@ Note that the "virtualenv" method is not available on Windows.}
 \description{
 Install Python dependencies. Arguments are passed to \link[reticulate]{py_install}.
 }
+\details{
+\code{\link{install_dependencies}} is a wrapper to install all dependencies at once.
+}
 \examples{
-\dontrun{install_gensim()}
+\dontrun{install_dependencies()}
 
 }

@@ -178,7 +178,9 @@ Model that produces entropy-weighted logarithmic term frequency representation.<
 
 <span class='co'># S3 method for python.builtin.tuple</span>
 <span class='fu'>model_logentropy</span>(<span class='no'>corpus</span>,
-  <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>load_logentropy</span>(<span class='no'>file</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -191,6 +193,10 @@ Model that produces entropy-weighted logarithmic term frequency representation.<
       <th>normalize</th>
       <td><p>If <code>TRUE</code>, the resulted log entropy weighted 
 vector will be normalized to length of 1, If <code>FALSE</code> - do nothing.</p></td>
+    </tr>
+    <tr>
+      <th>file</th>
+      <td><p>Path to a saved model.</p></td>
     </tr>
     </table>
     

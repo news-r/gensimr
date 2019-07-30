@@ -16,29 +16,88 @@ knitr::opts_chunk$set(
 reticulate::use_virtualenv("../env", required = TRUE)
 ```
 
-Create a model and evaluate its coherence. Below we use example datasets, see [preprocessing vignette](/articles/preprocessing) to see how to obtain those.
+This is a reproduction of the official tutorial on [Topic coherence](https://github.com/RaRe-Technologies/gensim/blob/develop/docs/notebooks/topic_coherence_tutorial.ipynb).
+
+We will be using the `u_mass` and `c_v` coherence for two different LDA models: a "good" and a "bad" LDA model. The good LDA model will be trained over 50 iterations and the bad one for 1 iteration. Hence in theory, the good LDA model will be able come up with better or more human-understandable topics. Therefore the coherence measure output for the good LDA model should be more (better) than that for the bad LDA model. This is because, simply, the good LDA model usually comes up with better topics that are more human interpretable.
+
+## Preprocess
+
+As stated in table 2 from [this paper](http://www.cs.bham.ac.uk/~pxt/IDA/lsa_ind.pdf), this corpus essentially has two classes of documents. First five are about human-computer interaction and the other four are about graphs. We will be setting up two LDA models. One with 50 iterations of training and the other with just 1. Hence the one with 50 iterations ("better" model) should be able to capture this underlying pattern of the corpus better than the "bad" LDA model. Therefore, in theory, our topic coherence for the good LDA model should be greater than the one for the bad LDA model.
 
 ```{r}
 library(gensimr)
 
-# Example data
-corp <- common_corpus(to_r = FALSE)
-dict <- common_dictionary(to_r = FALSE)
+data("corpus", package = "gensimr")
 
-model <- model_lda(corp, num_topics = 5L, id2word = dict)
-
-cm <- topic_coherence(model, corpus = common_corpus(), coherence = 'u_mass')
-cm$get_coherence()
+texts <- prepare_documents(corpus)
+dictionary <- corpora_dictionary(texts)
+corpus <- doc2bow(dictionary, texts)
 ```
 
-Create __multiple__ models and evaluate their coherence.
+## Set up two topic models
+
+We'll be setting up two different LDA Topic models. A good one and bad one. To build a "good" topic model, we'll simply train it using more iterations than the bad one. Therefore the u_mass coherence should in theory be better for the good model than the bad one since it would be producing more "human-interpretable" topics.
 
 ```{r}
-model2 <- model_lda(corp, num_topics = 2L, id2word = dict, passes = 200L) # 3 topics
-model5 <- model_lda(corp, num_topics = 5L, id2word = dict, passes = 200L) # 5 topics
-
-models <- c(model2, model5)
-
-cm <- topic_coherence(models, common_dictionary(), corpus = common_corpus(), coherence = 'u_mass')
-cm$compare_models(models)
+good_lda_model <- model_lda(corpus = corpus, id2word = dictionary, iterations = 50L, num_topics = 2L)
+bad_lda_model <- model_lda(corpus = corpus, id2word = dictionary, iterations = 1L, num_topics = 2L)
 ```
+
+## Interpreting the topics
+
+As we will see below using LDA visualization, the better model comes up with two topics composed of the following words:
+
+__good\_lda\_model:__
+
+- Topic 1: More weightage assigned to words such as "system", "user", "eps", "interface" etc which captures the first set of documents.
+- Topic 2: More weightage assigned to words such as "graph", "trees", "survey" which captures the topic in the second set of documents.
+
+__bad\_lda\_model:__
+
+- Topic 1: More weightage assigned to words such as "system", "user", "trees", "graph" which doesn't make the topic clear enough.
+- Topic 2: More weightage assigned to words such as "system", "trees", "graph", "user" which is similar to the first topic. Hence both topics are not human-interpretable.
+
+Therefore, the topic coherence for the `good\_lda\_model` should be greater for this than the `bad\_lda\_model` since the topics it comes up with are more human-interpretable. We will see this using `u_mass` and `c_v` topic coherence measures.
+
+## U_Mass Coherence
+
+```{r}
+good_cm <- model_coherence(model = good_lda_model, corpus = corpus, dictionary = dictionary, coherence = 'u_mass')
+bad_cm <- model_coherence(model = bad_lda_model, corpus = corpus, dictionary = dictionary, coherence = 'u_mass')
+```
+
+## Visualise
+
+From the R console once can use the `plot` function to interactively open the visualisation.
+
+```r
+vis <- prepare_ldavis(good_lda_model, corpus, dictionary)
+# plot(vis)
+save_ldavis_html(vis, "lda.html")
+htmltools::includeHTML("lda.html")
+```
+
+```{r, echo=FALSE}
+htmltools::includeHTML("lda.html")
+```
+
+```{r}
+good_cm$get_coherence()
+bad_cm$get_coherence()
+```
+
+## Using C_V coherence
+
+```{r}
+good_cm <- model_coherence(model = good_lda_model, texts = texts, dictionary = dictionary, coherence = 'c_v')
+bad_cm <- model_coherence(model = bad_lda_model, texts = texts, dictionary = dictionary, coherence = 'c_v')
+```
+
+```{r}
+good_cm$get_coherence()
+bad_cm$get_coherence()
+```
+
+## Conclusion
+
+Hence as we can see, the `u_mass` and `c_v` coherence for the good LDA model is much more (better) than that for the bad LDA model. This is because, simply, the good LDA model usually comes up with better topics that are more human interpretable. The `bad_lda_model` however fails to decipher between these two topics and comes up with topics which are not clear to a human. The `u_mass` and `c_v` topic coherences capture this wonderfully by giving the interpretability of these topics a number as we can see above. Hence this coherence measure can be used to compare difference topic models based on their human-interpretability.

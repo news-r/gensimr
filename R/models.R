@@ -16,6 +16,7 @@
 #' @param slope Setting the slope to 0.0 uses only the pivot as the norm, and setting the slope to 1.0 effectively disables pivoted 
 #' document length normalization. Singhal [2] suggests setting the slope between 0.2 and 0.3 for best results.
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/tfidfmodel.html}{official documentation}.
+#' @param file Path to a saved model.
 #' 
 #' @section SMART:
 #' Term frequency weighing:
@@ -53,7 +54,6 @@ model_tfidf <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slop
 #' @method model_tfidf mm_file
 #' @export
 model_tfidf.mm_file <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...){
-  assert_that(!missing(mm), msg = "Missing `mm_file`")
   corpus <- gensim$corpora$MmCorpus(mm$file)
   model <- gensim$models$TfidfModel(
     corpus, 
@@ -74,7 +74,6 @@ model_tfidf.mm_file <- function(mm, normalize = FALSE, smart = "nfc", pivot = NU
 #' @method model_tfidf mm
 #' @export
 model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...){
-  assert_that(!missing(mm), msg = "Missing `mm`")
   model <- gensim$models$TfidfModel(
     mm, 
     pivot = pivot,
@@ -91,6 +90,13 @@ model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, s
 #' @export
 model_tfidf.python.builtin.list <- model_tfidf.mm
 
+#' @rdname model_tfidf
+#' @export
+load_tfidf <- function(file){
+  assert_that(!missing(file), msg = "Missing `file`")
+  gensim$models$TfidfModel$load(file)
+}
+
 #' Latent Semantic Indexing Model
 #' 
 #' Transform into a latent n dimensional space via Latent Semantic Indexing.
@@ -98,6 +104,7 @@ model_tfidf.python.builtin.list <- model_tfidf.mm
 #' @param corpus Corpus as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.
 #' @param distributed If \code{TRUE} - distributed mode (parallel execution on several machines) will be used.
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/lsimodel.html}{official documentation}.
+#' @param file Path to a saved model.
 #' 
 #' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
 #' 
@@ -110,7 +117,6 @@ model_lsi <- function(corpus, distributed = FALSE, ...) UseMethod("model_lsi")
 #' @method model_lsi wrapped
 #' @export
 model_lsi.wrapped <- function(corpus, distributed = FALSE, ...){
-  assert_that(!missing(corpus), msg = "Missing `corpus`")
   gensim$models$LsiModel(corpus, distributed = distributed, ...)
 }
 
@@ -118,7 +124,6 @@ model_lsi.wrapped <- function(corpus, distributed = FALSE, ...){
 #' @method model_lsi list
 #' @export
 model_lsi.list <- function(corpus, distributed = FALSE, ...){
-  assert_that(!missing(corpus), msg = "Missing `corpus`")
   gensim$models$LsiModel(corpus, distributed = distributed, ...)
 }
 
@@ -127,12 +132,25 @@ model_lsi.list <- function(corpus, distributed = FALSE, ...){
 #' @export
 model_lsi.python.builtin.list <- model_lsi.list
 
+#' @rdname model_lsi
+#' @method model_lsi python.builtin.tuple
+#' @export
+model_lsi.python.builtin.tuple <- model_lsi.list
+
+#' @rdname model_lsi
+#' @export
+load_lsi <- function(file){
+  assert_that(!missing(file), msg = "Missing `file`")
+  gensim$models$LsiModel$load(file)
+}
+
 #' Normalization Model
 #' 
 #' Compute the l1 or l2 normalization by normalizing separately for each document in a corpus.
 #' 
 #' @param corpus Model as returned by \code{\link{wrap}}.
 #' @param norm Norm used to normalize, defaults to \code{l2}.
+#' @param file Path to a saved model.
 #' 
 #' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
 #' 
@@ -164,18 +182,33 @@ model_norm.list <- function(corpus, norm = c("l2", "l1")){
 #' @export
 model_norm.python.builtin.list <- model_norm.list
 
+#' @rdname model_norm
+#' @export
+load_norm <- function(file){
+  assert_that(!missing(file), msg = "Missing `file`")
+  gensim$models$normmodel$NormModel$load(file)
+}
+
 #' Fasttext Model
 #' 
 #' Train word embeddings from a training corpus with the additional 
 #' ability to obtain word vectors for out-of-vocabulary words.
 #' 
 #' @param ... Any option, from the \href{https://radimrehurek.com/gensim/models/fasttext.html}{official documentation}.
+#' @param file Path to a saved model.
 #' 
 #' @name model_fasttext
 #' 
 #' @export
 model_fasttext <- function(...){
   gensim$models$fasttext$FastText(...)
+}
+
+#' @rdname model_fasttext
+#' @export
+load_fasttext <- function(file){
+  assert_that(!missing(file), msg = "Missing `file`")
+  gensim$models$fasttext$FastText$load(file)
 }
 
 #' Random Projections Model
@@ -185,6 +218,7 @@ model_fasttext <- function(...){
 #' 
 #' @param corpus Corpus as returned by \code{\link{wrap}}. A tf-idf/bag-of-words transformation is recommended for LSI.
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/rpmodel.html}{official documentation}.
+#' @param file Path to a saved model.
 #' 
 #' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
 #' 
@@ -206,6 +240,13 @@ model_rp.wrapped <- function(corpus, ...){
 #' @export
 model_rp.gensim.interfaces.TransformedCorpus <- model_rp.wrapped
 
+#' @rdname model_rp
+#' @export
+load_rp <- function(file){
+  assert_that(!missing(file), msg = "Missing `file`")
+  gensim$models$RpModel$load(file)
+}
+
 #' Latent Dirichlet Allocation Model
 #' 
 #' Transformation from bag-of-words counts into a topic space of lower dimensionality. 
@@ -217,6 +258,7 @@ model_rp.gensim.interfaces.TransformedCorpus <- model_rp.wrapped
 #' @param corpus Model as returned by \code{\link{mmcorpus_serialize}}.
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/ldamodel.html}{official documentation of \code{model_lda}} or
 #' the \href{https://radimrehurek.com/gensim/models/ldamulticore.html}{official documentation of \code{model_ldamc}}.
+#' @param file Path to a saved model.
 #' 
 #' @section Functions:
 #' \itemize{
@@ -238,7 +280,7 @@ model_lda.mm_file <- function(corpus, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
   
   corpus_read <- gensim$corpora$MmCorpus(corpus$file)
-  model <- gensim$models$LdaModel(corpus_read, ...)
+  model <- gensim$models$LdaModel(corpus = corpus_read, ...)
 
   # unlink temp
   if(corpus$temp && corpus$delete) unlink(corpus$file)
@@ -251,7 +293,7 @@ model_lda.mm_file <- function(corpus, ...){
 #' @export
 model_lda.mm <- function(corpus, ...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
-  model <- gensim$models$LdaModel(corpus, ...)
+  model <- gensim$models$LdaModel(corpus = corpus, ...)
   invisible(model)
 }
 
@@ -269,6 +311,23 @@ model_lda.wrapped <- model_lda.mm
 #' @method model_lda gensim.interfaces.TransformedCorpus
 #' @export
 model_lda.gensim.interfaces.TransformedCorpus <- model_lda.mm
+
+#' @rdname model_lda
+#' @method model_lda python.builtin.tuple
+#' @export
+model_lda.python.builtin.tuple <- model_lda.mm
+
+#' @rdname model_lda
+#' @method model_lda python.builtin.tuple
+#' @export
+model_lda.python.builtin.tuple <- model_lda.mm
+
+#' @rdname model_lda
+#' @export
+load_lda <- function(file){
+  assert_that(!missing(file), msg = "Missing `file`")
+  gensim$models$LdaModel$load(file)
+}
 
 #' @rdname model_lda
 #' @export
@@ -303,6 +362,13 @@ model_ldamc.mm <- function(corpus,...){
 #' @export
 model_ldamc.python.builtin.list <- model_ldamc.mm
 
+#' @rdname model_lda
+#' @export
+load_ldamc <- function(file){
+  assert_that(!missing(file), msg = "Missing `file`")
+  gensim$models$LdaMulticore$load(file)
+}
+
 #' Log Entropy Model
 #' 
 #' This module allows simple Bag of Words (BoW) represented corpus 
@@ -312,6 +378,7 @@ model_ldamc.python.builtin.list <- model_ldamc.mm
 #' @param corpus Model as returned by \code{\link{doc2bow}}.
 #' @param normalize If \code{TRUE}, the resulted log entropy weighted 
 #' vector will be normalized to length of 1, If \code{FALSE} - do nothing.
+#' @param file Path to a saved model.
 #' 
 #' @name model_logentropy
 #' 
@@ -325,6 +392,13 @@ model_logentropy.python.builtin.tuple <- function(corpus, normalize = FALSE){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
   model <- gensim$models$LogEntropyModel(corpus, normalize = normalize)
   invisible(model)
+}
+
+#' @rdname model_logentropy
+#' @export
+load_logentropy <- function(file){
+  assert_that(!missing(file), msg = "Missing `file`")
+  gensim$models$LogEntropyModel$load(file)
 }
 
 #' Hierarchical Dirichlet Process Model
@@ -344,6 +418,7 @@ model_logentropy.python.builtin.tuple <- function(corpus, normalize = FALSE){
 #' @param corpus Model as returned by \code{\link{mmcorpus_serialize}}.
 #' @param id2word Dictionary for the input corpus, as returned by \code{\link{corpora_dictionary}}.
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/hdpmodel.html}{official documentation}.
+#' @param file Path to a saved model.
 #' 
 #' @details This is a non-parametric bayesian method: notice the lack of \code{num_topics} argument.
 #' 
@@ -385,11 +460,19 @@ model_hdp.mm <- function(corpus, id2word, ...){
 #' @export
 model_hdp.python.builtin.list <- model_hdp.mm
 
+#' @rdname model_hdp
+#' @export
+load_hdp <- function(file){
+  assert_that(!missing(file), msg = "Missing `file`")
+  gensim$models$HdpModel$load(file)
+}
+
 #' Word2Vec Model
 #' 
 #' The word2vec algorithms include skip-gram and CBOW models, using either hierarchical softmax or negative sampling.
 #' 
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/word2vec.html}{official documentation}.
+#' @param file Path to a saved model.
 #' 
 #' @name model_word2vec
 #' 
@@ -397,6 +480,13 @@ model_hdp.python.builtin.list <- model_hdp.mm
 model_word2vec <- function(...){
   model <- gensim$models$Word2Vec(...)  
   invisible(model)
+}
+
+#' @rdname model_word2vec
+#' @export
+load_word2vec <- function(file){
+  assert_that(!missing(file), msg = "Missing `file`")
+  gensim$models$Word2Vec$load(file)
 }
 
 #' Get Document Topics
@@ -449,6 +539,7 @@ get_docs_topics.gensim.interfaces.CorpusABC <- function(corpus){
 #' @param corpus Model as returned by \code{\link{mmcorpus_serialize}}.
 #' @param ... Any other options, from the ¨
 #' \href{https://radimrehurek.com/gensim/models/atmodel.html}{official documentation}.
+#' @param file Path to a saved model.
 #' 
 #' @name model_at
 #' 
@@ -479,6 +570,13 @@ model_at.mm <- function(corpus,...){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
   model <- gensim$models$AuthorTopicModel(corpus, ...)
   invisible(model)
+}
+
+#' @rdname model_at
+#' @export
+load_at <- function(file){
+  assert_that(!missing(file), msg = "Missing `file`")
+  gensim$models$AuthorTopicModel$load(file)
 }
 
 #' Get Author topics
