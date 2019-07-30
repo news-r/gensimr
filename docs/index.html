@@ -154,46 +154,46 @@ Reference
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>Below we build a <em>very basic</em> Latent Dirichlet Allocation model aiming for 2 latent dimensions using example data.</p>
-<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># example data</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">corpus &lt;-<span class="st"> </span><span class="kw"><a href="reference/utils.html">common_corpus</a></span>(<span class="dt">to_r =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">dict &lt;-<span class="st"> </span><span class="kw"><a href="reference/utils.html">common_dictionary</a></span>(<span class="dt">to_r =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co"># latent similarity index</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">lda &lt;-<span class="st"> </span><span class="kw"><a href="reference/model_lda.html">model_lda</a></span>(corpus, <span class="dt">id2word =</span> dict, <span class="dt">num_topics =</span> 2L)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">topics &lt;-<span class="st"> </span>lda<span class="op">$</span><span class="kw">print_topics</span>() <span class="co"># get topics</span></a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
+
+<span class="co"># example data</span>
+corpus &lt;-<span class="st"> </span><span class="kw"><a href="reference/utils.html">common_corpus</a></span>(<span class="dt">to_r =</span> <span class="ot">FALSE</span>)
+dict &lt;-<span class="st"> </span><span class="kw"><a href="reference/utils.html">common_dictionary</a></span>(<span class="dt">to_r =</span> <span class="ot">FALSE</span>)
+
+<span class="co"># latent similarity index</span>
+lda &lt;-<span class="st"> </span><span class="kw"><a href="reference/model_lda.html">model_lda</a></span>(corpus, <span class="dt">id2word =</span> dict, <span class="dt">num_topics =</span> 2L)
+topics &lt;-<span class="st"> </span>lda<span class="op">$</span><span class="kw">print_topics</span>() <span class="co"># get topics</span></code></pre></div>
 <p>Objects returned by the package are not automatically converted to R data structures, please use <code><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">reticulate::py_to_r</a></code> as shown below.</p>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>(topics) <span class="co"># convert to R format</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; [[1]]</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; [[1]][[1]]</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; [1] 0</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; [[1]][[2]]</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; [1] "0.154*\"system\" + 0.108*\"graph\" + 0.095*\"eps\" + 0.093*\"trees\" + 0.093*\"user\" + 0.087*\"minors\" + 0.084*\"survey\" + 0.066*\"response\" + 0.065*\"time\" + 0.060*\"human\""</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; [[2]]</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; [[2]][[1]]</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; [1] 1</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; [[2]][[2]]</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; [1] "0.117*\"computer\" + 0.107*\"interface\" + 0.105*\"user\" + 0.105*\"trees\" + 0.093*\"human\" + 0.085*\"time\" + 0.085*\"response\" + 0.081*\"graph\" + 0.073*\"system\" + 0.057*\"survey\""</span></a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>(topics) <span class="co"># convert to R format</span>
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; [[1]][[1]]</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[1]][[2]]</span>
+<span class="co">#&gt; [1] "0.184*\"system\" + 0.100*\"human\" + 0.093*\"eps\" + 0.089*\"survey\" + 0.082*\"time\" + 0.079*\"user\" + 0.074*\"computer\" + 0.070*\"response\" + 0.064*\"minors\" + 0.060*\"graph\""</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt; [[2]][[1]]</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]][[2]]</span>
+<span class="co">#&gt; [1] "0.135*\"trees\" + 0.127*\"graph\" + 0.112*\"user\" + 0.088*\"interface\" + 0.080*\"minors\" + 0.075*\"response\" + 0.073*\"system\" + 0.072*\"computer\" + 0.066*\"time\" + 0.061*\"survey\""</span></code></pre></div>
 <p>We can then use our model to transform our corpus and then the document topic matrix.</p>
-<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">corpus_wrapped &lt;-<span class="st"> </span><span class="kw"><a href="reference/wrap.html">wrap</a></span>(lda, corpus)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="reference/get_documents_topics.html">get_docs_topics</a></span>(corpus_wrapped)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; # A tibble: 9 x 4</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;   dimension_1_x dimension_1_y dimension_2_x dimension_2_y</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;           &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 1             0         0.148             1         0.852</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 2             0         0.543             1         0.457</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 3             0         0.794             1         0.206</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; 4             0         0.869             1         0.131</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; 5             0         0.228             1         0.772</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; 6             0         0.474             1         0.526</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; 7             0         0.726             1         0.274</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; 8             0         0.826             1         0.174</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 9             0         0.848             1         0.152</span></a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corpus_wrapped &lt;-<span class="st"> </span><span class="kw"><a href="reference/wrap.html">wrap</a></span>(lda, corpus)
+<span class="kw"><a href="reference/get_documents_topics.html">get_docs_topics</a></span>(corpus_wrapped)
+<span class="co">#&gt; # A tibble: 9 x 4</span>
+<span class="co">#&gt;   dimension_1_x dimension_1_y dimension_2_x dimension_2_y</span>
+<span class="co">#&gt;           &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;</span>
+<span class="co">#&gt; 1             0         0.486             1         0.514</span>
+<span class="co">#&gt; 2             0         0.826             1         0.174</span>
+<span class="co">#&gt; 3             0         0.598             1         0.402</span>
+<span class="co">#&gt; 4             0         0.883             1         0.117</span>
+<span class="co">#&gt; 5             0         0.231             1         0.769</span>
+<span class="co">#&gt; 6             0         0.269             1         0.731</span>
+<span class="co">#&gt; 7             0         0.183             1         0.817</span>
+<span class="co">#&gt; 8             0         0.145             1         0.855</span>
+<span class="co">#&gt; 9             0         0.208             1         0.792</span></code></pre></div>
 </div>
   </div>
 

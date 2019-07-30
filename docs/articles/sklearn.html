@@ -136,190 +136,190 @@
 <h2 class="hasAnchor">
 <a href="#preprocessing" class="anchor"></a>Preprocessing</h2>
 <p>First we preprocess the corpus using example data, a tiny corpus of 9 documents. Reproducing the tutorial on <a href="https://radimrehurek.com/gensim/tut1.html">corpora and vector spaces</a>.</p>
-<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>) <span class="co"># rerproducability</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># sample data</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(corpus, <span class="dt">package =</span> <span class="st">"gensimr"</span>)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(corpus)</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; [1] "Human machine interface for lab abc computer applications"    </span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; [2] "A survey of user opinion of computer system response time"    </span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; [3] "The EPS user interface management system"                     </span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; [4] "System and human system engineering testing of EPS"           </span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; [5] "Relation of user perceived response time to error measurement"</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt; [6] "The generation of random binary unordered trees"              </span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt; [7] "The intersection graph of paths in trees"                     </span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; [8] "Graph minors IV Widths of trees and well quasi ordering"      </span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; [9] "Graph minors A survey"</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co"># preprocess corpus</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19">docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepare_documents.html">prepare_documents</a></span>(corpus)</a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; → Preprocessing 9 documents</span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; ← 9 documents after perprocessing</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb1-23" data-line-number="23">docs[[<span class="dv">1</span>]] <span class="co"># print first preprocessed document </span></a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co">#&gt; [[1]]</span></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co">#&gt; [1] "human"</span></a>
-<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="co">#&gt; [[2]]</span></a>
-<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="co">#&gt; [1] "interface"</span></a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>) <span class="co"># rerproducability</span>
+
+<span class="co"># sample data</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(corpus, <span class="dt">package =</span> <span class="st">"gensimr"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(corpus)
+<span class="co">#&gt; [1] "Human machine interface for lab abc computer applications"    </span>
+<span class="co">#&gt; [2] "A survey of user opinion of computer system response time"    </span>
+<span class="co">#&gt; [3] "The EPS user interface management system"                     </span>
+<span class="co">#&gt; [4] "System and human system engineering testing of EPS"           </span>
+<span class="co">#&gt; [5] "Relation of user perceived response time to error measurement"</span>
+<span class="co">#&gt; [6] "The generation of random binary unordered trees"              </span>
+<span class="co">#&gt; [7] "The intersection graph of paths in trees"                     </span>
+<span class="co">#&gt; [8] "Graph minors IV Widths of trees and well quasi ordering"      </span>
+<span class="co">#&gt; [9] "Graph minors A survey"</span>
+
+<span class="co"># preprocess corpus</span>
+docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepare_documents.html">prepare_documents</a></span>(corpus)
+<span class="co">#&gt; → Preprocessing 9 documents</span>
+<span class="co">#&gt; ← 9 documents after perprocessing</span>
+
+docs[[<span class="dv">1</span>]] <span class="co"># print first preprocessed document </span>
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; [1] "human"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt; [1] "interface"</span></code></pre></div>
 <p>Once preprocessed we can build a dictionary.</p>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">dictionary &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpora_dictionary.html">corpora_dictionary</a></span>(docs)</a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dictionary &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpora_dictionary.html">corpora_dictionary</a></span>(docs)</code></pre></div>
 <p>A dictionary essentially assigns an integer to each term.</p>
 <p><code>doc2bow</code> simply applies the method of the same name to every documents (see example below); it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector.</p>
-<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># native method to a single document</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">dictionary<span class="op">$</span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(docs[[<span class="dv">1</span>]])</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; [(0, 1), (1, 1)]</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co"># apply to all documents</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># native method to a single document</span>
+dictionary<span class="op">$</span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(docs[[<span class="dv">1</span>]])
+<span class="co">#&gt; [(0, 1), (1, 1)]</span>
+
+<span class="co"># apply to all documents</span>
+corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</code></pre></div>
 <p>Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set <code>auto_delete</code> to <code>FALSE</code> otherwise the corpus is deleted after first use. Note this means you should manually delete it with <code>delete_mmcorpus</code>.</p>
-<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpJpzBjX/file37ff51a5eef6.mm </span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;  ✔ Temp file</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;  ✖ Delete after use</span></a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))
+<span class="co">#&gt; ℹ Path: /tmp/RtmpIS59Rf/file1696154d2648.mm </span>
+<span class="co">#&gt;  ✔ Temp file</span>
+<span class="co">#&gt;  ✖ Delete after use</span></code></pre></div>
 <p>Then initialise a model, we’re going to use a Latent Similarity Indexing method later on (<code>model_lsi</code>) which requires td-idf.</p>
-<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_tfidf.html">model_tfidf</a></span>(corpus_mm)</a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_tfidf.html">model_tfidf</a></span>(corpus_mm)</code></pre></div>
 <p>We can then use the model to transform our original corpus.</p>
-<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">corpus_transformed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(tfidf, corpus_bow)</a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corpus_transformed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(tfidf, corpus_bow)</code></pre></div>
 </div>
 <div id="author-topic-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#author-topic-model" class="anchor"></a>Author-topic Model</h2>
 <p>Author-topic model.</p>
-<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># authors of corpus</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"authors"</span>, <span class="dt">package =</span> <span class="st">"gensimr"</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#  turn author - document to format expected by scikit-learn</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">auth2doc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/auth2doc.html">auth2doc</a></span>(authors, name, document)</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">temp &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>(<span class="st">"serialized"</span>)</a>
-<a class="sourceLine" id="cb7-8" data-line-number="8">atmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_at.html">sklearn_at</a></span>(</a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">  <span class="dt">id2word =</span> dictionary, </a>
-<a class="sourceLine" id="cb7-10" data-line-number="10">  <span class="dt">author2doc =</span> auth2doc, </a>
-<a class="sourceLine" id="cb7-11" data-line-number="11">  <span class="dt">num_topics =</span> 2L, </a>
-<a class="sourceLine" id="cb7-12" data-line-number="12">  <span class="dt">passes =</span> 100L,</a>
-<a class="sourceLine" id="cb7-13" data-line-number="13">  <span class="dt">serialized =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb7-14" data-line-number="14">  <span class="dt">serialization_path =</span> temp</a>
-<a class="sourceLine" id="cb7-15" data-line-number="15">)</a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlink">unlink</a></span>(temp, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18">atmodel<span class="op">$</span><span class="kw">fit</span>(corpus_bow)<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(<span class="st">"jack"</span>)</a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; [[0.19863081 0.8013692 ]]</span></a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># authors of corpus</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"authors"</span>, <span class="dt">package =</span> <span class="st">"gensimr"</span>)
+
+<span class="co">#  turn author - document to format expected by scikit-learn</span>
+auth2doc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/auth2doc.html">auth2doc</a></span>(authors, name, document)
+
+temp &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>(<span class="st">"serialized"</span>)
+atmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_at.html">sklearn_at</a></span>(
+  <span class="dt">id2word =</span> dictionary, 
+  <span class="dt">author2doc =</span> auth2doc, 
+  <span class="dt">num_topics =</span> 2L, 
+  <span class="dt">passes =</span> 100L,
+  <span class="dt">serialized =</span> <span class="ot">TRUE</span>,
+  <span class="dt">serialization_path =</span> temp
+)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlink">unlink</a></span>(temp, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
+
+atmodel<span class="op">$</span><span class="kw">fit</span>(corpus_bow)<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(<span class="st">"jack"</span>)
+<span class="co">#&gt; [[0.7924365  0.20756352]]</span></code></pre></div>
 </div>
 <div id="doc2vec" class="section level2">
 <h2 class="hasAnchor">
 <a href="#doc2vec" class="anchor"></a>Doc2vec</h2>
-<pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">d2v &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_doc2vec.html">sklearn_doc2vec</a></span>(<span class="dt">min_count =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">vectors &lt;-<span class="st"> </span>d2v<span class="op">$</span><span class="kw">fit_transform</span>(docs)</a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d2v &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_doc2vec.html">sklearn_doc2vec</a></span>(<span class="dt">min_count =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">5</span>)
+vectors &lt;-<span class="st"> </span>d2v<span class="op">$</span><span class="kw">fit_transform</span>(docs)</code></pre></div>
 </div>
 <div id="hierarchical-dirichlet-process" class="section level2">
 <h2 class="hasAnchor">
 <a href="#hierarchical-dirichlet-process" class="anchor"></a>Hierarchical Dirichlet Process</h2>
-<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">hdp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_hdp.html">sklearn_hdp</a></span>(<span class="dt">id2word =</span> dictionary)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">vectors &lt;-<span class="st"> </span>hdp<span class="op">$</span><span class="kw">fit_transform</span>(corpus_bow)</a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hdp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_hdp.html">sklearn_hdp</a></span>(<span class="dt">id2word =</span> dictionary)
+vectors &lt;-<span class="st"> </span>hdp<span class="op">$</span><span class="kw">fit_transform</span>(corpus_bow)</code></pre></div>
 </div>
 <div id="latent-dirichlet-allocation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#latent-dirichlet-allocation" class="anchor"></a>Latent Dirichlet Allocation</h2>
-<pre class="sourceCode r" id="cb10"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">lda &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_lda.html">sklearn_lda</a></span>(</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="dt">id2word =</span> dictionary, </a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">  <span class="dt">num_topics =</span> <span class="dv">2</span>, </a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">  <span class="dt">iterations =</span> <span class="dv">20</span>, </a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">  <span class="dt">random_state =</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">vectors &lt;-<span class="st"> </span>hdp<span class="op">$</span><span class="kw">fit_transform</span>(corpus_bow)</a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lda &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_lda.html">sklearn_lda</a></span>(
+  <span class="dt">id2word =</span> dictionary, 
+  <span class="dt">num_topics =</span> <span class="dv">2</span>, 
+  <span class="dt">iterations =</span> <span class="dv">20</span>, 
+  <span class="dt">random_state =</span> <span class="dv">1</span>
+)
+vectors &lt;-<span class="st"> </span>hdp<span class="op">$</span><span class="kw">fit_transform</span>(corpus_bow)</code></pre></div>
 </div>
 <div id="latent-semantic-indexing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#latent-semantic-indexing" class="anchor"></a>Latent Semantic Indexing</h2>
 <p>Create stages for our pipeline (including gensim and sklearn models alike).</p>
-<pre class="sourceCode r" id="cb11"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">lsi &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_lsi.html">sklearn_lsi</a></span>(<span class="dt">id2word =</span> dictionary, <span class="dt">num_topics =</span> 15L)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co"># L2 reg classifier</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">clf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_logistic.html">sklearn_logistic</a></span>(<span class="dt">penalty =</span> <span class="st">"l2"</span>, <span class="dt">C =</span> <span class="fl">0.1</span>, <span class="dt">solver =</span> <span class="st">"lbfgs"</span>)</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co"># sklearn pipepline</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7">pipe &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_pipeline.html">sklearn_pipeline</a></span>(lsi, clf)</a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co"># Create some random binary labels for our documents.</span></a>
-<a class="sourceLine" id="cb11-10" data-line-number="10">labels &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(0L, 1L), <span class="dv">9</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb11-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co"># How well does our pipeline perform on the training set?</span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13">pipe<span class="op">$</span><span class="kw">fit</span>(corpus_bow, labels)<span class="op">$</span><span class="kw">score</span>(corpus_bow, labels)</a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; 0.7777777777777778</span></a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lsi &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_lsi.html">sklearn_lsi</a></span>(<span class="dt">id2word =</span> dictionary, <span class="dt">num_topics =</span> 15L)
+
+<span class="co"># L2 reg classifier</span>
+clf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_logistic.html">sklearn_logistic</a></span>(<span class="dt">penalty =</span> <span class="st">"l2"</span>, <span class="dt">C =</span> <span class="fl">0.1</span>, <span class="dt">solver =</span> <span class="st">"lbfgs"</span>)
+
+<span class="co"># sklearn pipepline</span>
+pipe &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_pipeline.html">sklearn_pipeline</a></span>(lsi, clf)
+
+<span class="co"># Create some random binary labels for our documents.</span>
+labels &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(0L, 1L), <span class="dv">9</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># How well does our pipeline perform on the training set?</span>
+pipe<span class="op">$</span><span class="kw">fit</span>(corpus_bow, labels)<span class="op">$</span><span class="kw">score</span>(corpus_bow, labels)
+<span class="co">#&gt; 0.5555555555555556</span></code></pre></div>
 </div>
 <div id="random-projections" class="section level2">
 <h2 class="hasAnchor">
 <a href="#random-projections" class="anchor"></a>Random Projections</h2>
-<pre class="sourceCode r" id="cb12"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># initialise</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">rp_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_rp.html">sklearn_rp</a></span>(<span class="dt">id2word =</span> dictionary)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co"># fit</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">rp_fit &lt;-<span class="st"> </span>rp_model<span class="op">$</span><span class="kw">fit</span>(corpus_bow)</a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co"># Use the trained model to transform a document.</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8">result &lt;-<span class="st"> </span>rp_fit<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(corpus_bow)</a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># initialise</span>
+rp_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_rp.html">sklearn_rp</a></span>(<span class="dt">id2word =</span> dictionary)
+
+<span class="co"># fit</span>
+rp_fit &lt;-<span class="st"> </span>rp_model<span class="op">$</span><span class="kw">fit</span>(corpus_bow)
+
+<span class="co"># Use the trained model to transform a document.</span>
+result &lt;-<span class="st"> </span>rp_fit<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(corpus_bow)</code></pre></div>
 </div>
 <div id="phrase-detection" class="section level2">
 <h2 class="hasAnchor">
 <a href="#phrase-detection" class="anchor"></a>Phrase Detection</h2>
-<pre class="sourceCode r" id="cb13"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># split phrases into vectors of words</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># this should be further cleaned</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">corpus_split &lt;-<span class="st"> </span>corpus <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(strsplit, <span class="st">" "</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(<span class="cf">function</span>(x){</a>
-<a class="sourceLine" id="cb13-6" data-line-number="6">    sentence &lt;-<span class="st"> </span>x[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb13-7" data-line-number="7">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/chartr">tolower</a></span>(sentence)</a>
-<a class="sourceLine" id="cb13-8" data-line-number="8">  })</a>
-<a class="sourceLine" id="cb13-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co"># Create the model. Make sure no term is ignored and combinations seen 2+ times are captured.</span></a>
-<a class="sourceLine" id="cb13-11" data-line-number="11">pt_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_pt.html">sklearn_pt</a></span>(<span class="dt">min_count =</span> <span class="dv">1</span>, <span class="dt">threshold =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co"># Use sklearn fit_transform to see the transformation.</span></a>
-<a class="sourceLine" id="cb13-14" data-line-number="14">pt_trans &lt;-<span class="st"> </span>pt_model<span class="op">$</span><span class="kw">fit_transform</span>(corpus_split)</a>
-<a class="sourceLine" id="cb13-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co"># Since graph and minors were seen together 2+ times they are considered a phrase.</span></a>
-<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"This"</span>, <span class="st">"is"</span>, <span class="st">"graph_minors"</span>) <span class="op">%in%</span><span class="st"> </span>reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>(pt_trans)[[<span class="dv">9</span>]]</a>
-<a class="sourceLine" id="cb13-18" data-line-number="18"><span class="co">#&gt; [1] FALSE FALSE  TRUE</span></a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># split phrases into vectors of words</span>
+<span class="co"># this should be further cleaned</span>
+corpus_split &lt;-<span class="st"> </span>corpus <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(strsplit, <span class="st">" "</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(<span class="cf">function</span>(x){
+    sentence &lt;-<span class="st"> </span>x[[<span class="dv">1</span>]]
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/chartr">tolower</a></span>(sentence)
+  })
+
+<span class="co"># Create the model. Make sure no term is ignored and combinations seen 2+ times are captured.</span>
+pt_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_pt.html">sklearn_pt</a></span>(<span class="dt">min_count =</span> <span class="dv">1</span>, <span class="dt">threshold =</span> <span class="dv">2</span>)
+
+<span class="co"># Use sklearn fit_transform to see the transformation.</span>
+pt_trans &lt;-<span class="st"> </span>pt_model<span class="op">$</span><span class="kw">fit_transform</span>(corpus_split)
+
+<span class="co"># Since graph and minors were seen together 2+ times they are considered a phrase.</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"This"</span>, <span class="st">"is"</span>, <span class="st">"graph_minors"</span>) <span class="op">%in%</span><span class="st"> </span>reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>(pt_trans)[[<span class="dv">9</span>]]
+<span class="co">#&gt; [1] FALSE FALSE  TRUE</span></code></pre></div>
 </div>
 <div id="word-id-mapping" class="section level2">
 <h2 class="hasAnchor">
 <a href="#word-id-mapping" class="anchor"></a>Word ID Mapping</h2>
 <p><code>doc2bow</code> with scikit-learn. Note that in the example below we do not clean the text (no <code>preprocess</code>).</p>
-<pre class="sourceCode r" id="cb14"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># initialise</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">skbow_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_doc2bow.html">sklearn_doc2bow</a></span>()</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co"># fit</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">corpus_skbow &lt;-<span class="st"> </span>skbow_model<span class="op">$</span><span class="kw">fit_transform</span>(corpus)</a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># initialise</span>
+skbow_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_doc2bow.html">sklearn_doc2bow</a></span>()
+
+<span class="co"># fit</span>
+corpus_skbow &lt;-<span class="st"> </span>skbow_model<span class="op">$</span><span class="kw">fit_transform</span>(corpus)</code></pre></div>
 </div>
 <div id="tf-idf" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tf-idf" class="anchor"></a>Tf-idf</h2>
-<pre class="sourceCode r" id="cb15"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">tfidf_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_tfidf.html">sklearn_tfidf</a></span>(<span class="dt">dictionary =</span> dictionary)</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">tfidf_w_sklearn &lt;-<span class="st"> </span>tfidf_model<span class="op">$</span><span class="kw">fit_transform</span>(corpus_bow)</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co"># same as with gensim</span></a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">corpus_transformed[[<span class="dv">1</span>]] <span class="op">==</span><span class="st"> </span>tfidf_w_sklearn[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#&gt; [1] TRUE</span></a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tfidf_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_tfidf.html">sklearn_tfidf</a></span>(<span class="dt">dictionary =</span> dictionary)
+tfidf_w_sklearn &lt;-<span class="st"> </span>tfidf_model<span class="op">$</span><span class="kw">fit_transform</span>(corpus_bow)
+
+<span class="co"># same as with gensim</span>
+corpus_transformed[[<span class="dv">1</span>]] <span class="op">==</span><span class="st"> </span>tfidf_w_sklearn[[<span class="dv">1</span>]]
+<span class="co">#&gt; [1] TRUE</span></code></pre></div>
 </div>
 <div id="word2vec" class="section level2">
 <h2 class="hasAnchor">
 <a href="#word2vec" class="anchor"></a>Word2vec</h2>
-<pre class="sourceCode r" id="cb16"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># Create a model to represent each word by a 10 dimensional vector.</span></a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">w2v_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_word2vec.html">sklearn_word2vec</a></span>(<span class="dt">size =</span> 10L, <span class="dt">min_count =</span> 1L, <span class="dt">seed =</span> 1L)</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co"># train</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5">w2v_model &lt;-<span class="st"> </span>w2v_model<span class="op">$</span><span class="kw">fit</span>(docs)</a>
-<a class="sourceLine" id="cb16-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co"># What is the vector representation of the word 'graph'?</span></a>
-<a class="sourceLine" id="cb16-8" data-line-number="8">w2v_model<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"graph"</span>))</a>
-<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">#&gt; [[-0.04165049  0.04549773  0.04733709 -0.0272528   0.02666847  0.04498356</span></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co">#&gt;   -0.03417673 -0.01410475  0.03612442 -0.01616823]]</span></a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a model to represent each word by a 10 dimensional vector.</span>
+w2v_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sklearn_word2vec.html">sklearn_word2vec</a></span>(<span class="dt">size =</span> 10L, <span class="dt">min_count =</span> 1L, <span class="dt">seed =</span> 1L)
+
+<span class="co"># train</span>
+w2v_model &lt;-<span class="st"> </span>w2v_model<span class="op">$</span><span class="kw">fit</span>(docs)
+
+<span class="co"># What is the vector representation of the word 'graph'?</span>
+w2v_model<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"graph"</span>))
+<span class="co">#&gt; [[-0.01760089  0.00239181 -0.02412791  0.04986496 -0.02371396 -0.01704442</span>
+<span class="co">#&gt;    0.03420629  0.04566782 -0.03378404 -0.01940463]]</span></code></pre></div>
 <p>Clean up, delete the corpus.</p>
-<pre class="sourceCode r" id="cb17"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="../reference/mmcorpus_serialize.html">delete_mmcorpus</a></span>(corpus_mm)</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co">#&gt; ✔ Temp unlinked</span></a></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/mmcorpus_serialize.html">delete_mmcorpus</a></span>(corpus_mm)
+<span class="co">#&gt; ✔ Temp unlinked</span></code></pre></div>
 </div>
   </div>
 

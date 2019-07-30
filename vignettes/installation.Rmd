@@ -42,7 +42,7 @@ my_env <- "./env"
 # run this (works on unix)
 args <- paste("-m venv", my_env)
 system2("python3", args) # create environment
- # force reticulate to use env
+reticulate::use_virtualenv(my_env) # force reticulate to use env
 gensimr::install_dependencies(my_env) # install gensim & scikit-learn in environment
 ```
 
