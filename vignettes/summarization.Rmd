@@ -73,5 +73,8 @@ str <- "Rice Pudding - Poem by Alan Alexander Milne
   She's perfectly well and she hasn't a pain,
   And it's lovely rice pudding for dinner again!
   What is the matter with Mary Jane?"
-summarize(str) %>% unlist
+summarize(str) %>% 
+  unlist() %>% 
+  cat()
 ```
+

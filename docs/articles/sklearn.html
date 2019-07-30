@@ -163,23 +163,20 @@
 <a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co">#&gt; [1] "human"</span></a>
 <a class="sourceLine" id="cb1-26" data-line-number="26"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb1-27" data-line-number="27"><span class="co">#&gt; [[2]]</span></a>
-<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="co">#&gt; [1] "interface"</span></a>
-<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="co">#&gt; [[3]]</span></a>
-<a class="sourceLine" id="cb1-31" data-line-number="31"><span class="co">#&gt; [1] "computer"</span></a></code></pre>
+<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="co">#&gt; [1] "interface"</span></a></code></pre>
 <p>Once preprocessed we can build a dictionary.</p>
 <pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">dictionary &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpora_dictionary.html">corpora_dictionary</a></span>(docs)</a></code></pre>
 <p>A dictionary essentially assigns an integer to each term.</p>
 <p><code>doc2bow</code> simply applies the method of the same name to every documents (see example below); it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector.</p>
 <pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># native method to a single document</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">dictionary<span class="op">$</span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(docs[[<span class="dv">1</span>]])</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; [(0, 1), (1, 1), (2, 1)]</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; [(0, 1), (1, 1)]</span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co"># apply to all documents</span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6">corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</a></code></pre>
 <p>Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set <code>auto_delete</code> to <code>FALSE</code> otherwise the corpus is deleted after first use. Note this means you should manually delete it with <code>delete_mmcorpus</code>.</p>
 <pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpARRJrY/file30d8926987a.mm </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpJpzBjX/file37ff51a5eef6.mm </span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;  ✔ Temp file</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;  ✖ Delete after use</span></a></code></pre>
 <p>Then initialise a model, we’re going to use a Latent Similarity Indexing method later on (<code>model_lsi</code>) which requires td-idf.</p>
@@ -209,7 +206,7 @@
 <a class="sourceLine" id="cb7-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlink">unlink</a></span>(temp, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb7-17" data-line-number="17"></a>
 <a class="sourceLine" id="cb7-18" data-line-number="18">atmodel<span class="op">$</span><span class="kw">fit</span>(corpus_bow)<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(<span class="st">"jack"</span>)</a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; [[0.18455955 0.8154404 ]]</span></a></code></pre>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; [[0.19863081 0.8013692 ]]</span></a></code></pre>
 </div>
 <div id="doc2vec" class="section level2">
 <h2 class="hasAnchor">
@@ -318,8 +315,8 @@
 <a class="sourceLine" id="cb16-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co"># What is the vector representation of the word 'graph'?</span></a>
 <a class="sourceLine" id="cb16-8" data-line-number="8">w2v_model<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"graph"</span>))</a>
-<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">#&gt; [[ 0.04103399 -0.031664    0.00787421 -0.03989334  0.00658267  0.02883217</span></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co">#&gt;   -0.04229731  0.0286288  -0.02150061 -0.00827976]]</span></a></code></pre>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">#&gt; [[-0.04165049  0.04549773  0.04733709 -0.0272528   0.02666847  0.04498356</span></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co">#&gt;   -0.03417673 -0.01410475  0.03612442 -0.01616823]]</span></a></code></pre>
 <p>Clean up, delete the corpus.</p>
 <pre class="sourceCode r" id="cb17"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="../reference/mmcorpus_serialize.html">delete_mmcorpus</a></span>(corpus_mm)</a>
 <a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co">#&gt; ✔ Temp unlinked</span></a></code></pre>

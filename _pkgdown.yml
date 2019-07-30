@@ -74,12 +74,12 @@ reference:
       - preprocess
       - remove_stopwords
       - stem_text
-      - get_bm25_weights
+      - text8corpus
+      - filter_rare
   - title: "Models"
     desc: "Available models and utilities."
     contents:
       - wrap
-      - keywords
       - matches("model")
       - get_documents_topics
       - starts_with("load")
@@ -100,6 +100,9 @@ reference:
     desc: "Text summarization-related functions."
     contents:
       - summarize
+      - keywords
+      - get_bm25_weights
+      - phrases
 
 authors:
   John Coene:

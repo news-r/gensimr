@@ -31,9 +31,9 @@ print(corpus)
 
 # preprocess corpus
 docs <- prepare_documents(corpus)
-
-docs[[1]] # print first preprocessed document 
 ```
+
+## Model
 
 Word2vec works somewhat differently. The example below is a reproduction of the Kaggle [Gensim Word2Vec Tutorial](https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model).
 
@@ -61,5 +61,45 @@ Test similarity between words.
 
 ```{r}
 word2vec$wv$similarity("human", "trees")
-word2vec$wv$similarity("eps", "system")
+word2vec$wv$similarity("eps", "survey")
+```
+
+## Phrases
+
+Automatically detect common phrases – multi-word expressions / word n-grams – from a stream of sentences.
+
+Here we use and example dataset. The idea is that it is saved to a file (on disk) thereby allowing gensim to stream its content which is much more efficient than loading everything in memory before runnig the model.
+
+Let's look at the content of the example file.
+
+```{r}
+file <- datapath('testcorpus.txt') # example dataset
+readLines(file) # just to show you what it looks like
+```
+
+We observe that it is very similar to the output of `prepare_documents(corpus)` (the `docs`) object in this document. We can now scan the file to build a corpus with `text8corpus`
+
+```{r}
+sentences <- text8corpus(file)
+phrases <- phrases(docs, min_count = 1L, threshold = 1L)
+```
+
+That simple, now we can apply the model to new sentences.
+
+```{r}
+sentence <- list('trees', 'graph', 'minors')
+wrap(phrases, sentence)
+```
+
+We can add vocabulary to an already trained model with.
+
+```{r}
+phrases$add_vocab(list(list("hello", "world"), list("meow")))
+```
+
+We can create a faster model with.
+
+```{r}
+bigram <- phraser(phrases)
+wrap(bigram, sentence)
 ```

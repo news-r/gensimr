@@ -224,7 +224,7 @@ if(typeof(LDAvis) !== "undefined"){
          });
 }
 </script><pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; -17.164480582963257</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; -17.14645991149178</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; -17.223047765245546</span></a></code></pre>
 </div>
@@ -234,9 +234,9 @@ if(typeof(LDAvis) !== "undefined"){
 <pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">good_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> good_lda_model, <span class="dt">texts =</span> texts, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'c_v'</span>)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">bad_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> bad_lda_model, <span class="dt">texts =</span> texts, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'c_v'</span>)</a></code></pre>
 <pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; 0.3886537599820318</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; 0.38865375998203167</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; 0.3886537599820318</span></a></code></pre>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; 0.38865375998203167</span></a></code></pre>
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">

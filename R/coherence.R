@@ -20,6 +20,5 @@ model_coherence.gensim.models.basemodel.BaseTopicModel <- function(models, ...){
 #' @method model_coherence list
 #' @export
 model_coherence.list <- function(models, ...){
-  assert_that(!missing(dictionary), msg = "Missing `dictionary`")
   gensim$models$CoherenceModel$for_models(models = models, ...)
 }

@@ -146,3 +146,22 @@ summarize.mm <- function(corpus, ...){
     purrr::map(reticulate::py_to_r) 
   invisible(model)
 }
+
+#' Phrases
+#' 
+#' Automatically detect common phrases – multi-word expressions / 
+#' word n-grams – from a stream of sentences.
+#' 
+#' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/summarization/phrases.html}{official documentation}.
+#' 
+#' @name phrases
+#' @export
+phrases <- function(...){
+  gensim$models$phrases$Phrases(...)
+}
+
+#' @rdname phrases
+#' @export
+phraser <- function(...){
+  gensim$models$phrases$Phraser(...)
+}

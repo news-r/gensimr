@@ -144,3 +144,15 @@ read_serialized_mmcorpus.character <- function(file){
   mm <- .as_mm(gensim$corpora$MmCorpus(file))
   invisible(mm)
 }
+
+#' Line Sentence
+#' 
+#' Iterate over sentences from \code{.txt} file.
+#'
+#' @param file Path to \code{.txt} file.
+#' @param max_sentence_length Maximum length of sentence to scan.
+#' 
+#' @export
+text8corpus <- function(file, max_sentence_length = 10000L){
+  gensim$models$word2vec$Text8Corpus(file, max_sentence_length = max_sentence_length)
+}
