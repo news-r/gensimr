@@ -16,8 +16,11 @@ knitr::opts_chunk$set(
 ```
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Travis build status](https://travis-ci.org/news-r/gensimr.svg?branch=master)](https://travis-ci.org/news-r/gensimr)
+[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/JohnCoene)
+[![code-size](https://img.shields.io/github/languages/code-size/news-r/gensimr.svg)](https://github.com/news-r/gensimr) 
+[![activity](https://img.shields.io/github/last-commit/news-r/gensimr.svg)](https://github.com/news-r/gensimr)
 <!-- badges: end -->
 
 # gensimr

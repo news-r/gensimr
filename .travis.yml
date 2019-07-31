@@ -5,7 +5,7 @@ cache: packages
 before_install:
   - R -e "install.packages('reticulate')"
   - R -e "reticulate::py_install('gensim')"
-  - R -e "reticulate::py_install('sklean')"
+  - R -e "reticulate::py_install('scikit-learn')"
   - R -e "reticulate::py_install('pyLDAvis')"
 
 env:
