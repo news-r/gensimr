@@ -12,6 +12,23 @@
 #' and \code{\link{show_ldavis}}. Note that a \code{plot} method that can be used 
 #' instead of \code{\link{show_ldavis}}.
 #' 
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' dict <- corpora_dictionary(docs)
+#' corpora <- doc2bow(dict, docs)
+#' 
+#' # lda model
+#' model <- model_lda(
+#'   corpus = corpora, 
+#'   id2word = dict, 
+#'   iterations = 50L, 
+#'   num_topics = 2L
+#' )
+#' 
+#' # visualise
+#' vis <- prepare_ldavis(model, corpora, dict)
+#' \dontrun{plot(vis)}
+#' 
 #' @name ldavis
 #' @export
 prepare_ldavis <- function(model, corpus, dictionary, ...){
@@ -66,7 +83,22 @@ ldavis_as_html.pyLDAvis._prepare.PreparedData <- function(prepared_vis){
 #' @param file A file name to save the html or json.
 #' @param ... Additional arguments from \href{https://pyldavis.readthedocs.io/en/latest/modules/API.html}{the official documentation}.
 #' 
-#' @section Function
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' dict <- corpora_dictionary(docs)
+#' corpora <- doc2bow(dict, docs)
+#' 
+#' # lda model
+#' model <- model_lda(
+#'   corpus = corpora, 
+#'   id2word = dict, 
+#'   iterations = 50L, 
+#'   num_topics = 2L
+#' )
+#' 
+#' # visualise
+#' vis <- prepare_ldavis(model, corpora, dict)
+#' \dontrun{save_ldavis_html(vis, "lda.html")}
 #' 
 #' @return Invisibly returns \code{file}.
 #' 

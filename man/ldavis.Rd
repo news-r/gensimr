@@ -41,3 +41,21 @@ Visualise Latent Dirichlet Allocation models with pyLDAvis.
 and \code{\link{show_ldavis}}. Note that a \code{plot} method that can be used 
 instead of \code{\link{show_ldavis}}.
 }
+\examples{
+docs <- prepare_documents(corpus)
+dict <- corpora_dictionary(docs)
+corpora <- doc2bow(dict, docs)
+
+# lda model
+model <- model_lda(
+  corpus = corpora, 
+  id2word = dict, 
+  iterations = 50L, 
+  num_topics = 2L
+)
+
+# visualise
+vis <- prepare_ldavis(model, corpora, dict)
+\dontrun{plot(vis)}
+
+}
