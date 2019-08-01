@@ -203,11 +203,25 @@
 
     <p>Invisibly returns <code>file</code>.</p>
     
-    <h2 class="hasAnchor" id="function"><a class="anchor" href="#function"></a>Function</h2>
 
-    <p>NA</p>
-    
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>docs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_documents.html'>prepare_documents</a></span>(<span class='no'>corpus</span>)</div><div class='output co'>#&gt; <span style='color: #BBBB00;'>→</span><span> Preprocessing </span><span style='color: #0000BB;'>9</span><span> documents
+#&gt; </span><span style='color: #BBBB00;'>←</span><span> </span><span style='color: #0000BB;'>9</span><span> documents after perprocessing</div><div class='input'><span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpora_dictionary.html'>corpora_dictionary</a></span>(<span class='no'>docs</span>)
+<span class='no'>corpora</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='doc2bow.html'>doc2bow</a></span>(<span class='no'>dict</span>, <span class='no'>docs</span>)
 
+<span class='co'># lda model</span>
+<span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='model_lda.html'>model_lda</a></span>(
+  <span class='kw'>corpus</span> <span class='kw'>=</span> <span class='no'>corpora</span>,
+  <span class='kw'>id2word</span> <span class='kw'>=</span> <span class='no'>dict</span>,
+  <span class='kw'>iterations</span> <span class='kw'>=</span> <span class='fl'>50L</span>,
+  <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>
+)
+
+<span class='co'># visualise</span>
+<span class='no'>vis</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ldavis.html'>prepare_ldavis</a></span>(<span class='no'>model</span>, <span class='no'>corpora</span>, <span class='no'>dict</span>)</div></span><span class='co'># NOT RUN {</span>
+<span class='fu'>save_ldavis_html</span>(<span class='no'>vis</span>, <span class='st'>"lda.html"</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -215,9 +229,9 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#function">Function</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

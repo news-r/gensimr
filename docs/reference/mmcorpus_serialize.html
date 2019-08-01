@@ -43,7 +43,7 @@
 
 <meta property="og:title" content="Serialise Matrix Market Corpus — mmcorpus_serialize" />
 
-<meta property="og:description" content="Serialise a term-document matrix on disk." />
+<meta property="og:description" content="Serialise a term-document matrix to disk." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -166,7 +166,7 @@
 
     <div class="ref-description">
     
-    <p>Serialise a term-document matrix on disk.</p>
+    <p>Serialise a term-document matrix to disk.</p>
     
     </div>
 
@@ -197,16 +197,31 @@
 
     <p>An object of class <code>mm_file</code> which holds the path to the <code>file</code> and metadata.</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Serialize the corpus to disk in order to take advantage of Python's file scan efficiency.</p>
+    
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
     
     <ul>
 <li><p><code>serialize_mmcorpus</code> - Serialize the corpus</p></li>
-<li><p><code>as_serialized_mmcorpus</code> - Create an <code>mm_file</code> from an already created corpus file.</p></li>
+<li><p><code>as_serialized_mmcorpus</code> - Create an object of class <code>mm_file</code> from an already created corpus file.</p></li>
 <li><p><code>delete_mmcorpus</code> - Delete temp corpus.</p></li>
 </ul>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>docs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_documents.html'>prepare_documents</a></span>(<span class='no'>corpus</span>)</div><div class='output co'>#&gt; <span style='color: #BBBB00;'>→</span><span> Preprocessing </span><span style='color: #0000BB;'>9</span><span> documents
+#&gt; </span><span style='color: #BBBB00;'>←</span><span> </span><span style='color: #0000BB;'>9</span><span> documents after perprocessing</div><div class='input'><span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpora_dictionary.html'>corpora_dictionary</a></span>(<span class='no'>docs</span>)
+<span class='no'>corpora</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='doc2bow.html'>doc2bow</a></span>(<span class='no'>dict</span>, <span class='no'>docs</span>)
+
+<span class='co'># serialize and delete</span></div></span><span class='co'># NOT RUN {</span>
+<span class='no'>corpus_mm</span> <span class='kw'>&lt;-</span> <span class='fu'>serialize_mmcorpus</span>(<span class='no'>corpora</span>)
+<span class='co'># }</span><span class='co'># NOT RUN {</span>
+<span class='fu'>delete_mmcorpus</span>(<span class='no'>corpus_mm</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -215,8 +230,12 @@
       
       <li><a href="#value">Value</a></li>
 
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#functions">Functions</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

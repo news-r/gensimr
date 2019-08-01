@@ -192,13 +192,58 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>A greater coherence is preferred: a higher value on the <code>get_coherence</code> method, see example.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># preprocess the corpus</span>
+<span class='no'>texts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_documents.html'>prepare_documents</a></span>(<span class='no'>corpus</span>)</div><div class='output co'>#&gt; <span style='color: #BBBB00;'>→</span><span> Preprocessing </span><span style='color: #0000BB;'>9</span><span> documents
+#&gt; </span><span style='color: #BBBB00;'>←</span><span> </span><span style='color: #0000BB;'>9</span><span> documents after perprocessing</div><div class='input'><span class='no'>dictionary</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpora_dictionary.html'>corpora_dictionary</a></span>(<span class='no'>texts</span>)
+<span class='no'>corpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='doc2bow.html'>doc2bow</a></span>(<span class='no'>dictionary</span>, <span class='no'>texts</span>)
+
+<span class='co'># create 2 models to compare</span>
+<span class='no'>good_lda_model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='model_lda.html'>model_lda</a></span>(
+  <span class='kw'>corpus</span> <span class='kw'>=</span> <span class='no'>corpus</span>,
+  <span class='kw'>id2word</span> <span class='kw'>=</span> <span class='no'>dictionary</span>,
+  <span class='kw'>iterations</span> <span class='kw'>=</span> <span class='fl'>50L</span>,
+  <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>
+)
+<span class='no'>bad_lda_model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='model_lda.html'>model_lda</a></span>(
+  <span class='kw'>corpus</span> <span class='kw'>=</span> <span class='no'>corpus</span>,
+  <span class='kw'>id2word</span> <span class='kw'>=</span> <span class='no'>dictionary</span>,
+  <span class='kw'>iterations</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>5L</span>
+)
+
+<span class='co'># create coherence models</span>
+<span class='no'>good_cm</span> <span class='kw'>&lt;-</span> <span class='fu'>model_coherence</span>(
+  <span class='kw'>model</span> <span class='kw'>=</span> <span class='no'>good_lda_model</span>,
+  <span class='kw'>corpus</span> <span class='kw'>=</span> <span class='no'>corpus</span>,
+  <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>dictionary</span>,
+  <span class='kw'>coherence</span> <span class='kw'>=</span> <span class='st'>'u_mass'</span>
+)
+<span class='no'>bad_cm</span> <span class='kw'>&lt;-</span> <span class='fu'>model_coherence</span>(
+  <span class='kw'>model</span> <span class='kw'>=</span> <span class='no'>bad_lda_model</span>,
+  <span class='kw'>corpus</span> <span class='kw'>=</span> <span class='no'>corpus</span>,
+  <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>dictionary</span>,
+  <span class='kw'>coherence</span> <span class='kw'>=</span> <span class='st'>'u_mass'</span>
+)
+
+<span class='co'># compare coherence</span>
+<span class='no'>good_cm</span>$<span class='fu'>get_coherence</span>()</div><div class='output co'>#&gt; -17.15096507935965</div><div class='input'><span class='no'>bad_cm</span>$<span class='fu'>get_coherence</span>()</div><div class='output co'>#&gt; -17.197818825185482</div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
