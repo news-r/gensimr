@@ -86,7 +86,12 @@ reference:
   - title: "Visualisation"
     desc: "Functions to visualise model outputs, embeddding, etc."
     contents:
-      - matches("ldavis")
+      - prepare_ldavis
+      - show_ldavis
+      - plot_ldavis
+      - ldavis_as_html
+      - save_ldavis_html
+      - save_ldavis_json
   - title: "Sklearn"
     desc: "Scikit-learn API."
     contents:
