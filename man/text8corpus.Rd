@@ -14,3 +14,10 @@ text8corpus(file, max_sentence_length = 10000L)
 \description{
 Iterate over sentences from \code{.txt} file.
 }
+\examples{
+file <- datapath('testcorpus.txt') # example file
+readLines(file) # what it looks like
+
+(sentences <- text8corpus(file))
+
+}

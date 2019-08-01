@@ -18,3 +18,19 @@ read_serialized_mmcorpus(file)
 \description{
 Read Serialized Matrix Market from path or \code{\link{as_serialized_mmcorpus}}.
 }
+\examples{
+docs <- prepare_documents(corpus)
+dict <- corpora_dictionary(docs)
+corpora <- doc2bow(dict, docs)
+
+# file to hold matrix market
+fl <- "corpus.mm"
+
+# serialize
+\dontrun{corpus_mm <- serialize_mmcorpus(corpora, file = fl)}
+
+# read and delete
+\dontrun{(mm <- read_serialized_mmcorpus(corpus_mm))}
+\dontrun{delete_mmcorpus(corpus_mm)}
+
+}

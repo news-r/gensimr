@@ -14,3 +14,8 @@ corpora_dictionary(docs, file = NULL)
 \description{
 Create a dictionary from a list of documents.
 }
+\examples{
+docs <- prepare_documents(corpus)
+(dict <- corpora_dictionary(docs))
+
+}

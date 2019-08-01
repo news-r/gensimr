@@ -21,3 +21,9 @@ Create a dictionary from a list of documents.
 Counts the number of occurrences of each distinct word, 
 converts the word to its integer word id and returns the result as a sparse vector.
 }
+\examples{
+docs <- prepare_documents(corpus)
+dict <- corpora_dictionary(docs)
+(corpora <- doc2bow(dict, docs))
+
+}

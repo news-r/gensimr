@@ -24,14 +24,27 @@ delete_mmcorpus(file)
 An object of class \code{mm_file} which holds the path to the \code{file} and metadata.
 }
 \description{
-Serialise a term-document matrix on disk.
+Serialise a term-document matrix to disk.
+}
+\details{
+Serialize the corpus to disk in order to take advantage of Python's file scan efficiency.
 }
 \section{Functions}{
 
 \itemize{
   \item{\code{serialize_mmcorpus} - Serialize the corpus}  
-  \item{\code{as_serialized_mmcorpus} - Create an \code{mm_file} from an already created corpus file.}  
+  \item{\code{as_serialized_mmcorpus} - Create an object of class \code{mm_file} from an already created corpus file.}  
   \item{\code{delete_mmcorpus} - Delete temp corpus.}  
 }
 }
 
+\examples{
+docs <- prepare_documents(corpus)
+dict <- corpora_dictionary(docs)
+corpora <- doc2bow(dict, docs)
+
+# serialize and delete
+\dontrun{corpus_mm <- serialize_mmcorpus(corpora)}
+\dontrun{delete_mmcorpus(corpus_mm)}
+
+}
