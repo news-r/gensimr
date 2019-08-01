@@ -6,17 +6,29 @@
 \alias{api_load}
 \title{API}
 \usage{
-api_info(name = NULL, ...)
+api_info(name = NULL, ..., to_r = TRUE)
 
 api_load(name, ...)
 }
 \arguments{
-\item{name}{A specific dataset, i.e.: \code{text8}}
+\item{name}{A specific dataset, i.e.: \code{text8}.}
 
 \item{...}{Any other argument from the \href{https://radimrehurek.com/gensim/downloader.html}{official documentation}.}
+
+\item{to_r}{Whether to return the information in R data structure (\code{list}).}
 }
 \description{
 This is an API for downloading, getting information and loading datasets/models. 
 See [RaRe-Technologies/gensim-data](https://github.com/RaRe-Technologies/gensim-data) 
 repo for more information about models/datasets/how-to-add-new/etc.
+}
+\examples{
+\dontrun{
+# available models to use with `api_load`
+(models <- api_info() \%>\% names())
+
+# load random model
+api_load(sample(models, 1))
+}
+
 }
