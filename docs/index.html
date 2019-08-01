@@ -176,7 +176,7 @@ topics &lt;-<span class="st"> </span>lda<span class="op">$</span><span class="kw
 <span class="co">#&gt; [1] 0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[1]][[2]]</span>
-<span class="co">#&gt; [1] "0.151*\"eps\" + 0.123*\"user\" + 0.112*\"interface\" + 0.099*\"trees\" + 0.095*\"human\" + 0.090*\"graph\" + 0.089*\"response\" + 0.087*\"time\" + 0.082*\"survey\" + 0.074*\"minors\""</span>
+<span class="co">#&gt; [1] "0.158*\"trees\" + 0.146*\"user\" + 0.136*\"graph\" + 0.102*\"interface\" + 0.098*\"eps\" + 0.085*\"minors\" + 0.081*\"response\" + 0.078*\"time\" + 0.060*\"human\" + 0.056*\"survey\""</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
@@ -184,12 +184,13 @@ topics &lt;-<span class="st"> </span>lda<span class="op">$</span><span class="kw
 <span class="co">#&gt; [1] 1</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]][[2]]</span>
-<span class="co">#&gt; [1] "0.143*\"graph\" + 0.137*\"trees\" + 0.120*\"user\" + 0.103*\"minors\" + 0.097*\"survey\" + 0.094*\"time\" + 0.092*\"response\" + 0.088*\"human\" + 0.077*\"interface\" + 0.050*\"eps\""</span></code></pre></div>
+<span class="co">#&gt; [1] "0.121*\"survey\" + 0.118*\"human\" + 0.109*\"graph\" + 0.102*\"time\" + 0.099*\"response\" + 0.099*\"user\" + 0.096*\"minors\" + 0.089*\"trees\" + 0.085*\"eps\" + 0.081*\"interface\""</span></code></pre></div>
 <p>We can then use our model to transform our corpus and then the document topic matrix.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corpus_wrapped &lt;-<span class="st"> </span><span class="kw"><a href="reference/wrap.html">wrap</a></span>(lda, corpus)
 doc_topics &lt;-<span class="st"> </span><span class="kw"><a href="reference/get_documents_topics.html">get_docs_topics</a></span>(corpus_wrapped)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(doc_topics<span class="op">$</span>dimension_<span class="dv">1</span>_y, doc_topics<span class="op">$</span>dimension_<span class="dv">2</span>_y)</code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p>The plot correctly identifies two topics/clusters. As stated in table 2 from <a href="http://www.cs.bham.ac.uk/~pxt/IDA/lsa_ind.pdf">this paper</a>, the example corpus (<code><a href="https://www.rdocumentation.org/packages/utils/topics/data">data(corpus)</a></code>) essentially has two classes of documents. First five are about human-computer interaction and the other four are about graphs.</p>
 </div>
   </div>
 
