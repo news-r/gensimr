@@ -33,6 +33,15 @@ Install Python dependencies. Arguments are passed to \link[reticulate]{py_instal
 \details{
 \code{\link{install_dependencies}} is a wrapper to install all dependencies at once.
 }
+\section{Dependencies}{
+
+\itemize{
+  \item{gensim - The core library.}
+  \item{scikit-learn - Gensim has a Scikit-learn API.}
+  \item{pyLDAvis - Module to visualise Latent Dirichlet Allocation models.}
+}
+}
+
 \examples{
 \dontrun{install_dependencies()}
 

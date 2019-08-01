@@ -10,6 +10,13 @@
 #' @param conda Path to conda executable (or "auto" to find conda using the
 #' \code{PATH} and other conventional install locations).
 #' 
+#' @section Dependencies:
+#' \itemize{
+#'   \item{gensim - The core library.}
+#'   \item{scikit-learn - Gensim has a Scikit-learn API.}
+#'   \item{pyLDAvis - Module to visualise Latent Dirichlet Allocation models.}
+#' }
+#' 
 #' @details \code{\link{install_dependencies}} is a wrapper to install all dependencies at once.
 #' 
 #' @examples
@@ -34,7 +41,7 @@ install_gensim <- function(envname = NULL, method = "auto", conda = "auto") {
 #' @rdname dependencies
 #' @export
 install_sklearn <- function(envname = NULL, method = "auto", conda = "auto") {
-  reticulate::py_install("sklearn", envname = envname, method = method, conda = conda)
+  reticulate::py_install("scikit-learn", envname = envname, method = method, conda = conda)
 }
 
 #' @rdname dependencies
