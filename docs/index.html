@@ -153,24 +153,30 @@ Reference
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<p>Below we build a <em>very basic</em> Latent Dirichlet Allocation model aiming for 2 latent dimensions using example data.</p>
+<p>Below we build a very basic Latent Dirichlet Allocation model aiming for 2 latent dimensions using example data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
 
-<span class="co"># example data</span>
-corpus &lt;-<span class="st"> </span><span class="kw"><a href="reference/utils.html">common_corpus</a></span>(<span class="dt">to_r =</span> <span class="ot">FALSE</span>)
-dict &lt;-<span class="st"> </span><span class="kw"><a href="reference/utils.html">common_dictionary</a></span>(<span class="dt">to_r =</span> <span class="ot">FALSE</span>)
+<span class="co"># example corpus</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"corpus"</span>, <span class="dt">package =</span> <span class="st">"gensimr"</span>)
+
+<span class="co"># preprocess documents</span>
+texts &lt;-<span class="st"> </span><span class="kw"><a href="reference/prepare_documents.html">prepare_documents</a></span>(corpus)
+<span class="co">#&gt; → Preprocessing 9 documents</span>
+<span class="co">#&gt; ← 9 documents after perprocessing</span>
+dictionary &lt;-<span class="st"> </span><span class="kw"><a href="reference/corpora_dictionary.html">corpora_dictionary</a></span>(texts)
+corpus &lt;-<span class="st"> </span><span class="kw"><a href="reference/doc2bow.html">doc2bow</a></span>(dictionary, texts)
 
 <span class="co"># latent similarity index</span>
-lda &lt;-<span class="st"> </span><span class="kw"><a href="reference/model_lda.html">model_lda</a></span>(corpus, <span class="dt">id2word =</span> dict, <span class="dt">num_topics =</span> 2L)
+lda &lt;-<span class="st"> </span><span class="kw"><a href="reference/model_lda.html">model_lda</a></span>(corpus, <span class="dt">id2word =</span> dictionary, <span class="dt">num_topics =</span> 2L)
 topics &lt;-<span class="st"> </span>lda<span class="op">$</span><span class="kw">print_topics</span>() <span class="co"># get topics</span></code></pre></div>
-<p>Objects returned by the package are not automatically converted to R data structures, please use <code><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">reticulate::py_to_r</a></code> as shown below.</p>
+<p>Objects returned by the package are not automatically converted to R data structures, use <code><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">reticulate::py_to_r</a></code> as shown below to convert them.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>(topics) <span class="co"># convert to R format</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; [[1]][[1]]</span>
 <span class="co">#&gt; [1] 0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[1]][[2]]</span>
-<span class="co">#&gt; [1] "0.106*\"survey\" + 0.103*\"user\" + 0.102*\"computer\" + 0.099*\"system\" + 0.090*\"graph\" + 0.085*\"interface\" + 0.081*\"response\" + 0.079*\"time\" + 0.076*\"minors\" + 0.069*\"trees\""</span>
+<span class="co">#&gt; [1] "0.151*\"eps\" + 0.123*\"user\" + 0.112*\"interface\" + 0.099*\"trees\" + 0.095*\"human\" + 0.090*\"graph\" + 0.089*\"response\" + 0.087*\"time\" + 0.082*\"survey\" + 0.074*\"minors\""</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
@@ -178,22 +184,12 @@ topics &lt;-<span class="st"> </span>lda<span class="op">$</span><span class="kw
 <span class="co">#&gt; [1] 1</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]][[2]]</span>
-<span class="co">#&gt; [1] "0.146*\"system\" + 0.127*\"trees\" + 0.106*\"graph\" + 0.100*\"eps\" + 0.092*\"user\" + 0.084*\"human\" + 0.070*\"minors\" + 0.067*\"time\" + 0.065*\"response\" + 0.061*\"interface\""</span></code></pre></div>
+<span class="co">#&gt; [1] "0.143*\"graph\" + 0.137*\"trees\" + 0.120*\"user\" + 0.103*\"minors\" + 0.097*\"survey\" + 0.094*\"time\" + 0.092*\"response\" + 0.088*\"human\" + 0.077*\"interface\" + 0.050*\"eps\""</span></code></pre></div>
 <p>We can then use our model to transform our corpus and then the document topic matrix.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corpus_wrapped &lt;-<span class="st"> </span><span class="kw"><a href="reference/wrap.html">wrap</a></span>(lda, corpus)
-<span class="kw"><a href="reference/get_documents_topics.html">get_docs_topics</a></span>(corpus_wrapped)
-<span class="co">#&gt; # A tibble: 9 x 4</span>
-<span class="co">#&gt;   dimension_1_x dimension_1_y dimension_2_x dimension_2_y</span>
-<span class="co">#&gt;           &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt; 1             0         0.810             1         0.190</span>
-<span class="co">#&gt; 2             0         0.894             1         0.106</span>
-<span class="co">#&gt; 3             0         0.212             1         0.788</span>
-<span class="co">#&gt; 4             0         0.128             1         0.872</span>
-<span class="co">#&gt; 5             0         0.801             1         0.199</span>
-<span class="co">#&gt; 6             0         0.296             1         0.704</span>
-<span class="co">#&gt; 7             0         0.223             1         0.777</span>
-<span class="co">#&gt; 8             0         0.202             1         0.798</span>
-<span class="co">#&gt; 9             0         0.810             1         0.190</span></code></pre></div>
+doc_topics &lt;-<span class="st"> </span><span class="kw"><a href="reference/get_documents_topics.html">get_docs_topics</a></span>(corpus_wrapped)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(doc_topics<span class="op">$</span>dimension_<span class="dv">1</span>_y, doc_topics<span class="op">$</span>dimension_<span class="dv">2</span>_y)</code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 </div>
   </div>
 

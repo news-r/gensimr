@@ -13,6 +13,8 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
+par(bg = '#f9f7f1')
+
 library(htmltools)
 reticulate::use_virtualenv("./env")
 ```
@@ -60,29 +62,43 @@ div(
 
 ## Example
 
-Below we build a _very basic_ Latent Dirichlet Allocation model aiming for 2 latent dimensions using example data.
+Below we build a very basic Latent Dirichlet Allocation model aiming for 2 latent dimensions using example data.
 
 ```{r}
 library(gensimr)
 
-# example data
-corpus <- common_corpus(to_r = FALSE)
-dict <- common_dictionary(to_r = FALSE)
+# example corpus
+data("corpus", package = "gensimr")
+
+# preprocess documents
+texts <- prepare_documents(corpus)
+dictionary <- corpora_dictionary(texts)
+corpus <- doc2bow(dictionary, texts)
 
 # latent similarity index
-lda <- model_lda(corpus, id2word = dict, num_topics = 2L)
+lda <- model_lda(corpus, id2word = dictionary, num_topics = 2L)
 topics <- lda$print_topics() # get topics
 ```
 
-Objects returned by the package are not automatically converted to R data structures, please use `reticulate::py_to_r` as shown below.
+Objects returned by the package are not automatically converted to R data structures, use `reticulate::py_to_r` as shown below to convert them.
 
 ```{r}
 reticulate::py_to_r(topics) # convert to R format
 ```
 
-We can then use our model to transform our corpus and then the document topic matrix.
+We can then use our model to transform our corpus and then the document topic matrix. 
 
-```{r}
+```r
 corpus_wrapped <- wrap(lda, corpus)
-get_docs_topics(corpus_wrapped)
+doc_topics <- get_docs_topics(corpus_wrapped)
+plot(doc_topics$dimension_1_y, doc_topics$dimension_2_y)
 ```
+
+```{r, echo = FALSE}
+corpus_wrapped <- wrap(lda, corpus)
+doc_topics <- get_docs_topics(corpus_wrapped)
+par(bg = '#f4f1e6')
+plot(doc_topics$dimension_1_y, doc_topics$dimension_2_y)
+```
+
+The plot correctly identifies two topics/clusters. As stated in table 2 from [this paper](http://www.cs.bham.ac.uk/~pxt/IDA/lsa_ind.pdf), the example corpus (`data(corpus)`) essentially has two classes of documents. First five are about human-computer interaction and the other four are about graphs. 
