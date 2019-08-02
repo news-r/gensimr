@@ -224,9 +224,9 @@ if(typeof(LDAvis) !== "undefined"){
          });
 }
 </script><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()
-<span class="co">#&gt; -17.15096507935965</span>
+<span class="co">#&gt; -14.670770411776648</span>
 bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()
-<span class="co">#&gt; -17.223047765245546</span></code></pre></div>
+<span class="co">#&gt; -14.726061108336854</span></code></pre></div>
 </div>
 <div id="using-c_v-coherence" class="section level2">
 <h2 class="hasAnchor">
@@ -234,9 +234,9 @@ bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">good_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> good_lda_model, <span class="dt">texts =</span> texts, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'c_v'</span>)
 bad_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> bad_lda_model, <span class="dt">texts =</span> texts, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'c_v'</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()
-<span class="co">#&gt; 0.38865375998203167</span>
+<span class="co">#&gt; 0.38384135537372027</span>
 bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()
-<span class="co">#&gt; 0.38865375998203167</span></code></pre></div>
+<span class="co">#&gt; 0.3838413553737203</span></code></pre></div>
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">

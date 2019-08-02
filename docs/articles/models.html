@@ -163,20 +163,23 @@ docs[[<span class="dv">1</span>]] <span class="co"># print first preprocessed d
 <span class="co">#&gt; [1] "human"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [1] "interface"</span></code></pre></div>
+<span class="co">#&gt; [1] "interface"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[3]]</span>
+<span class="co">#&gt; [1] "computer"</span></code></pre></div>
 <p>Once preprocessed we can build a dictionary.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dictionary &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpora_dictionary.html">corpora_dictionary</a></span>(docs)</code></pre></div>
 <p>A dictionary essentially assigns an integer to each term.</p>
 <p><code>doc2bow</code> simply applies the method of the same name to every documents (see example below); it counts the number of occurrences of each distinct word, converts the word to its integer word id and returns the result as a sparse vector.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># native method to a single document</span>
 dictionary<span class="op">$</span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(docs[[<span class="dv">1</span>]])
-<span class="co">#&gt; [(0, 1), (1, 1)]</span>
+<span class="co">#&gt; [(0, 1), (1, 1), (2, 1)]</span>
 
 <span class="co"># apply to all documents</span>
 corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</code></pre></div>
 <p>Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set <code>auto_delete</code> to <code>FALSE</code> otherwise the corpus is deleted after first use. Note this means you should manually delete it with <code>delete_mmcorpus</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))
-<span class="co">#&gt; ℹ Path: /tmp/RtmpZQkB4S/file1dc37170e397.mm </span>
+<span class="co">#&gt; ℹ Path: /tmp/RtmpaPzpPf/file3c101de2a986.mm </span>
 <span class="co">#&gt;  ✔ Temp file</span>
 <span class="co">#&gt;  ✖ Delete after use</span></code></pre></div>
 <p>Then initialise a model, we’re going to use a Latent Similarity Indexing method later on (<code>model_lsi</code>) which requires td-idf.</p>
@@ -191,7 +194,7 @@ corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <p>Note that we use the transformed corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lsi &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lsi.html">model_lsi</a></span>(corpus_transformed, <span class="dt">id2word =</span> dictionary, <span class="dt">num_topics =</span> 2L)
 lsi<span class="op">$</span><span class="kw">print_topics</span>()
-<span class="co">#&gt; [(0, '0.702*"trees" + 0.538*"graph" + 0.403*"minors" + 0.198*"survey" + 0.074*"time" + 0.074*"response" + 0.064*"user" + 0.020*"interface" + 0.020*"eps" + 0.013*"human"'), (1, '-0.433*"user" + -0.398*"interface" + -0.398*"eps" + -0.380*"response" + -0.380*"time" + -0.372*"human" + -0.204*"survey" + 0.155*"trees" + 0.059*"graph" + 0.010*"minors"')]</span></code></pre></div>
+<span class="co">#&gt; [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]</span></code></pre></div>
 <p>We can then wrap the model around the corpus to extract further information, below we extract how each document contribute to each dimension (topic).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wrapped_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(lsi, corpus_transformed)
 (wrapped_corpus_docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_documents_topics.html">get_docs_topics</a></span>(wrapped_corpus))
@@ -199,15 +202,15 @@ lsi<span class="op">$</span><span class="kw">print_topics</span>()
 <pre><code>#&gt; # A tibble: 9 x 4
 #&gt;   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
 #&gt;           &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
-#&gt; 1             0        0.0230             1       -0.544 
-#&gt; 2             0        0.208              1       -0.681 
-#&gt; 3             0        0.0539             1       -0.698 
-#&gt; 4             0        0.0230             1       -0.544 
-#&gt; 5             0        0.122              1       -0.676 
-#&gt; 6             0        0.702              1        0.155 
-#&gt; 7             0        0.877              1        0.151 
-#&gt; 8             0        0.911              1        0.115 
-#&gt; 9             0        0.625              1       -0.0946</code></pre>
+#&gt; 1             0        0.0660             1       -0.520 
+#&gt; 2             0        0.197              1       -0.761 
+#&gt; 3             0        0.0899             1       -0.724 
+#&gt; 4             0        0.0759             1       -0.632 
+#&gt; 5             0        0.102              1       -0.574 
+#&gt; 6             0        0.703              1        0.161 
+#&gt; 7             0        0.877              1        0.168 
+#&gt; 8             0        0.910              1        0.141 
+#&gt; 9             0        0.617              1       -0.0539</code></pre>
 <p><img src="models_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
 <div id="random-projections" class="section level2">
@@ -238,18 +241,18 @@ wrapped_corpus_docs &lt;-<span class="st"> </span><span class="kw"><a href="../r
 reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>(hdp<span class="op">$</span><span class="kw">show_topic</span>(<span class="dt">topic_id =</span> 1L, <span class="dt">topn =</span> 5L))
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; [[1]][[1]]</span>
-<span class="co">#&gt; [1] "response"</span>
+<span class="co">#&gt; [1] "computer"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[1]][[2]]</span>
-<span class="co">#&gt; [1] 0.2620199</span>
+<span class="co">#&gt; [1] 0.2570565</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
 <span class="co">#&gt; [[2]][[1]]</span>
-<span class="co">#&gt; [1] "user"</span>
+<span class="co">#&gt; [1] "system"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]][[2]]</span>
-<span class="co">#&gt; [1] 0.1623124</span>
+<span class="co">#&gt; [1] 0.1635838</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[3]]</span>
@@ -257,23 +260,23 @@ reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocum
 <span class="co">#&gt; [1] "trees"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[3]][[2]]</span>
-<span class="co">#&gt; [1] 0.1535293</span>
+<span class="co">#&gt; [1] 0.1484158</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[4]]</span>
 <span class="co">#&gt; [[4]][[1]]</span>
-<span class="co">#&gt; [1] "minors"</span>
+<span class="co">#&gt; [1] "human"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[4]][[2]]</span>
-<span class="co">#&gt; [1] 0.1401824</span>
+<span class="co">#&gt; [1] 0.1144852</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[5]]</span>
 <span class="co">#&gt; [[5]][[1]]</span>
-<span class="co">#&gt; [1] "survey"</span>
+<span class="co">#&gt; [1] "eps"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[5]][[2]]</span>
-<span class="co">#&gt; [1] 0.1395633</span></code></pre></div>
+<span class="co">#&gt; [1] 0.09639588</span></code></pre></div>
 </div>
 <div id="fasttext" class="section level2">
 <h2 class="hasAnchor">
@@ -286,15 +289,15 @@ ft<span class="op">$</span><span class="kw">train</span>(<span class="dt">senten
 
 <span class="co"># most similar</span>
 ft<span class="op">$</span>wv<span class="op">$</span><span class="kw">most_similar</span>(<span class="dt">positive =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'computer'</span>, <span class="st">'human'</span>), <span class="dt">negative =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'interface'</span>))
-<span class="co">#&gt; [('user', 0.6539908647537231), ('graph', 0.33888256549835205), ('response', 0.2424505352973938), ('time', 0.025952547788619995), ('eps', -0.029205352067947388), ('trees', -0.03112006187438965), ('interface', -0.27506646513938904), ('survey', -0.47796666622161865), ('minors', -0.5773917436599731)]</span>
+<span class="co">#&gt; [('system', 0.41442763805389404), ('trees', 0.386058509349823), ('time', 0.22427979111671448), ('user', 0.1963859349489212), ('graph', 0.09310441464185715), ('survey', 0.07097838819026947), ('interface', -0.07697445154190063), ('minors', -0.21524256467819214), ('response', -0.39034444093704224), ('eps', -0.8746801614761353)]</span>
 
 <span class="co"># odd one out</span>
 ft<span class="op">$</span>wv<span class="op">$</span><span class="kw">doesnt_match</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"human"</span>, <span class="st">"computer"</span>, <span class="st">"interface"</span>, <span class="st">"tree"</span>))
-<span class="co">#&gt; computer</span>
+<span class="co">#&gt; tree</span>
 
 <span class="co"># similarity score</span>
 ft<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">'computer'</span>, <span class="st">'human'</span>)
-<span class="co">#&gt; -0.06809507</span></code></pre></div>
+<span class="co">#&gt; 0.8081416</span></code></pre></div>
 </div>
 <div id="author-topic-model" class="section level2">
 <h2 class="hasAnchor">
@@ -322,16 +325,16 @@ atmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mod
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlink">unlink</a></span>(temp, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>Then extract the topics for each author.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">atmodel<span class="op">$</span><span class="kw"><a href="../reference/get_author_topics.html">get_author_topics</a></span>(<span class="st">"jack"</span>) <span class="co"># native for single author </span>
-<span class="co">#&gt; [(0, 0.09629754453095607), (1, 0.9037024554690439)]</span>
+<span class="co">#&gt; [(0, 0.9045919437303642), (1, 0.09540805626963585)]</span>
 
 <span class="co"># apply to all authors</span>
 <span class="kw"><a href="../reference/get_author_topics.html">get_author_topics</a></span>(atmodel)
 <span class="co">#&gt; # A tibble: 3 x 5</span>
 <span class="co">#&gt;   authors dimension_1_x dimension_1_y dimension_2_x dimension_2_y</span>
 <span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 jack                0        0.0963             1         0.904</span>
-<span class="co">#&gt; 2 jane                0        0.0697             1         0.930</span>
-<span class="co">#&gt; 3 john                0        0.143              1         0.857</span></code></pre></div>
+<span class="co">#&gt; 1 jack                0         0.905             1        0.0954</span>
+<span class="co">#&gt; 2 jane                0         0.931             1        0.0690</span>
+<span class="co">#&gt; 3 john                0         0.872             1        0.128</span></code></pre></div>
 </div>
 <div id="log-entropy" class="section level2">
 <h2 class="hasAnchor">

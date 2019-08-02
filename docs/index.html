@@ -176,7 +176,7 @@ topics &lt;-<span class="st"> </span>lda<span class="op">$</span><span class="kw
 <span class="co">#&gt; [1] 0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[1]][[2]]</span>
-<span class="co">#&gt; [1] "0.158*\"trees\" + 0.146*\"user\" + 0.136*\"graph\" + 0.102*\"interface\" + 0.098*\"eps\" + 0.085*\"minors\" + 0.081*\"response\" + 0.078*\"time\" + 0.060*\"human\" + 0.056*\"survey\""</span>
+<span class="co">#&gt; [1] "0.124*\"user\" + 0.094*\"system\" + 0.094*\"survey\" + 0.094*\"response\" + 0.092*\"interface\" + 0.090*\"time\" + 0.086*\"computer\" + 0.084*\"graph\" + 0.078*\"minors\" + 0.060*\"eps\""</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
@@ -184,7 +184,7 @@ topics &lt;-<span class="st"> </span>lda<span class="op">$</span><span class="kw
 <span class="co">#&gt; [1] 1</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]][[2]]</span>
-<span class="co">#&gt; [1] "0.121*\"survey\" + 0.118*\"human\" + 0.109*\"graph\" + 0.102*\"time\" + 0.099*\"response\" + 0.099*\"user\" + 0.096*\"minors\" + 0.089*\"trees\" + 0.085*\"eps\" + 0.081*\"interface\""</span></code></pre></div>
+<span class="co">#&gt; [1] "0.158*\"trees\" + 0.155*\"system\" + 0.114*\"graph\" + 0.094*\"human\" + 0.089*\"eps\" + 0.068*\"minors\" + 0.066*\"user\" + 0.057*\"computer\" + 0.053*\"time\" + 0.050*\"interface\""</span></code></pre></div>
 <p>We can then use our model to transform our corpus and then the document topic matrix.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corpus_wrapped &lt;-<span class="st"> </span><span class="kw"><a href="reference/wrap.html">wrap</a></span>(lda, corpus)
 doc_topics &lt;-<span class="st"> </span><span class="kw"><a href="reference/get_documents_topics.html">get_docs_topics</a></span>(corpus_wrapped)

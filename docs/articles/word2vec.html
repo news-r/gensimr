@@ -142,16 +142,6 @@
 
 <span class="co"># sample data</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(corpus, <span class="dt">package =</span> <span class="st">"gensimr"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(corpus)
-<span class="co">#&gt; [1] "Human machine interface for lab abc computer applications"    </span>
-<span class="co">#&gt; [2] "A survey of user opinion of computer system response time"    </span>
-<span class="co">#&gt; [3] "The EPS user interface management system"                     </span>
-<span class="co">#&gt; [4] "System and human system engineering testing of EPS"           </span>
-<span class="co">#&gt; [5] "Relation of user perceived response time to error measurement"</span>
-<span class="co">#&gt; [6] "The generation of random binary unordered trees"              </span>
-<span class="co">#&gt; [7] "The intersection graph of paths in trees"                     </span>
-<span class="co">#&gt; [8] "Graph minors IV Widths of trees and well quasi ordering"      </span>
-<span class="co">#&gt; [9] "Graph minors A survey"</span>
 
 <span class="co"># preprocess corpus</span>
 docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepare_documents.html">prepare_documents</a></span>(corpus)
@@ -167,20 +157,20 @@ word2vec &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mo
 word2vec<span class="op">$</span><span class="kw">build_vocab</span>(docs) 
 <span class="co">#&gt; None</span>
 word2vec<span class="op">$</span><span class="kw">train</span>(docs, <span class="dt">total_examples =</span> word2vec<span class="op">$</span>corpus_count, <span class="dt">epochs =</span> 20L)
-<span class="co">#&gt; (45, 460)</span>
+<span class="co">#&gt; (76, 580)</span>
 word2vec<span class="op">$</span><span class="kw">init_sims</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; None</span></code></pre></div>
 <p>Now we can explore the model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">most_similar</span>(<span class="dt">positive =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"interface"</span>))
-<span class="co">#&gt; [('response', 0.1236969605088234), ('eps', 0.08931069076061249), ('minors', 0.02228805050253868), ('trees', -0.018619386479258537), ('time', -0.022757232189178467), ('user', -0.03657709062099457), ('survey', -0.0529751181602478), ('graph', -0.055267248302698135), ('human', -0.08162233233451843)]</span></code></pre></div>
+<span class="co">#&gt; [('response', 0.18041151762008667), ('trees', 0.1660563051700592), ('system', 0.10508902370929718), ('graph', 0.035755448043346405), ('time', -0.01089409552514553), ('user', -0.03196129947900772), ('human', -0.04460706189274788), ('computer', -0.07458757609128952), ('eps', -0.09074579179286957), ('survey', -0.2050313651561737)]</span></code></pre></div>
 <p>We expect “trees” to be the odd one out, it is a term that was in a different topic (#2) whereas other terms were in topics #1.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">doesnt_match</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"human"</span>, <span class="st">"interface"</span>, <span class="st">"trees"</span>))
-<span class="co">#&gt; interface</span></code></pre></div>
+<span class="co">#&gt; human</span></code></pre></div>
 <p>Test similarity between words.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"human"</span>, <span class="st">"trees"</span>)
-<span class="co">#&gt; 0.03953718</span>
+<span class="co">#&gt; 0.05159024</span>
 word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"eps"</span>, <span class="st">"survey"</span>)
-<span class="co">#&gt; -0.07035658</span></code></pre></div>
+<span class="co">#&gt; -0.10205723</span></code></pre></div>
 </div>
 <div id="phrases" class="section level2">
 <h2 class="hasAnchor">

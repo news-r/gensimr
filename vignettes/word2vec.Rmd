@@ -27,7 +27,6 @@ set.seed(42) # rerproducability
 
 # sample data
 data(corpus, package = "gensimr")
-print(corpus)
 
 # preprocess corpus
 docs <- prepare_documents(corpus)
