@@ -153,7 +153,7 @@ corpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2
 <a href="#set-up-two-topic-models" class="anchor"></a>Set up two topic models</h2>
 <p>We’ll be setting up two different LDA Topic models. A good one and bad one. To build a “good” topic model, we’ll simply train it using more iterations than the bad one. Therefore the u_mass coherence should in theory be better for the good model than the bad one since it would be producing more “human-interpretable” topics.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">good_lda_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(<span class="dt">corpus =</span> corpus, <span class="dt">id2word =</span> dictionary, <span class="dt">iterations =</span> 50L, <span class="dt">num_topics =</span> 2L)
-bad_lda_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(<span class="dt">corpus =</span> corpus, <span class="dt">id2word =</span> dictionary, <span class="dt">iterations =</span> 1L, <span class="dt">num_topics =</span> 2L)</code></pre></div>
+bad_lda_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(<span class="dt">corpus =</span> corpus, <span class="dt">id2word =</span> dictionary, <span class="dt">iterations =</span> 1L, <span class="dt">num_topics =</span> 10L)</code></pre></div>
 </div>
 <div id="interpreting-the-topics" class="section level2">
 <h2 class="hasAnchor">
@@ -224,9 +224,9 @@ if(typeof(LDAvis) !== "undefined"){
          });
 }
 </script><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()
-<span class="co">#&gt; -14.704559170785663</span>
+<span class="co">#&gt; -14.673842117141104</span>
 bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()
-<span class="co">#&gt; -14.726061108336854</span></code></pre></div>
+<span class="co">#&gt; -14.70455917078566</span></code></pre></div>
 </div>
 <div id="using-c_v-coherence" class="section level2">
 <h2 class="hasAnchor">

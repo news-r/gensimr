@@ -40,7 +40,7 @@ We'll be setting up two different LDA Topic models. A good one and bad one. To b
 
 ```{r}
 good_lda_model <- model_lda(corpus = corpus, id2word = dictionary, iterations = 50L, num_topics = 2L)
-bad_lda_model <- model_lda(corpus = corpus, id2word = dictionary, iterations = 1L, num_topics = 2L)
+bad_lda_model <- model_lda(corpus = corpus, id2word = dictionary, iterations = 1L, num_topics = 10L)
 ```
 
 ## Interpreting the topics
