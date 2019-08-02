@@ -59,7 +59,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Models
+    Modeling
      
     <span class="caret"></span>
   </a>
@@ -162,15 +162,15 @@ word2vec<span class="op">$</span><span class="kw">init_sims</span>(<span class="
 <span class="co">#&gt; None</span></code></pre></div>
 <p>Now we can explore the model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">most_similar</span>(<span class="dt">positive =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"interface"</span>))
-<span class="co">#&gt; [('response', 0.18041151762008667), ('trees', 0.1660563051700592), ('system', 0.10508902370929718), ('graph', 0.035755448043346405), ('time', -0.01089409552514553), ('user', -0.03196129947900772), ('human', -0.04460706189274788), ('computer', -0.07458757609128952), ('eps', -0.09074579179286957), ('survey', -0.2050313651561737)]</span></code></pre></div>
+<span class="co">#&gt; [('graph', 0.1473119854927063), ('user', 0.1430417001247406), ('human', 0.07799186557531357), ('minors', 0.05306056886911392), ('response', 0.027499448508024216), ('survey', -0.009502698667347431), ('system', -0.023484889417886734), ('time', -0.05888282507658005), ('eps', -0.07128775864839554), ('trees', -0.10169176757335663)]</span></code></pre></div>
 <p>We expect “trees” to be the odd one out, it is a term that was in a different topic (#2) whereas other terms were in topics #1.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">doesnt_match</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"human"</span>, <span class="st">"interface"</span>, <span class="st">"trees"</span>))
-<span class="co">#&gt; human</span></code></pre></div>
+<span class="co">#&gt; trees</span></code></pre></div>
 <p>Test similarity between words.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"human"</span>, <span class="st">"trees"</span>)
-<span class="co">#&gt; 0.05159024</span>
+<span class="co">#&gt; 0.04467096</span>
 word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"eps"</span>, <span class="st">"survey"</span>)
-<span class="co">#&gt; -0.10205723</span></code></pre></div>
+<span class="co">#&gt; 0.0849669</span></code></pre></div>
 </div>
 <div id="phrases" class="section level2">
 <h2 class="hasAnchor">

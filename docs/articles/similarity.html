@@ -59,7 +59,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Models
+    Modeling
      
     <span class="caret"></span>
   </a>
@@ -180,7 +180,7 @@ dictionary<span class="op">$</span><span class="kw"><a href="../reference/doc2bo
 corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</code></pre></div>
 <p>Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set <code>auto_delete</code> to <code>FALSE</code> otherwise the corpus is deleted after first use. Note this means you should manually delete it with <code>delete_mmcorpus</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))
-<span class="co">#&gt; ℹ Path: /tmp/RtmpZRRv1d/file3ccb5602e881.mm </span>
+<span class="co">#&gt; ℹ Path: /tmp/RtmpamoUIT/file449e5736e9f8.mm </span>
 <span class="co">#&gt;  ✔ Temp file</span>
 <span class="co">#&gt;  ✖ Delete after use</span></code></pre></div>
 <p>Then initialise a model, we’re going to use a Latent Similarity Indexing method later on (<code>model_lsi</code>) which requires td-idf.</p>

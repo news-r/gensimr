@@ -10,7 +10,7 @@ navbar:
       href: "articles/installation.html"
     - text: "Parsing"
       href: "articles/preprocessing.html"
-    - text: "Models"
+    - text: "Modeling"
       menu:
         - text: "Topic Modeling"
           href: "articles/models.html"

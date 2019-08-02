@@ -59,7 +59,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Models
+    Modeling
      
     <span class="caret"></span>
   </a>
@@ -179,7 +179,7 @@ dictionary<span class="op">$</span><span class="kw"><a href="../reference/doc2bo
 corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</code></pre></div>
 <p>Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set <code>auto_delete</code> to <code>FALSE</code> otherwise the corpus is deleted after first use. Note this means you should manually delete it with <code>delete_mmcorpus</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))
-<span class="co">#&gt; ℹ Path: /tmp/RtmpaPzpPf/file3c101de2a986.mm </span>
+<span class="co">#&gt; ℹ Path: /tmp/RtmpbXAyTx/file43e25c7ff9e4.mm </span>
 <span class="co">#&gt;  ✔ Temp file</span>
 <span class="co">#&gt;  ✖ Delete after use</span></code></pre></div>
 <p>Then initialise a model, we’re going to use a Latent Similarity Indexing method later on (<code>model_lsi</code>) which requires td-idf.</p>
@@ -194,7 +194,7 @@ corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <p>Note that we use the transformed corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lsi &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lsi.html">model_lsi</a></span>(corpus_transformed, <span class="dt">id2word =</span> dictionary, <span class="dt">num_topics =</span> 2L)
 lsi<span class="op">$</span><span class="kw">print_topics</span>()
-<span class="co">#&gt; [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"time" + 0.060*"response" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]</span></code></pre></div>
+<span class="co">#&gt; [(0, '0.703*"trees" + 0.538*"graph" + 0.402*"minors" + 0.187*"survey" + 0.061*"system" + 0.060*"response" + 0.060*"time" + 0.058*"user" + 0.049*"computer" + 0.035*"interface"'), (1, '-0.460*"system" + -0.373*"user" + -0.332*"eps" + -0.328*"interface" + -0.320*"time" + -0.320*"response" + -0.293*"computer" + -0.280*"human" + -0.171*"survey" + 0.161*"trees"')]</span></code></pre></div>
 <p>We can then wrap the model around the corpus to extract further information, below we extract how each document contribute to each dimension (topic).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wrapped_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(lsi, corpus_transformed)
 (wrapped_corpus_docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_documents_topics.html">get_docs_topics</a></span>(wrapped_corpus))
@@ -241,10 +241,10 @@ wrapped_corpus_docs &lt;-<span class="st"> </span><span class="kw"><a href="../r
 reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion">py_to_r</a></span>(hdp<span class="op">$</span><span class="kw">show_topic</span>(<span class="dt">topic_id =</span> 1L, <span class="dt">topn =</span> 5L))
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; [[1]][[1]]</span>
-<span class="co">#&gt; [1] "computer"</span>
+<span class="co">#&gt; [1] "minors"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[1]][[2]]</span>
-<span class="co">#&gt; [1] 0.2570565</span>
+<span class="co">#&gt; [1] 0.1718132</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
@@ -252,31 +252,31 @@ reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocum
 <span class="co">#&gt; [1] "system"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]][[2]]</span>
-<span class="co">#&gt; [1] 0.1635838</span>
+<span class="co">#&gt; [1] 0.1618536</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[3]]</span>
 <span class="co">#&gt; [[3]][[1]]</span>
-<span class="co">#&gt; [1] "trees"</span>
+<span class="co">#&gt; [1] "interface"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[3]][[2]]</span>
-<span class="co">#&gt; [1] 0.1484158</span>
+<span class="co">#&gt; [1] 0.1205098</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[4]]</span>
 <span class="co">#&gt; [[4]][[1]]</span>
-<span class="co">#&gt; [1] "human"</span>
+<span class="co">#&gt; [1] "time"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[4]][[2]]</span>
-<span class="co">#&gt; [1] 0.1144852</span>
+<span class="co">#&gt; [1] 0.09888023</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[5]]</span>
 <span class="co">#&gt; [[5]][[1]]</span>
-<span class="co">#&gt; [1] "eps"</span>
+<span class="co">#&gt; [1] "user"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[5]][[2]]</span>
-<span class="co">#&gt; [1] 0.09639588</span></code></pre></div>
+<span class="co">#&gt; [1] 0.09581883</span></code></pre></div>
 </div>
 <div id="fasttext" class="section level2">
 <h2 class="hasAnchor">

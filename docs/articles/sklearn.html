@@ -59,7 +59,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Models
+    Modeling
      
     <span class="caret"></span>
   </a>
@@ -179,7 +179,7 @@ dictionary<span class="op">$</span><span class="kw"><a href="../reference/doc2bo
 corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</code></pre></div>
 <p>Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set <code>auto_delete</code> to <code>FALSE</code> otherwise the corpus is deleted after first use. Note this means you should manually delete it with <code>delete_mmcorpus</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))
-<span class="co">#&gt; ℹ Path: /tmp/Rtmp9KA1aB/file3cfc690825b4.mm </span>
+<span class="co">#&gt; ℹ Path: /tmp/Rtmpc4qcF5/file44d11ccc02fe.mm </span>
 <span class="co">#&gt;  ✔ Temp file</span>
 <span class="co">#&gt;  ✖ Delete after use</span></code></pre></div>
 <p>Then initialise a model, we’re going to use a Latent Similarity Indexing method later on (<code>model_lsi</code>) which requires td-idf.</p>
@@ -209,7 +209,7 @@ atmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/skl
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlink">unlink</a></span>(temp, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
 
 atmodel<span class="op">$</span><span class="kw">fit</span>(corpus_bow)<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(<span class="st">"jack"</span>)
-<span class="co">#&gt; [[0.8155843  0.18441571]]</span></code></pre></div>
+<span class="co">#&gt; [[0.816113   0.18388699]]</span></code></pre></div>
 </div>
 <div id="doc2vec" class="section level2">
 <h2 class="hasAnchor">
@@ -318,8 +318,8 @@ w2v_model &lt;-<span class="st"> </span>w2v_model<span class="op">$</span><span 
 
 <span class="co"># What is the vector representation of the word 'graph'?</span>
 w2v_model<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"graph"</span>))
-<span class="co">#&gt; [[-0.00695533  0.01675071  0.03906275  0.04087657  0.02962516 -0.00343562</span>
-<span class="co">#&gt;   -0.00272745  0.01817101  0.01718491 -0.03465964]]</span></code></pre></div>
+<span class="co">#&gt; [[-0.03163474 -0.0277922  -0.01181493  0.00320626 -0.03308149  0.01843606</span>
+<span class="co">#&gt;    0.01892981  0.03571266  0.0226998   0.04390454]]</span></code></pre></div>
 <p>Clean up, delete the corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/mmcorpus_serialize.html">delete_mmcorpus</a></span>(corpus_mm)
 <span class="co">#&gt; ✔ Temp unlinked</span></code></pre></div>
