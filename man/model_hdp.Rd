@@ -43,3 +43,14 @@ approximation.
 \details{
 This is a non-parametric bayesian method: notice the lack of \code{num_topics} argument.
 }
+\examples{
+docs <- prepare_documents(corpus)
+dictionary <- corpora_dictionary(docs)
+corpora <- doc2bow(dictionary, docs)
+corpus_mm <- serialize_mmcorpus(corpora, auto_delete = FALSE)
+
+# fit model
+hdp <-  model_hdp(corpus_mm, id2word = dictionary)
+reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
+
+}

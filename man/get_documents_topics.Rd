@@ -16,3 +16,17 @@ get_docs_topics(corpus)
 \description{
 Get document-topics matrix.
 }
+\examples{
+docs <- prepare_documents(corpus)
+dictionary <- corpora_dictionary(docs)
+corpora <- doc2bow(dictionary, docs)
+corpus_mm <- serialize_mmcorpus(corpora)
+tfidf <- model_tfidf(corpus_mm)
+corpus_transformed <- wrap(tfidf, corpora)
+
+# fit model
+lsi <- model_lsi(corpus_transformed, id2word = dictionary, num_topics = 2L)
+wrapped_corpus <- wrap(lsi, corpus_transformed)
+get_docs_topics(wrapped_corpus)
+
+}

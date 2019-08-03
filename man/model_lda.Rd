@@ -70,3 +70,15 @@ Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “go
 }
 }
 
+\examples{
+docs <- prepare_documents(corpus)
+dictionary <- corpora_dictionary(docs)
+corpora <- doc2bow(dictionary, docs)
+corpus_mm <- serialize_mmcorpus(corpora, auto_delete = FALSE)
+
+# fit model
+lda <- model_lda(corpus_mm, id2word = dictionary, num_topics = 2L)
+lda_topics <- lda$get_document_topics(corpora)
+get_docs_topics(lda_topics)
+
+}

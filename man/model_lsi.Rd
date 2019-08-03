@@ -37,3 +37,13 @@ Transform into a latent n dimensional space via Latent Semantic Indexing.
 \details{
 Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
 }
+\examples{
+docs <- prepare_documents(corpus)
+dictionary <- corpora_dictionary(docs)
+corpora <- doc2bow(dictionary, docs)
+
+# fit model
+lsi <- model_lsi(corpora, id2word = dictionary, num_topics = 2L)
+lsi$print_topics()
+
+}

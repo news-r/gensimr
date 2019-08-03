@@ -18,6 +18,14 @@
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/tfidfmodel.html}{official documentation}.
 #' @param file Path to a saved model.
 #' 
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' dictionary <- corpora_dictionary(docs)
+#' corpora <- doc2bow(dictionary, docs)
+#' 
+#' # fit model
+#' tfidf <- model_tfidf(corpora)
+#' 
 #' @section SMART:
 #' Term frequency weighing:
 #' \itemize{
@@ -91,6 +99,11 @@ model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, s
 model_tfidf.python.builtin.list <- model_tfidf.mm
 
 #' @rdname model_tfidf
+#' @method model_tfidf python.builtin.tuple
+#' @export
+model_tfidf.python.builtin.tuple <- model_tfidf.mm
+
+#' @rdname model_tfidf
 #' @export
 load_tfidf <- function(file){
   assert_that(!missing(file), msg = "Missing `file`")
@@ -105,6 +118,15 @@ load_tfidf <- function(file){
 #' @param distributed If \code{TRUE} - distributed mode (parallel execution on several machines) will be used.
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/lsimodel.html}{official documentation}.
 #' @param file Path to a saved model.
+#' 
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' dictionary <- corpora_dictionary(docs)
+#' corpora <- doc2bow(dictionary, docs)
+#' 
+#' # fit model
+#' lsi <- model_lsi(corpora, id2word = dictionary, num_topics = 2L)
+#' lsi$print_topics()
 #' 
 #' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
 #' 
@@ -152,6 +174,14 @@ load_lsi <- function(file){
 #' @param norm Norm used to normalize, defaults to \code{l2}.
 #' @param file Path to a saved model.
 #' 
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' dictionary <- corpora_dictionary(docs)
+#' corpora <- doc2bow(dictionary, docs)
+#' 
+#' # fit model
+#' norm <- model_norm(corpora)
+#' 
 #' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
 #' 
 #' @name model_norm
@@ -183,6 +213,11 @@ model_norm.list <- function(corpus, norm = c("l2", "l1")){
 model_norm.python.builtin.list <- model_norm.list
 
 #' @rdname model_norm
+#' @method model_norm python.builtin.tuple
+#' @export
+model_norm.python.builtin.tuple <- model_norm.list
+
+#' @rdname model_norm
 #' @export
 load_norm <- function(file){
   assert_that(!missing(file), msg = "Missing `file`")
@@ -196,6 +231,27 @@ load_norm <- function(file){
 #' 
 #' @param ... Any option, from the \href{https://radimrehurek.com/gensim/models/fasttext.html}{official documentation}.
 #' @param file Path to a saved model.
+#' 
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' 
+#' # fit model
+#' ft <- model_fasttext(size = 4L, window = 3L, min_count = 1L)
+#' 
+#' # build vocabulary
+#' ft$build_vocab(sentences = unname(docs))
+#' 
+#' # train
+#' ft$train(sentences = unname(docs), total_examples = length(docs), epochs = 10L)
+#' 
+#' # most similar
+#' ft$wv$most_similar(positive = c('computer', 'human'), negative = c('interface'))
+#' 
+#' # odd one out
+#' ft$wv$doesnt_match(c("human", "computer", "interface", "tree"))
+#' 
+#' # similarity score
+#' ft$wv$similarity('computer', 'human')
 #' 
 #' @name model_fasttext
 #' 
@@ -267,6 +323,17 @@ load_rp <- function(file){
 #' }
 #' 
 #' @details Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
+#' 
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' dictionary <- corpora_dictionary(docs)
+#' corpora <- doc2bow(dictionary, docs)
+#' corpus_mm <- serialize_mmcorpus(corpora, auto_delete = FALSE)
+#' 
+#' # fit model
+#' lda <- model_lda(corpus_mm, id2word = dictionary, num_topics = 2L)
+#' lda_topics <- lda$get_document_topics(corpora)
+#' get_docs_topics(lda_topics)
 #' 
 #' @name model_lda
 #' 
@@ -380,6 +447,15 @@ load_ldamc <- function(file){
 #' vector will be normalized to length of 1, If \code{FALSE} - do nothing.
 #' @param file Path to a saved model.
 #' 
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' dictionary <- corpora_dictionary(docs)
+#' corpora <- doc2bow(dictionary, docs)
+#' 
+#' # fit model
+#' log_entropy <- model_logentropy(corpora)
+#' wrap(log_entropy, corpora)
+#' 
 #' @name model_logentropy
 #' 
 #' @export
@@ -421,6 +497,16 @@ load_logentropy <- function(file){
 #' @param file Path to a saved model.
 #' 
 #' @details This is a non-parametric bayesian method: notice the lack of \code{num_topics} argument.
+#' 
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' dictionary <- corpora_dictionary(docs)
+#' corpora <- doc2bow(dictionary, docs)
+#' corpus_mm <- serialize_mmcorpus(corpora, auto_delete = FALSE)
+#' 
+#' # fit model
+#' hdp <-  model_hdp(corpus_mm, id2word = dictionary)
+#' reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
 #' 
 #' @name model_hdp
 #' 
@@ -474,6 +560,20 @@ load_hdp <- function(file){
 #' @param ... Any other options, from the \href{https://radimrehurek.com/gensim/models/word2vec.html}{official documentation}.
 #' @param file Path to a saved model.
 #' 
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' 
+#' # initialise
+#' word2vec <- model_word2vec(size = 100L, window = 5L, min_count = 1L)
+#' word2vec$build_vocab(docs)
+#' word2vec$train(docs, total_examples = word2vec$corpus_count, epochs = 20L)
+#' word2vec$init_sims(replace = TRUE)
+#' 
+#' # use
+#' word2vec$wv$most_similar(positive = c("interface"))
+#' word2vec$wv$doesnt_match(c("human", "interface", "trees"))
+#' word2vec$wv$similarity("human", "trees")
+#' 
 #' @name model_word2vec
 #' 
 #' @export
@@ -494,6 +594,19 @@ load_word2vec <- function(file){
 #' Get document-topics matrix.
 #' 
 #' @param corpus Corpus.
+#' 
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' dictionary <- corpora_dictionary(docs)
+#' corpora <- doc2bow(dictionary, docs)
+#' corpus_mm <- serialize_mmcorpus(corpora)
+#' tfidf <- model_tfidf(corpus_mm)
+#' corpus_transformed <- wrap(tfidf, corpora)
+#' 
+#' # fit model
+#' lsi <- model_lsi(corpus_transformed, id2word = dictionary, num_topics = 2L)
+#' wrapped_corpus <- wrap(lsi, corpus_transformed)
+#' get_docs_topics(wrapped_corpus)
 #' 
 #' @name get_documents_topics
 #' @export
@@ -541,6 +654,33 @@ get_docs_topics.gensim.interfaces.CorpusABC <- function(corpus){
 #' \href{https://radimrehurek.com/gensim/models/atmodel.html}{official documentation}.
 #' @param file Path to a saved model.
 #' 
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' dictionary <- corpora_dictionary(docs)
+#' corpora <- doc2bow(dictionary, docs)
+#' corpus_mm <- serialize_mmcorpus(corpora)
+#' 
+#' # fit model
+#' auth2doc <- auth2doc(authors, name, document)
+#' 
+#' \dontrun{
+#' # create temp to hold serialized data
+#' temp <- tempfile("serialized")
+#' 
+# build model
+#' atmodel <- model_at(
+#'   corpus_mm, 
+#'   id2word = dictionary, 
+#'   author2doc = auth2doc, 
+#'   num_topics = 2L, 
+#'   serialized = TRUE,
+#'   serialization_path = temp
+#' )
+#' 
+#' # delete temp
+#' unlink(temp, recursive = TRUE)
+#' }
+#' 
 #' @name model_at
 #' 
 #' @seealso \code{\link{get_author_topics}}
@@ -584,6 +724,34 @@ load_at <- function(file){
 #' Construct vectors of topics for each author.
 #' 
 #' @param auth2doc Output of \code{\link{model_at}}.
+#' 
+#' @examples
+#' docs <- prepare_documents(corpus)
+#' dictionary <- corpora_dictionary(docs)
+#' corpora <- doc2bow(dictionary, docs)
+#' corpus_mm <- serialize_mmcorpus(corpora)
+#' 
+#' # fit model
+#' auth2doc <- auth2doc(authors, name, document)
+#' 
+#' \dontrun{
+#' # create temp to hold serialized data
+#' temp <- tempfile("serialized")
+#' 
+# build model
+#' atmodel <- model_at(
+#'   corpus_mm, 
+#'   id2word = dictionary, 
+#'   author2doc = auth2doc, 
+#'   num_topics = 2L, 
+#'   serialized = TRUE,
+#'   serialization_path = temp
+#' )
+#' 
+#' # delete temp
+#' unlink(temp, recursive = TRUE)
+#' get_author_topics(atmodel)
+#' }
 #' 
 #' @name get_author_topics
 #' 

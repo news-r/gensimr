@@ -18,3 +18,25 @@ load_fasttext(file)
 Train word embeddings from a training corpus with the additional 
 ability to obtain word vectors for out-of-vocabulary words.
 }
+\examples{
+docs <- prepare_documents(corpus)
+
+# fit model
+ft <- model_fasttext(size = 4L, window = 3L, min_count = 1L)
+
+# build vocabulary
+ft$build_vocab(sentences = unname(docs))
+
+# train
+ft$train(sentences = unname(docs), total_examples = length(docs), epochs = 10L)
+
+# most similar
+ft$wv$most_similar(positive = c('computer', 'human'), negative = c('interface'))
+
+# odd one out
+ft$wv$doesnt_match(c("human", "computer", "interface", "tree"))
+
+# similarity score
+ft$wv$similarity('computer', 'human')
+
+}

@@ -5,6 +5,7 @@
 \alias{model_norm.wrapped}
 \alias{model_norm.list}
 \alias{model_norm.python.builtin.list}
+\alias{model_norm.python.builtin.tuple}
 \alias{load_norm}
 \title{Normalization Model}
 \usage{
@@ -15,6 +16,8 @@ model_norm(corpus, norm = c("l2", "l1"))
 \method{model_norm}{list}(corpus, norm = c("l2", "l1"))
 
 \method{model_norm}{python.builtin.list}(corpus, norm = c("l2", "l1"))
+
+\method{model_norm}{python.builtin.tuple}(corpus, norm = c("l2", "l1"))
 
 load_norm(file)
 }
@@ -30,4 +33,13 @@ Compute the l1 or l2 normalization by normalizing separately for each document i
 }
 \details{
 Target dimensionality (\code{num_topics}) of 200–500 is recommended as a “golden standard” \url{https://dl.acm.org/citation.cfm?id=1458105}.
+}
+\examples{
+docs <- prepare_documents(corpus)
+dictionary <- corpora_dictionary(docs)
+corpora <- doc2bow(dictionary, docs)
+
+# fit model
+norm <- model_norm(corpora)
+
 }

@@ -26,6 +26,33 @@ load_at(file)
 \description{
 Author-topic Model
 }
+\examples{
+docs <- prepare_documents(corpus)
+dictionary <- corpora_dictionary(docs)
+corpora <- doc2bow(dictionary, docs)
+corpus_mm <- serialize_mmcorpus(corpora)
+
+# fit model
+auth2doc <- auth2doc(authors, name, document)
+
+\dontrun{
+# create temp to hold serialized data
+temp <- tempfile("serialized")
+
+atmodel <- model_at(
+  corpus_mm, 
+  id2word = dictionary, 
+  author2doc = auth2doc, 
+  num_topics = 2L, 
+  serialized = TRUE,
+  serialization_path = temp
+)
+
+# delete temp
+unlink(temp, recursive = TRUE)
+}
+
+}
 \seealso{
 \code{\link{get_author_topics}}
 }

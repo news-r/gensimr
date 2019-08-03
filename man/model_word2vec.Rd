@@ -17,3 +17,18 @@ load_word2vec(file)
 \description{
 The word2vec algorithms include skip-gram and CBOW models, using either hierarchical softmax or negative sampling.
 }
+\examples{
+docs <- prepare_documents(corpus)
+
+# initialise
+word2vec <- model_word2vec(size = 100L, window = 5L, min_count = 1L)
+word2vec$build_vocab(docs)
+word2vec$train(docs, total_examples = word2vec$corpus_count, epochs = 20L)
+word2vec$init_sims(replace = TRUE)
+
+# use
+word2vec$wv$most_similar(positive = c("interface"))
+word2vec$wv$doesnt_match(c("human", "interface", "trees"))
+word2vec$wv$similarity("human", "trees")
+
+}

@@ -5,6 +5,7 @@
 \alias{model_tfidf.mm_file}
 \alias{model_tfidf.mm}
 \alias{model_tfidf.python.builtin.list}
+\alias{model_tfidf.python.builtin.tuple}
 \alias{load_tfidf}
 \title{Tf-idf Model}
 \usage{
@@ -18,6 +19,9 @@ model_tfidf(mm, normalize = FALSE, smart = "nfc", pivot = NULL,
   pivot = NULL, slope = 0.25, ...)
 
 \method{model_tfidf}{python.builtin.list}(mm, normalize = FALSE,
+  smart = "nfc", pivot = NULL, slope = 0.25, ...)
+
+\method{model_tfidf}{python.builtin.tuple}(mm, normalize = FALSE,
   smart = "nfc", pivot = NULL, slope = 0.25, ...)
 
 load_tfidf(file)
@@ -77,3 +81,12 @@ Document normalization:
 }
 }
 
+\examples{
+docs <- prepare_documents(corpus)
+dictionary <- corpora_dictionary(docs)
+corpora <- doc2bow(dictionary, docs)
+
+# fit model
+tfidf <- model_tfidf(corpora)
+
+}

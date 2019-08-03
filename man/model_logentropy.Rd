@@ -26,3 +26,13 @@ This module allows simple Bag of Words (BoW) represented corpus
 to be transformed into log entropy space. It implements Log Entropy 
 Model that produces entropy-weighted logarithmic term frequency representation.
 }
+\examples{
+docs <- prepare_documents(corpus)
+dictionary <- corpora_dictionary(docs)
+corpora <- doc2bow(dictionary, docs)
+
+# fit model
+log_entropy <- model_logentropy(corpora)
+wrap(log_entropy, corpora)
+
+}
