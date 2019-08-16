@@ -14,4 +14,3 @@ Brings [gensim](https://radimrehurek.com/gensim) to R: efficient large-scale top
 -   [Preprocessing](https://gensimr.news-r.org/articles/preprocessing.html)
 -   [Documentation](https://gensimr.news-r.org/)
 
-⚠️ Notice the "Experimental" lifecycle badge: things won't work, stuff will break.
