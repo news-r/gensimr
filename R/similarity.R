@@ -35,9 +35,10 @@ get_similarity <- function(sim) UseMethod("get_similarity")
 get_similarity.wrapped <- function(sim){
   enum <- bi$enumerate(sim)
   lst <- bi$list(enum)
+  lst <- unlist(lst[[1]][[2]])
   tibble::tibble( 
     doc = 1:length(lst),
-    cosine = unlist(lst)
+    cosine = lst
   ) %>% 
     dplyr::mutate(doc = doc - 1) %>% 
     dplyr::arrange(-cosine)
