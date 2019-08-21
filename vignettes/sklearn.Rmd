@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
+par(bg = '#f9f7f1')
 reticulate::use_virtualenv("../env")
 ```
 
