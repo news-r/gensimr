@@ -33,10 +33,11 @@ get_similarity <- function(sim) UseMethod("get_similarity")
 #' @method get_similarity wrapped
 #' @export
 get_similarity.wrapped <- function(sim){
-  x <- reticulate::py_to_r(sim)
+  enum <- bi$enumerate(sim)
+  lst <- bi$list(enum)
   tibble::tibble( 
-    doc = 1:length(x),
-    cosine = x[1,]
+    doc = 1:length(lst),
+    cosine = unlist(lst)
   ) %>% 
     dplyr::mutate(doc = doc - 1) %>% 
     dplyr::arrange(-cosine)

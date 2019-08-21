@@ -180,7 +180,7 @@
 <a class="sourceLine" id="cb3-6" data-line-number="6">corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</a></code></pre>
 <p>Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set <code>auto_delete</code> to <code>FALSE</code> otherwise the corpus is deleted after first use. Note this means you should manually delete it with <code>delete_mmcorpus</code>.</p>
 <pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpItVrEi/fileb8d5d7a6274.mm </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//Rtmp8nG2So/file29a964dd7011.mm </span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;  ✔ Temp file</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;  ✖ Delete after use</span></a></code></pre>
 <p>Then initialise a model, we’re going to use a Latent Similarity Indexing method later on (<code>model_lsi</code>) which requires td-idf.</p>
@@ -207,18 +207,19 @@
 <a class="sourceLine" id="cb7-13" data-line-number="13">sims &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(index, vec_lsi)</a>
 <a class="sourceLine" id="cb7-14" data-line-number="14"></a>
 <a class="sourceLine" id="cb7-15" data-line-number="15"><span class="kw"><a href="../reference/get_similarity.html">get_similarity</a></span>(sims)</a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; # A tibble: 9 x 2</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt;     doc    cosine</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt;   &lt;dbl&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; 1     0  6.02e- 1</span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; 2     3  4.32e- 1</span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; 3     8  1.12e- 8</span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; 4     5  0.      </span></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt; 5     6 -9.31e-10</span></a>
-<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt; 6     7 -7.45e- 9</span></a>
-<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt; 7     1 -2.39e- 2</span></a>
-<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt; 8     2 -2.93e- 2</span></a>
-<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt; 9     4 -3.62e- 2</span></a></code></pre>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; # A tibble: 10 x 2</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt;      doc    cosine</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt;  1     0  6.02e- 1</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt;  2     0  4.32e- 1</span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt;  3     0  1.12e- 8</span></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt;  4     0  0.      </span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt;  5     0  0.      </span></a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt;  6     0 -9.31e-10</span></a>
+<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt;  7     0 -7.45e- 9</span></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt;  8     0 -2.39e- 2</span></a>
+<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt;  9     0 -2.93e- 2</span></a>
+<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt; 10     0 -3.62e- 2</span></a></code></pre>
 <p>Clean up, delete the corpus.</p>
 <pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/mmcorpus_serialize.html">delete_mmcorpus</a></span>(corpus_mm)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; ✔ Temp unlinked</span></a></code></pre>
