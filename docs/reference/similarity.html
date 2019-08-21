@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wrap — wrap • gensimr</title>
+<title>Similarity — similarity • gensimr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -41,9 +41,15 @@
 
 
 
-<meta property="og:title" content="Wrap — wrap" />
+<meta property="og:title" content="Similarity — similarity" />
 
-<meta property="og:description" content="Wraps y with x" />
+<meta property="og:description" content="Splits the index into several smaller sub-indexes (“shards”), 
+which are disk-based. If your entire index fits in memory 
+(~one million documents per 1GB of RAM), you can also use 
+the similarity_matrix. It is more simple but
+does not scale as well: it keeps the entire index in RAM, 
+no sharding. It also do not support adding new document 
+to the index dynamically." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -159,29 +165,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Wrap</h1>
+    <h1>Similarity</h1>
     
-    <div class="hidden name"><code>wrap.Rd</code></div>
+    <div class="hidden name"><code>similarity.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Wraps <code>y</code> with <code>x</code></p>
+    <p>Splits the index into several smaller sub-indexes (“shards”), 
+which are disk-based. If your entire index fits in memory 
+(~one million documents per 1GB of RAM), you can also use 
+the <code><a href='similarity_matrix.html'>similarity_matrix</a></code>. It is more simple but
+does not scale as well: it keeps the entire index in RAM, 
+no sharding. It also do not support adding new document 
+to the index dynamically.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>wrap</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>to_r</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>similarity</span>(<span class='no'>corpus</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for gensim.corpora.mmcorpus.MmCorpus</span>
+<span class='fu'>similarity</span>(<span class='no'>corpus</span>, <span class='no'>num_features</span>,
+  <span class='no'>...</span>)
+
+<span class='co'># S3 method for mm_file</span>
+<span class='fu'>similarity</span>(<span class='no'>corpus</span>, <span class='no'>num_features</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for python.builtin.tuple</span>
+<span class='fu'>similarity</span>(<span class='no'>corpus</span>, <span class='no'>num_features</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x, y</th>
-      <td><p>Python objects.</p></td>
+      <th>corpus</th>
+      <td><p>A corpus.</p></td>
     </tr>
     <tr>
-      <th>to_r</th>
-      <td><p>Applies <a href='https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion'>py_to_r</a> on output.</p></td>
+      <th>...</th>
+      <td><p>Any other parameters to pass to the Python function, see 
+<a href='https://radimrehurek.com/gensim/similarities/docsim.html#gensim.similarities.docsim.Similarity'>official documentation</a>.</p></td>
+    </tr>
+    <tr>
+      <th>num_features</th>
+      <td><p>Size of the dictionary i.e.:<code><a href='https://www.rdocumentation.org/packages/reticulate/topics/py_len'>reticulate::py_len(dictionary)</a></code>.</p></td>
     </tr>
     </table>
     
