@@ -136,41 +136,41 @@
 <h2 class="hasAnchor">
 <a href="#preprocessing" class="anchor"></a>Preprocessing</h2>
 <p>First we preprocess the corpus using example data, a tiny corpus of 9 documents. Reproducing the tutorial on <a href="https://radimrehurek.com/gensim/tut1.html">corpora and vector spaces</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>) <span class="co"># rerproducability</span>
-
-<span class="co"># sample data</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(corpus, <span class="dt">package =</span> <span class="st">"gensimr"</span>)
-
-<span class="co"># preprocess corpus</span>
-docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepare_documents.html">prepare_documents</a></span>(corpus)
-<span class="co">#&gt; → Preprocessing 9 documents</span>
-<span class="co">#&gt; ← 9 documents after perprocessing</span></code></pre></div>
+<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>) <span class="co"># rerproducability</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># sample data</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(corpus, <span class="dt">package =</span> <span class="st">"gensimr"</span>)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co"># preprocess corpus</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prepare_documents.html">prepare_documents</a></span>(corpus)</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; → Preprocessing 9 documents</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; ← 9 documents after perprocessing</span></a></code></pre>
 </div>
 <div id="model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#model" class="anchor"></a>Model</h2>
 <p>Word2vec works somewhat differently. The example below is a reproduction of the Kaggle <a href="https://www.kaggle.com/pierremegret/gensim-word2vec-tutorial#Training-the-model">Gensim Word2Vec Tutorial</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># initialise</span>
-word2vec &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_word2vec.html">model_word2vec</a></span>(<span class="dt">size =</span> 100L, <span class="dt">window =</span> 5L, <span class="dt">min_count =</span> 1L)
-word2vec<span class="op">$</span><span class="kw">build_vocab</span>(docs) 
-<span class="co">#&gt; None</span>
-word2vec<span class="op">$</span><span class="kw">train</span>(docs, <span class="dt">total_examples =</span> word2vec<span class="op">$</span>corpus_count, <span class="dt">epochs =</span> 20L)
-<span class="co">#&gt; (76, 580)</span>
-word2vec<span class="op">$</span><span class="kw">init_sims</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; None</span></code></pre></div>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># initialise</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">word2vec &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_word2vec.html">model_word2vec</a></span>(<span class="dt">size =</span> 100L, <span class="dt">window =</span> 5L, <span class="dt">min_count =</span> 1L)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">word2vec<span class="op">$</span><span class="kw">build_vocab</span>(docs) </a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; None</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">word2vec<span class="op">$</span><span class="kw">train</span>(docs, <span class="dt">total_examples =</span> word2vec<span class="op">$</span>corpus_count, <span class="dt">epochs =</span> 20L)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; (76, 580)</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">word2vec<span class="op">$</span><span class="kw">init_sims</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; None</span></a></code></pre>
 <p>Now we can explore the model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">most_similar</span>(<span class="dt">positive =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"interface"</span>))
-<span class="co">#&gt; [('graph', 0.1473119854927063), ('user', 0.1430417001247406), ('human', 0.07799186557531357), ('minors', 0.05306056886911392), ('response', 0.027499448508024216), ('survey', -0.009502698667347431), ('system', -0.023484889417886734), ('time', -0.05888282507658005), ('eps', -0.07128775864839554), ('trees', -0.10169176757335663)]</span></code></pre></div>
+<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">most_similar</span>(<span class="dt">positive =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"interface"</span>))</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; [('computer', 0.1356927901506424), ('user', 0.06559349596500397), ('minors', 0.02820305898785591), ('human', 0.026718534529209137), ('response', -0.0028929095715284348), ('trees', -0.028418680652976036), ('graph', -0.05561172962188721), ('time', -0.09481455385684967), ('system', -0.11541391909122467), ('survey', -0.1329917013645172)]</span></a></code></pre>
 <p>We expect “trees” to be the odd one out, it is a term that was in a different topic (#2) whereas other terms were in topics #1.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">doesnt_match</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"human"</span>, <span class="st">"interface"</span>, <span class="st">"trees"</span>))
-<span class="co">#&gt; trees</span></code></pre></div>
+<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">doesnt_match</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"human"</span>, <span class="st">"interface"</span>, <span class="st">"trees"</span>))</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; trees</span></a></code></pre>
 <p>Test similarity between words.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"human"</span>, <span class="st">"trees"</span>)
-<span class="co">#&gt; 0.04467096</span>
-word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"eps"</span>, <span class="st">"survey"</span>)
-<span class="co">#&gt; 0.0849669</span></code></pre></div>
+<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"human"</span>, <span class="st">"trees"</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; -0.02523147</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"eps"</span>, <span class="st">"survey"</span>)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; -0.04554404</span></a></code></pre>
 </div>
 <div id="phrases" class="section level2">
 <h2 class="hasAnchor">
@@ -178,31 +178,31 @@ word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">sim
 <p>Automatically detect common phrases – multi-word expressions / word n-grams – from a stream of sentences.</p>
 <p>Here we use and example dataset. The idea is that it is saved to a file (on disk) thereby allowing gensim to stream its content which is much more efficient than loading everything in memory before runnig the model.</p>
 <p>Let’s look at the content of the example file.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file &lt;-<span class="st"> </span><span class="kw"><a href="../reference/datapath.html">datapath</a></span>(<span class="st">'testcorpus.txt'</span>) <span class="co"># example dataset</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(file) <span class="co"># just to show you what it looks like</span>
-<span class="co">#&gt; [1] "computer human interface"                 </span>
-<span class="co">#&gt; [2] "computer response survey system time user"</span>
-<span class="co">#&gt; [3] "interface system user eps"                </span>
-<span class="co">#&gt; [4] "human system system eps"                  </span>
-<span class="co">#&gt; [5] "response time user"                       </span>
-<span class="co">#&gt; [6] "trees"                                    </span>
-<span class="co">#&gt; [7] "trees graph"                              </span>
-<span class="co">#&gt; [8] "trees graph minors"                       </span>
-<span class="co">#&gt; [9] "survey graph minors"</span></code></pre></div>
+<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">file &lt;-<span class="st"> </span><span class="kw"><a href="../reference/datapath.html">datapath</a></span>(<span class="st">'testcorpus.txt'</span>) <span class="co"># example dataset</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(file) <span class="co"># just to show you what it looks like</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; [1] "computer human interface"                 </span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; [2] "computer response survey system time user"</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; [3] "interface system user eps"                </span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; [4] "human system system eps"                  </span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; [5] "response time user"                       </span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; [6] "trees"                                    </span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; [7] "trees graph"                              </span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; [8] "trees graph minors"                       </span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; [9] "survey graph minors"</span></a></code></pre>
 <p>We observe that it is very similar to the output of <code><a href="../reference/prepare_documents.html">prepare_documents(corpus)</a></code> (the <code>docs</code>) object in this document. We can now scan the file to build a corpus with <code>text8corpus</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sentences &lt;-<span class="st"> </span><span class="kw"><a href="../reference/text8corpus.html">text8corpus</a></span>(file)
-phrases &lt;-<span class="st"> </span><span class="kw"><a href="../reference/phrases.html">phrases</a></span>(docs, <span class="dt">min_count =</span> 1L, <span class="dt">threshold =</span> 1L)</code></pre></div>
+<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">sentences &lt;-<span class="st"> </span><span class="kw"><a href="../reference/text8corpus.html">text8corpus</a></span>(file)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">phrases &lt;-<span class="st"> </span><span class="kw"><a href="../reference/phrases.html">phrases</a></span>(docs, <span class="dt">min_count =</span> 1L, <span class="dt">threshold =</span> 1L)</a></code></pre>
 <p>That simple, now we can apply the model to new sentences.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sentence &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">'trees'</span>, <span class="st">'graph'</span>, <span class="st">'minors'</span>)
-<span class="kw"><a href="../reference/wrap.html">wrap</a></span>(phrases, sentence)
-<span class="co">#&gt; ['trees', 'graph_minors']</span></code></pre></div>
+<pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">sentence &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">'trees'</span>, <span class="st">'graph'</span>, <span class="st">'minors'</span>)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(phrases, sentence)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; ['trees', 'graph_minors']</span></a></code></pre>
 <p>We can add vocabulary to an already trained model with.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">phrases<span class="op">$</span><span class="kw">add_vocab</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"hello"</span>, <span class="st">"world"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"meow"</span>)))
-<span class="co">#&gt; None</span></code></pre></div>
+<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">phrases<span class="op">$</span><span class="kw">add_vocab</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"hello"</span>, <span class="st">"world"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"meow"</span>)))</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; None</span></a></code></pre>
 <p>We can create a faster model with.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bigram &lt;-<span class="st"> </span><span class="kw"><a href="../reference/phrases.html">phraser</a></span>(phrases)
-<span class="kw"><a href="../reference/wrap.html">wrap</a></span>(bigram, sentence)
-<span class="co">#&gt; ['trees', 'graph_minors']</span></code></pre></div>
+<pre class="sourceCode r" id="cb10"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">bigram &lt;-<span class="st"> </span><span class="kw"><a href="../reference/phrases.html">phraser</a></span>(phrases)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(bigram, sentence)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; ['trees', 'graph_minors']</span></a></code></pre>
 </div>
   </div>
 

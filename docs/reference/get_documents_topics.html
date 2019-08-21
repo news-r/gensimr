@@ -185,12 +185,38 @@
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>docs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_documents.html'>prepare_documents</a></span>(<span class='no'>corpus</span>)</div><div class='output co'>#&gt; <span style='color: #BBBB00;'>→</span><span> Preprocessing </span><span style='color: #0000BB;'>9</span><span> documents
+#&gt; </span><span style='color: #BBBB00;'>←</span><span> </span><span style='color: #0000BB;'>9</span><span> documents after perprocessing</div><div class='input'><span class='no'>dictionary</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpora_dictionary.html'>corpora_dictionary</a></span>(<span class='no'>docs</span>)
+<span class='no'>corpora</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='doc2bow.html'>doc2bow</a></span>(<span class='no'>dictionary</span>, <span class='no'>docs</span>)
+<span class='no'>corpus_mm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mmcorpus_serialize.html'>serialize_mmcorpus</a></span>(<span class='no'>corpora</span>)
+<span class='no'>tfidf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='model_tfidf.html'>model_tfidf</a></span>(<span class='no'>corpus_mm</span>)
+<span class='no'>corpus_transformed</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='wrap.html'>wrap</a></span>(<span class='no'>tfidf</span>, <span class='no'>corpora</span>)
+
+<span class='co'># fit model</span>
+<span class='no'>lsi</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='model_lsi.html'>model_lsi</a></span>(<span class='no'>corpus_transformed</span>, <span class='kw'>id2word</span> <span class='kw'>=</span> <span class='no'>dictionary</span>, <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>)
+<span class='no'>wrapped_corpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='wrap.html'>wrap</a></span>(<span class='no'>lsi</span>, <span class='no'>corpus_transformed</span>)
+<span class='fu'>get_docs_topics</span>(<span class='no'>wrapped_corpus</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 9 x 4</span><span>
+#&gt;   dimension_1_x dimension_1_y dimension_2_x dimension_2_y
+#&gt;           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>             0        0.066</span><span style='text-decoration: underline;'>0</span><span>             1       -</span><span style='color: #BB0000;'>0.520</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span>             0        0.197              1       -</span><span style='color: #BB0000;'>0.761</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span>             0        0.089</span><span style='text-decoration: underline;'>9</span><span>             1       -</span><span style='color: #BB0000;'>0.724</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span>             0        0.075</span><span style='text-decoration: underline;'>9</span><span>             1       -</span><span style='color: #BB0000;'>0.632</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span>             0        0.102              1       -</span><span style='color: #BB0000;'>0.574</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span>             0        0.703              1        0.161 
+#&gt; </span><span style='color: #BCBCBC;'>7</span><span>             0        0.877              1        0.168 
+#&gt; </span><span style='color: #BCBCBC;'>8</span><span>             0        0.910              1        0.141 
+#&gt; </span><span style='color: #BCBCBC;'>9</span><span>             0        0.617              1       -</span><span style='color: #BB0000;'>0.053</span><span style='color: #BB0000;text-decoration: underline;'>9</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

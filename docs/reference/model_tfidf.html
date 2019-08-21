@@ -185,6 +185,10 @@
 <span class='fu'>model_tfidf</span>(<span class='no'>mm</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>smart</span> <span class='kw'>=</span> <span class='st'>"nfc"</span>, <span class='kw'>pivot</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>slope</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='no'>...</span>)
 
+<span class='co'># S3 method for python.builtin.tuple</span>
+<span class='fu'>model_tfidf</span>(<span class='no'>mm</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>smart</span> <span class='kw'>=</span> <span class='st'>"nfc"</span>, <span class='kw'>pivot</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>slope</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='no'>...</span>)
+
 <span class='fu'>load_tfidf</span>(<span class='no'>file</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -253,6 +257,13 @@ document length normalization. Singhal [2] suggests setting the slope between 0.
 </ul>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>docs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_documents.html'>prepare_documents</a></span>(<span class='no'>corpus</span>)</div><div class='output co'>#&gt; <span style='color: #BBBB00;'>→</span><span> Preprocessing </span><span style='color: #0000BB;'>9</span><span> documents
+#&gt; </span><span style='color: #BBBB00;'>←</span><span> </span><span style='color: #0000BB;'>9</span><span> documents after perprocessing</div><div class='input'><span class='no'>dictionary</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpora_dictionary.html'>corpora_dictionary</a></span>(<span class='no'>docs</span>)
+<span class='no'>corpora</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='doc2bow.html'>doc2bow</a></span>(<span class='no'>dictionary</span>, <span class='no'>docs</span>)
+
+<span class='co'># fit model</span>
+<span class='no'>tfidf</span> <span class='kw'>&lt;-</span> <span class='fu'>model_tfidf</span>(<span class='no'>corpora</span>)</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -260,7 +271,9 @@ document length normalization. Singhal [2] suggests setting the slope between 0.
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#smart">SMART</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

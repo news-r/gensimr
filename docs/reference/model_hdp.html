@@ -229,6 +229,55 @@ approximation.</p>
     <p>This is a non-parametric bayesian method: notice the lack of <code>num_topics</code> argument.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>docs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_documents.html'>prepare_documents</a></span>(<span class='no'>corpus</span>)</div><div class='output co'>#&gt; <span style='color: #BBBB00;'>→</span><span> Preprocessing </span><span style='color: #0000BB;'>9</span><span> documents
+#&gt; </span><span style='color: #BBBB00;'>←</span><span> </span><span style='color: #0000BB;'>9</span><span> documents after perprocessing</div><div class='input'><span class='no'>dictionary</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpora_dictionary.html'>corpora_dictionary</a></span>(<span class='no'>docs</span>)
+<span class='no'>corpora</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='doc2bow.html'>doc2bow</a></span>(<span class='no'>dictionary</span>, <span class='no'>docs</span>)
+<span class='no'>corpus_mm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mmcorpus_serialize.html'>serialize_mmcorpus</a></span>(<span class='no'>corpora</span>, <span class='kw'>auto_delete</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='co'># fit model</span>
+<span class='no'>hdp</span> <span class='kw'>&lt;-</span>  <span class='fu'>model_hdp</span>(<span class='no'>corpus_mm</span>, <span class='kw'>id2word</span> <span class='kw'>=</span> <span class='no'>dictionary</span>)
+<span class='kw pkg'>reticulate</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/reticulate/topics/r-py-conversion'>py_to_r</a></span>(<span class='no'>hdp</span>$<span class='fu'>show_topic</span>(<span class='kw'>topic_id</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>topn</span> <span class='kw'>=</span> <span class='fl'>5L</span>))</div><div class='output co'>#&gt; [[1]]
+#&gt; [[1]][[1]]
+#&gt; [1] "response"
+#&gt; 
+#&gt; [[1]][[2]]
+#&gt; [1] 0.3007322
+#&gt; 
+#&gt; 
+#&gt; [[2]]
+#&gt; [[2]][[1]]
+#&gt; [1] "user"
+#&gt; 
+#&gt; [[2]][[2]]
+#&gt; [1] 0.2898649
+#&gt; 
+#&gt; 
+#&gt; [[3]]
+#&gt; [[3]][[1]]
+#&gt; [1] "minors"
+#&gt; 
+#&gt; [[3]][[2]]
+#&gt; [1] 0.1047671
+#&gt; 
+#&gt; 
+#&gt; [[4]]
+#&gt; [[4]][[1]]
+#&gt; [1] "trees"
+#&gt; 
+#&gt; [[4]][[2]]
+#&gt; [1] 0.06323082
+#&gt; 
+#&gt; 
+#&gt; [[5]]
+#&gt; [[5]][[1]]
+#&gt; [1] "survey"
+#&gt; 
+#&gt; [[5]][[2]]
+#&gt; [1] 0.05174245
+#&gt; 
+#&gt; </div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -236,7 +285,9 @@ approximation.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

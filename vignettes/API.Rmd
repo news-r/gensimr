@@ -25,7 +25,6 @@ dataset <- "glove-twitter-25"
 
 # model description
 api_info(dataset) %>% 
-  reticulate::py_to_r() %>% 
   .[["description"]]
 
 # download the model

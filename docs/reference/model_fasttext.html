@@ -190,12 +190,31 @@ ability to obtain word vectors for out-of-vocabulary words.</p>
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>docs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_documents.html'>prepare_documents</a></span>(<span class='no'>corpus</span>)</div><div class='output co'>#&gt; <span style='color: #BBBB00;'>→</span><span> Preprocessing </span><span style='color: #0000BB;'>9</span><span> documents
+#&gt; </span><span style='color: #BBBB00;'>←</span><span> </span><span style='color: #0000BB;'>9</span><span> documents after perprocessing</div><div class='input'>
+<span class='co'># fit model</span>
+<span class='no'>ft</span> <span class='kw'>&lt;-</span> <span class='fu'>model_fasttext</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>4L</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3L</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1L</span>)
+
+<span class='co'># build vocabulary</span>
+<span class='no'>ft</span>$<span class='fu'>build_vocab</span>(<span class='kw'>sentences</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unname'>unname</a></span>(<span class='no'>docs</span>))</div><div class='output co'>#&gt; None</div><div class='input'>
+<span class='co'># train</span>
+<span class='no'>ft</span>$<span class='fu'>train</span>(<span class='kw'>sentences</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unname'>unname</a></span>(<span class='no'>docs</span>), <span class='kw'>total_examples</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>docs</span>), <span class='kw'>epochs</span> <span class='kw'>=</span> <span class='fl'>10L</span>)</div><div class='output co'>#&gt; None</div><div class='input'>
+<span class='co'># most similar</span>
+<span class='no'>ft</span>$<span class='no'>wv</span>$<span class='fu'>most_similar</span>(<span class='kw'>positive</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'computer'</span>, <span class='st'>'human'</span>), <span class='kw'>negative</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'interface'</span>))</div><div class='output co'>#&gt; [('system', 0.4660586714744568), ('user', 0.43439602851867676), ('trees', 0.37251460552215576), ('time', 0.25313329696655273), ('survey', 0.08980631828308105), ('graph', 0.08002881705760956), ('interface', -0.12998628616333008), ('response', -0.1862679272890091), ('minors', -0.2511548101902008), ('eps', -0.863673746585846)]</div><div class='input'>
+<span class='co'># odd one out</span>
+<span class='no'>ft</span>$<span class='no'>wv</span>$<span class='fu'>doesnt_match</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"human"</span>, <span class='st'>"computer"</span>, <span class='st'>"interface"</span>, <span class='st'>"tree"</span>))</div><div class='output co'>#&gt; tree</div><div class='input'>
+<span class='co'># similarity score</span>
+<span class='no'>ft</span>$<span class='no'>wv</span>$<span class='fu'>similarity</span>(<span class='st'>'computer'</span>, <span class='st'>'human'</span>)</div><div class='output co'>#&gt; 0.51893425</div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

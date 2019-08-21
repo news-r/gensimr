@@ -115,12 +115,14 @@ vectors <- hdp$fit_transform(corpus_bow)
 
 ```{r}
 lda <- sklearn_lda(
+  num_topics = 2L, 
   id2word = dictionary, 
-  num_topics = 2, 
-  iterations = 20, 
-  random_state = 1
+  iterations = 20L, 
+  random_state = 1L
 )
-vectors <- hdp$fit_transform(corpus_bow)
+lda$fit_transform(corpus_bow) %>% 
+  reticulate::py_to_r() %>% 
+  plot()
 ```
 
 ## Latent Semantic Indexing

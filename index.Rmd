@@ -75,8 +75,12 @@ texts <- prepare_documents(corpus)
 dictionary <- corpora_dictionary(texts)
 corpus <- doc2bow(dictionary, texts)
 
+# create tf-idf model
+tfidf <- model_tfidf(corpus)
+tfidf_corpus <- wrap(tfidf, corpus)
+
 # latent similarity index
-lda <- model_lda(corpus, id2word = dictionary, num_topics = 2L)
+lda <- model_lda(tfidf_corpus, id2word = dictionary, num_topics = 2L)
 topics <- lda$print_topics() # get topics
 ```
 

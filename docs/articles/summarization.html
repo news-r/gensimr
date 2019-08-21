@@ -132,65 +132,65 @@
 
     
     
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>) <span class="co"># rerproducability</span>
-
-<span class="co"># sample data</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(corpus, <span class="dt">package =</span> <span class="st">"gensimr"</span>)
-
-<span class="co"># preprocess corpus</span>
-docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/preprocess.html">preprocess</a></span>(corpus)</code></pre></div>
+<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gensimr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>) <span class="co"># rerproducability</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># sample data</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(corpus, <span class="dt">package =</span> <span class="st">"gensimr"</span>)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co"># preprocess corpus</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">docs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/preprocess.html">preprocess</a></span>(corpus)</a></code></pre>
 <div id="bm25-weights" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bm25-weights" class="anchor"></a>BM25 Weights</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/get_bm25_weights.html">get_bm25_weights</a></span>(docs)</code></pre></div>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/get_bm25_weights.html">get_bm25_weights</a></span>(docs)</a></code></pre>
 </div>
 <div id="keywords" class="section level2">
 <h2 class="hasAnchor">
 <a href="#keywords" class="anchor"></a>Keywords</h2>
 <p>Extract keywords.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">str &lt;-<span class="st"> "Challenges in natural language processing frequently </span>
-<span class="st">  speech recognition, natural language understanding, natural language</span>
-<span class="st">  generation (frequently from formal, machine-readable logical forms),</span>
-<span class="st">  connecting language and machine perception, dialog systems, or some</span>
-<span class="st">  combination thereof."</span>
-(<span class="kw"><a href="../reference/keywords.html">keywords</a></span>(str))
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "language"   "machine"    "frequently"</span></code></pre></div>
+<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">str &lt;-<span class="st"> "Challenges in natural language processing frequently </span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  speech recognition, natural language understanding, natural language</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="st">  generation (frequently from formal, machine-readable logical forms),</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="st">  connecting language and machine perception, dialog systems, or some</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  combination thereof."</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">(<span class="kw"><a href="../reference/keywords.html">keywords</a></span>(str))</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; [1] "language"   "machine"    "frequently"</span></a></code></pre>
 </div>
 <div id="summarize" class="section level2">
 <h2 class="hasAnchor">
 <a href="#summarize" class="anchor"></a>Summarize</h2>
 <p>Text summarisation.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">str &lt;-<span class="st"> "Rice Pudding - Poem by Alan Alexander Milne</span>
-<span class="st">  What is the matter with Mary Jane?</span>
-<span class="st">  She's crying with all her might and main,</span>
-<span class="st">  And she won't eat her dinner - rice pudding again -</span>
-<span class="st">  What is the matter with Mary Jane?</span>
-<span class="st">  What is the matter with Mary Jane?</span>
-<span class="st">  I've promised her dolls and a daisy-chain,</span>
-<span class="st">  And a book about animals - all in vain -</span>
-<span class="st">  What is the matter with Mary Jane?</span>
-<span class="st">  What is the matter with Mary Jane?</span>
-<span class="st">  She's perfectly well, and she hasn't a pain;</span>
-<span class="st">  But, look at her, now she's beginning again! -</span>
-<span class="st">  What is the matter with Mary Jane?</span>
-<span class="st">  What is the matter with Mary Jane?</span>
-<span class="st">  I've promised her sweets and a ride in the train,</span>
-<span class="st">  And I've begged her to stop for a bit and explain -</span>
-<span class="st">  What is the matter with Mary Jane?</span>
-<span class="st">  What is the matter with Mary Jane?</span>
-<span class="st">  She's perfectly well and she hasn't a pain,</span>
-<span class="st">  And it's lovely rice pudding for dinner again!</span>
-<span class="st">  What is the matter with Mary Jane?"</span>
-<span class="kw"><a href="../reference/summarize.html">summarize</a></span>(str) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>()
-<span class="co">#&gt; And she won't eat her dinner - rice pudding again -</span>
-<span class="co">#&gt; I've promised her dolls and a daisy-chain,</span>
-<span class="co">#&gt; I've promised her sweets and a ride in the train,</span>
-<span class="co">#&gt; And it's lovely rice pudding for dinner again!</span></code></pre></div>
+<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">str &lt;-<span class="st"> "Rice Pudding - Poem by Alan Alexander Milne</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  What is the matter with Mary Jane?</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  She's crying with all her might and main,</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  And she won't eat her dinner - rice pudding again -</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  What is the matter with Mary Jane?</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  What is the matter with Mary Jane?</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">  I've promised her dolls and a daisy-chain,</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="st">  And a book about animals - all in vain -</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  What is the matter with Mary Jane?</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  What is the matter with Mary Jane?</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="st">  She's perfectly well, and she hasn't a pain;</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">  But, look at her, now she's beginning again! -</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="st">  What is the matter with Mary Jane?</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="st">  What is the matter with Mary Jane?</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="st">  I've promised her sweets and a ride in the train,</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="st">  And I've begged her to stop for a bit and explain -</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="st">  What is the matter with Mary Jane?</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="st">  What is the matter with Mary Jane?</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="st">  She's perfectly well and she hasn't a pain,</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="st">  And it's lovely rice pudding for dinner again!</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="st">  What is the matter with Mary Jane?"</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="kw"><a href="../reference/summarize.html">summarize</a></span>(str) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>()</a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt; And she won't eat her dinner - rice pudding again -</span></a>
+<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt; I've promised her dolls and a daisy-chain,</span></a>
+<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt; I've promised her sweets and a ride in the train,</span></a>
+<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt; And it's lovely rice pudding for dinner again!</span></a></code></pre>
 </div>
   </div>
 

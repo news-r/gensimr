@@ -203,6 +203,30 @@
     <div class='dont-index'><p><code><a href='get_author_topics.html'>get_author_topics</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>docs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_documents.html'>prepare_documents</a></span>(<span class='no'>corpus</span>)</div><div class='output co'>#&gt; <span style='color: #BBBB00;'>→</span><span> Preprocessing </span><span style='color: #0000BB;'>9</span><span> documents
+#&gt; </span><span style='color: #BBBB00;'>←</span><span> </span><span style='color: #0000BB;'>9</span><span> documents after perprocessing</div><div class='input'><span class='no'>dictionary</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpora_dictionary.html'>corpora_dictionary</a></span>(<span class='no'>docs</span>)
+<span class='no'>corpora</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='doc2bow.html'>doc2bow</a></span>(<span class='no'>dictionary</span>, <span class='no'>docs</span>)
+<span class='no'>corpus_mm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mmcorpus_serialize.html'>serialize_mmcorpus</a></span>(<span class='no'>corpora</span>)
+
+<span class='co'># fit model</span>
+<span class='no'>auth2doc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='auth2doc.html'>auth2doc</a></span>(<span class='no'>authors</span>, <span class='no'>name</span>, <span class='no'>document</span>)</div></span><span class='co'># NOT RUN {</span>
+<span class='co'># create temp to hold serialized data</span>
+<span class='no'>temp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"serialized"</span>)
+
+<span class='no'>atmodel</span> <span class='kw'>&lt;-</span> <span class='fu'>model_at</span>(
+  <span class='no'>corpus_mm</span>,
+  <span class='kw'>id2word</span> <span class='kw'>=</span> <span class='no'>dictionary</span>,
+  <span class='kw'>author2doc</span> <span class='kw'>=</span> <span class='no'>auth2doc</span>,
+  <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
+  <span class='kw'>serialized</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>serialization_path</span> <span class='kw'>=</span> <span class='no'>temp</span>
+)
+
+<span class='co'># delete temp</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unlink'>unlink</a></span>(<span class='no'>temp</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -210,7 +234,9 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

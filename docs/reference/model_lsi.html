@@ -213,6 +213,15 @@
     <p>Target dimensionality (<code>num_topics</code>) of 200–500 is recommended as a “golden standard” <a href='https://dl.acm.org/citation.cfm?id=1458105'>https://dl.acm.org/citation.cfm?id=1458105</a>.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>docs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_documents.html'>prepare_documents</a></span>(<span class='no'>corpus</span>)</div><div class='output co'>#&gt; <span style='color: #BBBB00;'>→</span><span> Preprocessing </span><span style='color: #0000BB;'>9</span><span> documents
+#&gt; </span><span style='color: #BBBB00;'>←</span><span> </span><span style='color: #0000BB;'>9</span><span> documents after perprocessing</div><div class='input'><span class='no'>dictionary</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpora_dictionary.html'>corpora_dictionary</a></span>(<span class='no'>docs</span>)
+<span class='no'>corpora</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='doc2bow.html'>doc2bow</a></span>(<span class='no'>dictionary</span>, <span class='no'>docs</span>)
+
+<span class='co'># fit model</span>
+<span class='no'>lsi</span> <span class='kw'>&lt;-</span> <span class='fu'>model_lsi</span>(<span class='no'>corpora</span>, <span class='kw'>id2word</span> <span class='kw'>=</span> <span class='no'>dictionary</span>, <span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fl'>2L</span>)
+<span class='no'>lsi</span>$<span class='fu'>print_topics</span>()</div><div class='output co'>#&gt; [(0, u'0.644*"system" + 0.404*"user" + 0.301*"eps" + 0.265*"response" + 0.265*"time" + 0.240*"computer" + 0.221*"human" + 0.206*"survey" + 0.198*"interface" + 0.036*"graph"'), (1, u'0.623*"graph" + 0.490*"trees" + 0.451*"minors" + 0.274*"survey" + -0.167*"system" + -0.141*"eps" + -0.113*"human" + 0.107*"response" + 0.107*"time" + -0.072*"interface"')]</div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -220,7 +229,9 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
