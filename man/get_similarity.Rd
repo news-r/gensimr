@@ -13,7 +13,7 @@ get_similarity(sim)
 \item{sim}{A wrapped similarity, output of \code{\link{wrap}}.}
 }
 \value{
-Documents by order of similarity, 
+A \link[tibble]{tibble} Documents by order of similarity, 
 the most similar at the top and the least similar at the bottom.
 }
 \description{

@@ -73,7 +73,7 @@ We can then use the model to transform our original corpus.
 corpus_transformed <- wrap(tfidf, corpus_bow)
 ```
 
-## Similarity
+## One Document
 
 Now we can compare similarity between our preprocessed corpus and a new document.
 
@@ -93,6 +93,36 @@ index <- similarity_matrix(wrapped_lsi)
 sims <- wrap(index, vec_lsi)
 
 get_similarity(sims)
+```
+
+## Matrix
+
+You can also compare documents in the corpora with one another. The method is slightly different to improve computational efficiency. Note that we set the number of features to the number of words in the dictionary.
+
+The visualisation (matrix of cosine similarities) reveals the two clusters of documents again: as stated in table 2 from [this paper](http://www.cs.bham.ac.uk/~pxt/IDA/lsa_ind.pdf), the example corpus (`data(corpus)`) essentially has two classes of documents. First five are about human-computer interaction and the other four are about graphs. 
+
+```{r}
+# build model
+index2 <- similarity(corpus_mm, num_features = reticulate::py_len(dictionary))
+
+# query all similarities
+sims <- wrap(index2, corpus_bow, to_r = TRUE)
+
+sims_long <- reshape2::melt(sims)
+
+library(ggplot2)
+
+sims_long %>% 
+  dplyr::mutate_at(dplyr::vars(c("Var1", "Var2")), as.factor) %>% 
+  ggplot(aes(Var1, Var2)) + 
+  geom_tile(aes(fill = value)) + 
+  theme(
+    panel.background = element_rect(fill = "#f4f1e6"),
+    plot.background = element_rect(fill = "#f4f1e6"),
+    legend.background = element_rect(fill = "#f4f1e6")
+  ) +
+  xlab("Document") +
+  ylab("Document") 
 ```
 
 Clean up, delete the corpus.

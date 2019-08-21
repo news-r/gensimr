@@ -180,7 +180,7 @@
 <a class="sourceLine" id="cb3-6" data-line-number="6">corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</a></code></pre>
 <p>Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set <code>auto_delete</code> to <code>FALSE</code> otherwise the corpus is deleted after first use. Note this means you should manually delete it with <code>delete_mmcorpus</code>.</p>
 <pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//Rtmp8nG2So/file29a964dd7011.mm </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpgiTzCI/file41dd3d7b8c7d.mm </span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;  ✔ Temp file</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;  ✖ Delete after use</span></a></code></pre>
 <p>Then initialise a model, we’re going to use a Latent Similarity Indexing method later on (<code>model_lsi</code>) which requires td-idf.</p>
@@ -188,9 +188,9 @@
 <p>We can then use the model to transform our original corpus.</p>
 <pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">corpus_transformed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(tfidf, corpus_bow)</a></code></pre>
 </div>
-<div id="similarity" class="section level2">
+<div id="one-document" class="section level2">
 <h2 class="hasAnchor">
-<a href="#similarity" class="anchor"></a>Similarity</h2>
+<a href="#one-document" class="anchor"></a>One Document</h2>
 <p>Now we can compare similarity between our preprocessed corpus and a new document.</p>
 <pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">lsi &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lsi.html">model_lsi</a></span>(corpus_transformed, <span class="dt">id2word =</span> dictionary)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"></a>
@@ -207,22 +207,47 @@
 <a class="sourceLine" id="cb7-13" data-line-number="13">sims &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(index, vec_lsi)</a>
 <a class="sourceLine" id="cb7-14" data-line-number="14"></a>
 <a class="sourceLine" id="cb7-15" data-line-number="15"><span class="kw"><a href="../reference/get_similarity.html">get_similarity</a></span>(sims)</a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; # A tibble: 10 x 2</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt;      doc    cosine</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt;  1     0  6.02e- 1</span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt;  2     0  4.32e- 1</span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt;  3     0  1.12e- 8</span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt;  4     0  0.      </span></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt;  5     0  0.      </span></a>
-<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt;  6     0 -9.31e-10</span></a>
-<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt;  7     0 -7.45e- 9</span></a>
-<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt;  8     0 -2.39e- 2</span></a>
-<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt;  9     0 -2.93e- 2</span></a>
-<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt; 10     0 -3.62e- 2</span></a></code></pre>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; # A tibble: 9 x 2</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt;     doc    cosine</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt;   &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; 1     0  6.02e- 1</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; 2     3  4.32e- 1</span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; 3     8  1.12e- 8</span></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; 4     5  0.      </span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt; 5     6 -9.31e-10</span></a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt; 6     7 -7.45e- 9</span></a>
+<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt; 7     1 -2.39e- 2</span></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt; 8     2 -2.93e- 2</span></a>
+<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt; 9     4 -3.62e- 2</span></a></code></pre>
+<p>## Matrix</p>
+<p>You can also compare documents in the corpora with one another. The method is slightly different to improve computational efficiency. Note that we set the number of features to the number of words in the dictionary.</p>
+<p>The visualisation (matrix of cosine similarities) reveals the two clusters of documents again: as stated in table 2 from <a href="http://www.cs.bham.ac.uk/~pxt/IDA/lsa_ind.pdf">this paper</a>, the example corpus (<code><a href="https://www.rdocumentation.org/packages/utils/topics/data">data(corpus)</a></code>) essentially has two classes of documents. First five are about human-computer interaction and the other four are about graphs.</p>
+<pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># build model</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">index2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/similarity.html">similarity</a></span>(corpus_mm, <span class="dt">num_features =</span> reticulate<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reticulate/topics/py_len">py_len</a></span>(dictionary))</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co"># query all similarities</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">sims &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(index2, corpus_bow, <span class="dt">to_r =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">sims_long &lt;-<span class="st"> </span>reshape2<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reshape2/topics/melt">melt</a></span>(sims)</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt; Warning: package 'ggplot2' was built under R version 3.5.2</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12">sims_long <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/vars.html">vars</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Var1"</span>, <span class="st">"Var2"</span>)), as.factor) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(Var1, Var2)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_tile</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">fill =</span> value)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(</a>
+<a class="sourceLine" id="cb8-17" data-line-number="17">    <span class="dt">panel.background =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span>(<span class="dt">fill =</span> <span class="st">"#f4f1e6"</span>),</a>
+<a class="sourceLine" id="cb8-18" data-line-number="18">    <span class="dt">plot.background =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span>(<span class="dt">fill =</span> <span class="st">"#f4f1e6"</span>),</a>
+<a class="sourceLine" id="cb8-19" data-line-number="19">    <span class="dt">legend.background =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span>(<span class="dt">fill =</span> <span class="st">"#f4f1e6"</span>)</a>
+<a class="sourceLine" id="cb8-20" data-line-number="20">  ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"Document"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">"Document"</span>) </a></code></pre>
+<p><img src="similarity_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 <p>Clean up, delete the corpus.</p>
-<pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/mmcorpus_serialize.html">delete_mmcorpus</a></span>(corpus_mm)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; ✔ Temp unlinked</span></a></code></pre>
+<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/mmcorpus_serialize.html">delete_mmcorpus</a></span>(corpus_mm)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; ✔ Temp unlinked</span></a></code></pre>
 </div>
   </div>
 
@@ -232,7 +257,7 @@
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#preprocess">Preprocess</a></li>
-      <li><a href="#similarity">Similarity</a></li>
+      <li><a href="#one-document">One Document</a></li>
       </ul>
 </div>
       </div>

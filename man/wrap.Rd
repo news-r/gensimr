@@ -4,10 +4,12 @@
 \alias{wrap}
 \title{Wrap}
 \usage{
-wrap(x, y)
+wrap(x, y, to_r = FALSE)
 }
 \arguments{
 \item{x, y}{Python objects.}
+
+\item{to_r}{Applies \link[reticulate]{py_to_r} on output.}
 }
 \description{
 Wraps \code{y} with \code{x}
