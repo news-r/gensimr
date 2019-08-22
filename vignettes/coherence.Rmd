@@ -124,17 +124,32 @@ get_coherence_data(model_collection)
 
 ## Workflow
 
-In the real world you will likely use the `map_*` functions to run and assess multiple models at once.
+In the real world you will likely use the `map_*` functions to run and assess multiple models at once then assess which is best using the perplexity score. Here we use the `reuters` dataset from the [textanalysis package](https://textanalysis.news-r.org/) as a larger corpus helps to better demonstrate. The `reuters` package is a set of reuters articles on 10 different commodities.
 
 ```{r}
+# remotes::install_github("news-r/textanalysis")
+data("reuters", package = "textanalysis")
+
+# preprocess the reuters dataset
+texts <- prepare_documents(reuters$text)
+dictionary <- corpora_dictionary(texts)
+corpus_bow <- doc2bow(dictionary, texts)
+
+tfidf <- model_tfidf(corpus_bow, id2word = dictionary)
+corpus_tfidf <- wrap(tfidf, corpus_bow)
+
+# train multiple models
 models <- map_model(
-  num_topics = c(2, 4, 8, 10),
   corpus = corpus_tfidf, 
   id2word = dictionary
 ) 
 
+# compute topic coherence of all models
 models <- map_coherence(models, corpus = corpus_tfidf, dictionary = dictionary, coherence = 'u_mass')
 
 get_coherence_data(models)
-get_perplexity_data(models)
+
+plot(models)
 ```
+
+Coherence closer to 0 is better.

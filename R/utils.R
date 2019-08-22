@@ -17,8 +17,8 @@ globalVariables(
   )
 )
 
-.construct_model_collection <- function(x){
-  structure(x, class = c("model_collection", class(x)))
+.construct_model_collection <- function(x, ...){
+  structure(x, class = c(..., "model_collection", class(x)))
 }
 
 .get_corpus <- function(...){
@@ -32,7 +32,7 @@ globalVariables(
   purrr::map_dfr(models, function(x){
     assert_that(!is.na(x$perplexity), msg = "Model perplexity was not computed.")
     tibble::tibble(
-      topics = x$num_topics,
+      num_topics = x$num_topics,
       perplexity = x$perplexity
     )
   })
@@ -42,7 +42,7 @@ globalVariables(
   purrr::map_dfr(models, function(x){
     assert_that(length(x$coherence) > 0, msg = "Topic coherence was not computed.")
     tibble::tibble(
-      topics = x$num_topics,
+      num_topics = x$num_topics,
       coherence = x$coherence
     )
   })

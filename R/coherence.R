@@ -93,7 +93,7 @@ map_coherence.model_collection <- function(models, ...){
   purrr::map2(models, coherence, function(x, y){
     append(x, y)
   }) %>% 
-    .construct_model_collection()
+    .construct_model_collection("model_coherence")
 }
 
 

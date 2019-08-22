@@ -868,3 +868,13 @@ plot.model_collection <- function(x, y, ...){
     .get_perplexity_data() %>% 
     plot(..., type = "l")
 }
+
+#' @export
+plot.model_coherence <- function(x, y, ...){
+  data <- .get_coherence_data(x)
+  
+  point <- dplyr::filter(data, coherence == min(coherence))
+
+  plot(data,  type = "l")
+  points(point, col = "red", pch = 19)
+}
