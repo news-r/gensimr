@@ -11,7 +11,7 @@
 #' 
 #' @name utils
 #' @export
-common_texts <- function(to_r = TRUE) {
+common_texts <- function(to_r = FALSE) {
   data <- gensim$test$utils$common_texts
   
   if(to_r)
@@ -22,7 +22,7 @@ common_texts <- function(to_r = TRUE) {
 
 #' @rdname utils
 #' @export
-common_corpus <- function(to_r = TRUE) {
+common_corpus <- function(to_r = FALSE) {
   data <- gensim$test$utils$common_corpus
 
   if(to_r)
@@ -33,7 +33,7 @@ common_corpus <- function(to_r = TRUE) {
 
 #' @rdname utils
 #' @export
-common_dictionary <- function(to_r = TRUE) {
+common_dictionary <- function(to_r = FALSE) {
   data <- gensim$test$utils$common_dictionary
 
   if(to_r)
