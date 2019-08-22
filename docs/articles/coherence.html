@@ -146,14 +146,17 @@
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; → Preprocessing 9 documents</span></a>
 <a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; ← 9 documents after perprocessing</span></a>
 <a class="sourceLine" id="cb1-8" data-line-number="8">dictionary &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpora_dictionary.html">corpora_dictionary</a></span>(texts)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">corpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, texts)</a></code></pre>
+<a class="sourceLine" id="cb1-9" data-line-number="9">corpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, texts)</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_tfidf.html">model_tfidf</a></span>(corpus, <span class="dt">id2word =</span> dictionary)</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">corpus_tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(tfidf, corpus)</a></code></pre>
 </div>
 <div id="set-up-two-topic-models" class="section level2">
 <h2 class="hasAnchor">
 <a href="#set-up-two-topic-models" class="anchor"></a>Set up two topic models</h2>
 <p>We’ll be setting up two different LDA Topic models. A good one and bad one. To build a “good” topic model, we’ll simply train it using more iterations than the bad one. Therefore the u_mass coherence should in theory be better for the good model than the bad one since it would be producing more “human-interpretable” topics.</p>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">good_lda_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(<span class="dt">corpus =</span> corpus, <span class="dt">id2word =</span> dictionary, <span class="dt">iterations =</span> 50L, <span class="dt">num_topics =</span> 2L)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">bad_lda_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(<span class="dt">corpus =</span> corpus, <span class="dt">id2word =</span> dictionary, <span class="dt">iterations =</span> 1L, <span class="dt">num_topics =</span> 10L)</a></code></pre>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">good_lda_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(<span class="dt">corpus =</span> corpus_tfidf, <span class="dt">id2word =</span> dictionary, <span class="dt">iterations =</span> 50L, <span class="dt">num_topics =</span> 2L)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">bad_lda_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_lda.html">model_lda</a></span>(<span class="dt">corpus =</span> corpus_tfidf, <span class="dt">id2word =</span> dictionary, <span class="dt">iterations =</span> 1L, <span class="dt">num_topics =</span> 10L)</a></code></pre>
 </div>
 <div id="interpreting-the-topics" class="section level2">
 <h2 class="hasAnchor">
@@ -224,9 +227,9 @@ if(typeof(LDAvis) !== "undefined"){
          });
 }
 </script><pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; -14.676913822505561</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; -14.664627001047737</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; -14.697801418983861</span></a></code></pre>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; -14.665855683193522</span></a></code></pre>
 </div>
 <div id="using-c_v-coherence" class="section level2">
 <h2 class="hasAnchor">

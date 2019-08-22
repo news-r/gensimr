@@ -31,7 +31,10 @@ data("corpus", package = "gensimr")
 
 texts <- prepare_documents(corpus)
 dictionary <- corpora_dictionary(texts)
-corpus <- doc2bow(dictionary, texts)
+corpus_bow <- doc2bow(dictionary, texts)
+
+tfidf <- model_tfidf(corpus_bow, id2word = dictionary)
+corpus_tfidf <- wrap(tfidf, corpus_bow)
 ```
 
 ## Set up two topic models
@@ -39,8 +42,8 @@ corpus <- doc2bow(dictionary, texts)
 We'll be setting up two different LDA Topic models. A good one and bad one. To build a "good" topic model, we'll simply train it using more iterations than the bad one. Therefore the u_mass coherence should in theory be better for the good model than the bad one since it would be producing more "human-interpretable" topics.
 
 ```{r}
-good_lda_model <- model_lda(corpus = corpus, id2word = dictionary, iterations = 50L, num_topics = 2L)
-bad_lda_model <- model_lda(corpus = corpus, id2word = dictionary, iterations = 1L, num_topics = 10L)
+good_lda_model <- model_lda(corpus = corpus_tfidf, id2word = dictionary, iterations = 50L, num_topics = 2L)
+bad_lda_model <- model_lda(corpus = corpus_tfidf, id2word = dictionary, iterations = 1L, num_topics = 10L)
 ```
 
 ## Interpreting the topics
@@ -62,8 +65,13 @@ Therefore, the topic coherence for the `good\_lda\_model` should be greater for 
 ## U_Mass Coherence
 
 ```{r}
-good_cm <- model_coherence(model = good_lda_model, corpus = corpus, dictionary = dictionary, coherence = 'u_mass')
-bad_cm <- model_coherence(model = bad_lda_model, corpus = corpus, dictionary = dictionary, coherence = 'u_mass')
+good_cm <- model_coherence(model = good_lda_model, corpus = corpus_tfidf, dictionary = dictionary, coherence = 'u_mass')
+bad_cm <- model_coherence(model = bad_lda_model, corpus = corpus_tfidf, dictionary = dictionary, coherence = 'u_mass')
+```
+
+```{r}
+good_cm$get_coherence()
+bad_cm$get_coherence()
 ```
 
 ## Visualise
