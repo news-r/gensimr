@@ -62,3 +62,50 @@ model_coherence.gensim.models.basemodel.BaseTopicModel <- function(models, ...){
 model_coherence.list <- function(models, ...){
   gensim$models$CoherenceModel$for_models(models = models, ...)
 }
+
+#' Map Coherence
+#' 
+#' Compute topic coherence on multiple models to assess best model.
+#' 
+#' @param models An object of class \code{model_collection} as returned by
+#' \code{map_model}.
+#' @param ... Any other argument that would normally be passed to 
+#' \code{\link{model_coherence}}.
+#' 
+#' @name map_coherence
+#' @export
+map_coherence <- function(models, ...) UseMethod("map_coherence")
+
+#' @rdname map_coherence
+#' @method map_coherence model_collection
+#' @export
+map_coherence.model_collection <- function(models, ...){
+  coherence <- models %>% 
+    purrr::map("model") %>% 
+    purrr::map(model_coherence, ...) %>% 
+    purrr::map(function(x){
+      list(
+        coherence_model = x,
+        coherence = x$get_coherence() %>% reticulate::py_to_r()
+      )
+    })
+  
+  purrr::map2(models, coherence, function(x, y){
+    append(x, y)
+  }) %>% 
+    .construct_model_collection()
+}
+
+
+#' @rdname map_coherence
+#' @export
+get_coherence_data <- function(models) UseMethod("get_coherence_data")
+
+#' @rdname map_coherence
+#' @method get_coherence_data model_collection
+#' @export
+get_coherence_data.model_collection <- function(models){
+  data <- .get_coherence_data(models)
+  data$coherence_model <- purrr::map(models, "coherence_model") %>% unlist()
+  return(data)
+}

@@ -28,11 +28,22 @@ globalVariables(
   return(corpus)
 }
 
-.get_perplexity_data <- function(x){
-  purrr::map_dfr(x, function(x){
+.get_perplexity_data <- function(models){
+  purrr::map_dfr(models, function(x){
+    assert_that(!is.na(x$perplexity), msg = "Model perplexity was not computed.")
     tibble::tibble(
-      topics = x$n_topics,
+      topics = x$num_topics,
       perplexity = x$perplexity
+    )
+  })
+}
+
+.get_coherence_data <- function(models){
+  purrr::map_dfr(models, function(x){
+    assert_that(length(x$coherence) > 0, msg = "Topic coherence was not computed.")
+    tibble::tibble(
+      topics = x$num_topics,
+      coherence = x$coherence
     )
   })
 }
