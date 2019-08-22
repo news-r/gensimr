@@ -5,6 +5,8 @@
 #' @param x,y Python objects.
 #' @param to_r Applies \link[reticulate]{py_to_r} on output.
 #' 
+#' @importFrom graphics plot
+#' 
 #' @export
 wrap <- function(x, y, to_r = FALSE) {
   wrap <- x[y]

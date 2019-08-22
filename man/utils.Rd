@@ -7,11 +7,11 @@
 \alias{common_dictionary}
 \title{Preprocessed Text}
 \usage{
-common_texts(to_r = TRUE)
+common_texts(to_r = FALSE)
 
-common_corpus(to_r = TRUE)
+common_corpus(to_r = FALSE)
 
-common_dictionary(to_r = TRUE)
+common_dictionary(to_r = FALSE)
 }
 \arguments{
 \item{to_r}{Whether to return R data scruture.}

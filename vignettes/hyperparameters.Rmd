@@ -1,0 +1,47 @@
+---
+title: "Hyperparameter Tuning"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Hyperparameter Tuning}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+reticulate::use_virtualenv("../env", required = TRUE)
+```
+
+## Preprocess
+
+As stated in table 2 from [this paper](http://www.cs.bham.ac.uk/~pxt/IDA/lsa_ind.pdf), this corpus essentially has two classes of documents. First five are about human-computer interaction and the other four are about graphs. We will be setting up two LDA models. One with 50 iterations of training and the other with just 1. Hence the one with 50 iterations ("better" model) should be able to capture this underlying pattern of the corpus better than the "bad" LDA model. Therefore, in theory, our topic coherence for the good LDA model should be greater than the one for the bad LDA model.
+
+```{r}
+library(gensimr)
+
+data("corpus", package = "gensimr")
+
+texts <- prepare_documents(corpus)
+dictionary <- corpora_dictionary(texts)
+corpus_bow <- doc2bow(dictionary, texts)
+
+tfidf <- model_tfidf(corpus_bow, id2word = dictionary)
+corpus_tfidf <- wrap(tfidf, corpus_bow)
+```
+
+## Tune
+
+```{r}
+models <- map_model(
+  num_topics = c(2, 4, 8),
+  corpus = corpus_tfidf, 
+  id2word = dictionary, 
+  iterations = 50L
+) 
+
+plot(models)
+```
