@@ -24,6 +24,8 @@ navbar:
           href: "articles/poincare.html"
         - text: "Document similarity"
           href: "articles/similarity.html"
+        - text: "Hyperparameters"
+          href: "articles/hyperparameters.html"
         - text: "Topic coherence"
           href: "articles/coherence.html"
         - text: "API"

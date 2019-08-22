@@ -2,10 +2,16 @@
 % Please edit documentation in R/models.R
 \name{map_model}
 \alias{map_model}
+\alias{get_perplexity_data}
+\alias{get_perplexity_data.model_collection}
 \title{Map Models}
 \usage{
 map_model(num_topics = seq(2, 98, by = 10), model_function = model_lda,
   ...)
+
+get_perplexity_data(models)
+
+\method{get_perplexity_data}{model_collection}(models)
 }
 \arguments{
 \item{num_topics}{A vector or list of number of topics to run the model with.}
@@ -13,6 +19,9 @@ map_model(num_topics = seq(2, 98, by = 10), model_function = model_lda,
 \item{model_function}{A gensimr model function name to use.}
 
 \item{...}{Any other argument that would normally be passed to \code{model_function}.}
+
+\item{models}{An object of class \code{model_collection} as returned by
+\code{map_model}.}
 }
 \description{
 Apply multiple models to given different number of topcis

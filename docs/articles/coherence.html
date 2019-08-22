@@ -83,6 +83,9 @@
       <a href="../articles/similarity.html">Document similarity</a>
     </li>
     <li>
+      <a href="../articles/hyperparameters.html">Hyperparameters</a>
+    </li>
+    <li>
       <a href="../articles/coherence.html">Topic coherence</a>
     </li>
     <li>
@@ -146,10 +149,10 @@
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; → Preprocessing 9 documents</span></a>
 <a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; ← 9 documents after perprocessing</span></a>
 <a class="sourceLine" id="cb1-8" data-line-number="8">dictionary &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpora_dictionary.html">corpora_dictionary</a></span>(texts)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">corpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, texts)</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, texts)</a>
 <a class="sourceLine" id="cb1-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_tfidf.html">model_tfidf</a></span>(corpus, <span class="dt">id2word =</span> dictionary)</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">corpus_tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(tfidf, corpus)</a></code></pre>
+<a class="sourceLine" id="cb1-11" data-line-number="11">tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_tfidf.html">model_tfidf</a></span>(corpus_bow, <span class="dt">id2word =</span> dictionary)</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">corpus_tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wrap.html">wrap</a></span>(tfidf, corpus_bow)</a></code></pre>
 </div>
 <div id="set-up-two-topic-models" class="section level2">
 <h2 class="hasAnchor">
@@ -177,17 +180,21 @@
 <div id="u_mass-coherence" class="section level2">
 <h2 class="hasAnchor">
 <a href="#u_mass-coherence" class="anchor"></a>U_Mass Coherence</h2>
-<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">good_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> good_lda_model, <span class="dt">corpus =</span> corpus, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'u_mass'</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">bad_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> bad_lda_model, <span class="dt">corpus =</span> corpus, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'u_mass'</span>)</a></code></pre>
+<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">good_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> good_lda_model, <span class="dt">corpus =</span> corpus_tfidf, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'u_mass'</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">bad_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> bad_lda_model, <span class="dt">corpus =</span> corpus_tfidf, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'u_mass'</span>)</a></code></pre>
+<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; -14.69227234932784</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; -14.669541729630868</span></a></code></pre>
 </div>
 <div id="visualise" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualise" class="anchor"></a>Visualise</h2>
 <p>From the R console once can use the <code>plot</code> function to interactively open the visualisation.</p>
-<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">vis &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ldavis.html">prepare_ldavis</a></span>(good_lda_model, corpus, dictionary)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># plot(vis)</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="../reference/ldavis_save.html">save_ldavis_html</a></span>(vis, <span class="st">"lda.html"</span>)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">htmltools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/htmltools/topics/include">includeHTML</a></span>(<span class="st">"lda.html"</span>)</a></code></pre>
+<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">vis &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ldavis.html">prepare_ldavis</a></span>(good_lda_model, corpus, dictionary)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># plot(vis)</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="../reference/ldavis_save.html">save_ldavis_html</a></span>(vis, <span class="st">"lda.html"</span>)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">htmltools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/htmltools/topics/include">includeHTML</a></span>(<span class="st">"lda.html"</span>)</a></code></pre>
 
 <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/bmabey/pyLDAvis/files/ldavis.v1.0.0.css">
 <div id="ldavis_el825348899559282518888206"></div>
@@ -226,20 +233,20 @@ if(typeof(LDAvis) !== "undefined"){
             })
          });
 }
-</script><pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; -14.664627001047737</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; -14.665855683193522</span></a></code></pre>
+</script><pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; -14.69227234932784</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; -14.669541729630868</span></a></code></pre>
 </div>
 <div id="using-c_v-coherence" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-c_v-coherence" class="anchor"></a>Using C_V coherence</h2>
-<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">good_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> good_lda_model, <span class="dt">texts =</span> texts, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'c_v'</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">bad_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> bad_lda_model, <span class="dt">texts =</span> texts, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'c_v'</span>)</a></code></pre>
-<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; 0.3838413553737203</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; 0.38384135537372027</span></a></code></pre>
+<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">good_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> good_lda_model, <span class="dt">texts =</span> texts, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'c_v'</span>)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">bad_cm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/topics.html">model_coherence</a></span>(<span class="dt">model =</span> bad_lda_model, <span class="dt">texts =</span> texts, <span class="dt">dictionary =</span> dictionary, <span class="dt">coherence =</span> <span class="st">'c_v'</span>)</a></code></pre>
+<pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">good_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; 0.3838413553737203</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">bad_cm<span class="op">$</span><span class="kw">get_coherence</span>()</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; 0.38384135537372027</span></a></code></pre>
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">

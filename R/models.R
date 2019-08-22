@@ -798,10 +798,13 @@ get_author_topics.gensim.models.atmodel.AuthorTopicModel <- function(auth2doc){
 #' Apply multiple models to given different number of topcis
 #' and log the perplexity to assess best model.
 #' 
+#' @param models An object of class \code{model_collection} as returned by
+#' \code{map_model}.
 #' @param num_topics A vector or list of number of topics to run the model with.
 #' @param model_function A gensimr model function name to use.
 #' @param ... Any other argument that would normally be passed to \code{model_function}.
 #' 
+#' @name map_model
 #' @export
 map_model <- function(num_topics = seq(2, 98, by = 10), model_function = model_lda, ...){
   assert_that(min(num_topics) > 1, msg = "Minimum of `num_topics` must be greater than 1.")
@@ -821,8 +824,17 @@ map_model <- function(num_topics = seq(2, 98, by = 10), model_function = model_l
   invisible(models)
 }
 
-.construct_model_collection <- function(x){
-  structure(x, class = c("model_collection", class(x)))
+#' @rdname map_model
+#' @export
+get_perplexity_data <- function(models) UseMethod("get_perplexity_data")
+
+#' @rdname map_model
+#' @method get_perplexity_data model_collection
+#' @export
+get_perplexity_data.model_collection <- function(models){
+  data <- .get_perplexity_data(models)
+  data$models <- purrr::map(models, "model") %>% unlist()
+  return(data)
 }
 
 #' @export
@@ -833,20 +845,9 @@ print.model_collection <- function(x, ...){
   )
 }
 
-.get_corpus <- function(...){
-  args <- list(...)
-  corpus <- args[["corpus"]]
-  assert_that(!is.null(corpus), msg = "`corpus` argument is required.")
-  return(corpus)
-}
-
 #' @export
 plot.model_collection <- function(x, y, ...){
-  purrr::map_dfr(x, function(x){
-    tibble::tibble(
-      topics = x$n_topics,
-      perplexity = x$perplexity
-    )
-  }) %>% 
+  x %>% 
+    .get_perplexity_data() %>% 
     plot(..., type = "l")
 }

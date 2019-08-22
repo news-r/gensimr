@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Filter Rarely — filter_rare • gensimr</title>
+<title>Map Models — map_model • gensimr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -41,9 +41,10 @@
 
 
 
-<meta property="og:title" content="Filter Rarely — filter_rare" />
+<meta property="og:title" content="Map Models — map_model" />
 
-<meta property="og:description" content="Filter rarely appearing keywords from documents." />
+<meta property="og:description" content="Apply multiple models to given different number of topcis
+and log the perplexity to assess best model." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -162,35 +163,45 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Filter Rarely</h1>
+    <h1>Map Models</h1>
     
-    <div class="hidden name"><code>filter_rare.Rd</code></div>
+    <div class="hidden name"><code>map_model.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Filter rarely appearing keywords from documents.</p>
+    <p>Apply multiple models to given different number of topcis
+and log the perplexity to assess best model.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>filter_rare</span>(<span class='no'>s</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+    <pre class="usage"><span class='fu'>map_model</span>(<span class='kw'>num_topics</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(<span class='fl'>2</span>, <span class='fl'>98</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>10</span>), <span class='kw'>model_function</span> <span class='kw'>=</span> <span class='no'>model_lda</span>,
+  <span class='no'>...</span>)
 
-<span class='co'># S3 method for character</span>
-<span class='fu'>filter_rare</span>(<span class='no'>s</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'>get_perplexity_data</span>(<span class='no'>models</span>)
 
-<span class='co'># S3 method for list</span>
-<span class='fu'>filter_rare</span>(<span class='no'>s</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+<span class='co'># S3 method for model_collection</span>
+<span class='fu'>get_perplexity_data</span>(<span class='no'>models</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>s</th>
-      <td><p>A Character string or a list.</p></td>
+      <th>num_topics</th>
+      <td><p>A vector or list of number of topics to run the model with.</p></td>
     </tr>
     <tr>
-      <th>min_freq</th>
-      <td><p>Minimum term frequency to keep terms in.</p></td>
+      <th>model_function</th>
+      <td><p>A gensimr model function name to use.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Any other argument that would normally be passed to <code>model_function</code>.</p></td>
+    </tr>
+    <tr>
+      <th>models</th>
+      <td><p>An object of class <code>model_collection</code> as returned by
+<code>map_model</code>.</p></td>
     </tr>
     </table>
     

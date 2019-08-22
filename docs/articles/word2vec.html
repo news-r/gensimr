@@ -83,6 +83,9 @@
       <a href="../articles/similarity.html">Document similarity</a>
     </li>
     <li>
+      <a href="../articles/hyperparameters.html">Hyperparameters</a>
+    </li>
+    <li>
       <a href="../articles/coherence.html">Topic coherence</a>
     </li>
     <li>
@@ -162,15 +165,15 @@
 <a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; None</span></a></code></pre>
 <p>Now we can explore the model.</p>
 <pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">most_similar</span>(<span class="dt">positive =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"interface"</span>))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; [('computer', 0.1356927901506424), ('user', 0.06559349596500397), ('minors', 0.02820305898785591), ('human', 0.026718534529209137), ('response', -0.0028929095715284348), ('trees', -0.028418680652976036), ('graph', -0.05561172962188721), ('time', -0.09481455385684967), ('system', -0.11541391909122467), ('survey', -0.1329917013645172)]</span></a></code></pre>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; [('computer', 0.23181433975696564), ('graph', 0.11893773078918457), ('minors', 0.09199836105108261), ('eps', 0.06503799557685852), ('user', 0.04753843694925308), ('time', -0.008810970932245255), ('system', -0.011411845684051514), ('response', -0.01997048407793045), ('human', -0.029993511736392975), ('survey', -0.052159011363983154)]</span></a></code></pre>
 <p>We expect “trees” to be the odd one out, it is a term that was in a different topic (#2) whereas other terms were in topics #1.</p>
 <pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">doesnt_match</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"human"</span>, <span class="st">"interface"</span>, <span class="st">"trees"</span>))</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; trees</span></a></code></pre>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; interface</span></a></code></pre>
 <p>Test similarity between words.</p>
-<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"human"</span>, <span class="st">"trees"</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; -0.02523147</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw">similarity</span>(<span class="st">"eps"</span>, <span class="st">"survey"</span>)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; -0.04554404</span></a></code></pre>
+<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw"><a href="../reference/similarity.html">similarity</a></span>(<span class="st">"human"</span>, <span class="st">"trees"</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; 0.024661217</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">word2vec<span class="op">$</span>wv<span class="op">$</span><span class="kw"><a href="../reference/similarity.html">similarity</a></span>(<span class="st">"eps"</span>, <span class="st">"survey"</span>)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; -0.10218239</span></a></code></pre>
 </div>
 <div id="phrases" class="section level2">
 <h2 class="hasAnchor">

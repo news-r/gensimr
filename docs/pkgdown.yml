@@ -4,6 +4,7 @@ pkgdown_sha: ~
 articles:
   API: API.html
   coherence: coherence.html
+  hyperparameters: hyperparameters.html
   installation: installation.html
   models: models.html
   poincare: poincare.html
