@@ -17,7 +17,7 @@ par(bg = '#f9f7f1')
 reticulate::use_virtualenv("../env", required = TRUE)
 ```
 
-Note that there is no universal way to assess the best number of topics (`num_topics`) to fit a set of document.
+Note that there is no universal way to assess the best number of topics (`num_topics`) to fit a set of document, see [this post](http://qpleple.com/perplexity-to-evaluate-topic-models/).
 
 ## Preprocess
 
