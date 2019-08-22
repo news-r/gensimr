@@ -106,6 +106,35 @@ good_cm$get_coherence()
 bad_cm$get_coherence()
 ```
 
-## Conclusion
-
 Hence as we can see, the `u_mass` and `c_v` coherence for the good LDA model is much more (better) than that for the bad LDA model. This is because, simply, the good LDA model usually comes up with better topics that are more human interpretable. The `bad_lda_model` however fails to decipher between these two topics and comes up with topics which are not clear to a human. The `u_mass` and `c_v` topic coherences capture this wonderfully by giving the interpretability of these topics a number as we can see above. Hence this coherence measure can be used to compare difference topic models based on their human-interpretability.
+
+## Map
+
+You can also apply the `model_coherence` to multiple models at once using `map_coherence`.
+
+```{r}
+# create a model collection
+models <- list(good_lda_model, bad_lda_model)
+(model_collection <- as_model_collection(models))
+
+# compute topic coherence
+model_collection <- map_coherence(model_collection, corpus = corpus_tfidf, dictionary = dictionary, coherence = 'u_mass')
+get_coherence_data(model_collection)
+```
+
+## Workflow
+
+In the real world you will likely use the `map_*` functions to run and assess multiple models at once.
+
+```{r}
+models <- map_model(
+  num_topics = c(2, 4, 8, 10),
+  corpus = corpus_tfidf, 
+  id2word = dictionary
+) 
+
+models <- map_coherence(models, corpus = corpus_tfidf, dictionary = dictionary, coherence = 'u_mass')
+
+get_coherence_data(models)
+get_perplexity_data(models)
+```

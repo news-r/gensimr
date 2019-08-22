@@ -135,6 +135,7 @@
 
     
     
+<p>Note that there is no universal way to assess the best number of topics (<code>num_topics</code>) to fit a set of document.</p>
 <div id="preprocess" class="section level2">
 <h2 class="hasAnchor">
 <a href="#preprocess" class="anchor"></a>Preprocess</h2>
@@ -157,7 +158,7 @@
 <a href="#tune" class="anchor"></a>Tune</h2>
 <p>We can run multiple Latent Dirichlet Allocation models given different number of topics then assess which is best using the perplexity score.</p>
 <pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">models &lt;-<span class="st"> </span><span class="kw"><a href="../reference/map_model.html">map_model</a></span>(</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="dt">num_topics =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="dt">num_topics =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">12</span>),</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="dt">corpus =</span> corpus_tfidf, </a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="dt">id2word =</span> dictionary</a>
 <a class="sourceLine" id="cb2-5" data-line-number="5">) </a>
@@ -165,14 +166,14 @@
 <a class="sourceLine" id="cb2-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(models)</a></code></pre>
 <p><img src="hyperparameters_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/map_model.html">get_perplexity_data</a></span>(models)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;   topics perplexity models    </span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;list&gt;    </span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 1      2      -3.45 &lt;gns...LM&gt;</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 2      4      -4.05 &lt;gns...LM&gt;</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3      8      -5.31 &lt;gns...LM&gt;</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 4     10      -5.29 &lt;gns...LM&gt;</span></a></code></pre>
-<p>Perplexity is lowest at <code>num_topics = 2</code>: this is the best fit.</p>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; # A tibble: 5 x 3</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;   topics perplexity model     </span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;    &lt;int&gt;      &lt;dbl&gt; &lt;list&gt;    </span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 1      2      -3.50 &lt;gns...LM&gt;</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 2      4      -4.15 &lt;gns...LM&gt;</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3      8      -5.20 &lt;gns...LM&gt;</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 4     10      -5.38 &lt;gns...LM&gt;</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; 5     12      -5.97 &lt;gns...LM&gt;</span></a></code></pre>
 </div>
   </div>
 

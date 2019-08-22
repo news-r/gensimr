@@ -17,6 +17,8 @@ par(bg = '#f9f7f1')
 reticulate::use_virtualenv("../env", required = TRUE)
 ```
 
+Note that there is no universal way to assess the best number of topics (`num_topics`) to fit a set of document.
+
 ## Preprocess
 
 As stated in table 2 from [this paper](http://www.cs.bham.ac.uk/~pxt/IDA/lsa_ind.pdf), this corpus essentially has two classes of documents. First five are about human-computer interaction and the other four are about graphs. Therefore a process to assess the best number of topics to apply to a corpus should return `2`.
@@ -40,7 +42,7 @@ We can run multiple Latent Dirichlet Allocation models given different number of
 
 ```{r}
 models <- map_model(
-  num_topics = c(2, 4, 8, 10),
+  num_topics = c(2, 4, 8, 10, 12),
   corpus = corpus_tfidf, 
   id2word = dictionary
 ) 
@@ -48,5 +50,3 @@ models <- map_model(
 plot(models)
 get_perplexity_data(models)
 ```
-
-Perplexity is lowest at `num_topics = 2`: this is the best fit.
