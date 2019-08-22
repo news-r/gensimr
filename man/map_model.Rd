@@ -2,6 +2,7 @@
 % Please edit documentation in R/models.R
 \name{map_model}
 \alias{map_model}
+\alias{as_model_collection}
 \alias{get_perplexity_data}
 \alias{get_perplexity_data.model_collection}
 \title{Map Models}
@@ -9,21 +10,28 @@
 map_model(num_topics = seq(2, 98, by = 10), model_function = model_lda,
   ...)
 
+as_model_collection(models, corpus = NULL)
+
 get_perplexity_data(models)
 
 \method{get_perplexity_data}{model_collection}(models)
 }
 \arguments{
-\item{num_topics}{A vector or list of number of topics to run the model with.}
+\item{num_topics}{A vector or list indicating number of topics to use for each model.}
 
 \item{model_function}{A gensimr model function name to use.}
 
 \item{...}{Any other argument that would normally be passed to \code{model_function}.}
 
 \item{models}{An object of class \code{model_collection} as returned by
-\code{map_model}.}
+\code{map_model}, or a list of models for \code{as_model_collection}.}
+
+\item{corpus}{If passed perplexity is computed (recommended).}
 }
 \description{
 Apply multiple models to given different number of topcis
 and log the perplexity to assess best model.
+}
+\details{
+\code{model_collection} object inherits from list.
 }

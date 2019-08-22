@@ -799,29 +799,46 @@ get_author_topics.gensim.models.atmodel.AuthorTopicModel <- function(auth2doc){
 #' and log the perplexity to assess best model.
 #' 
 #' @param models An object of class \code{model_collection} as returned by
-#' \code{map_model}.
-#' @param num_topics A vector or list of number of topics to run the model with.
+#' \code{map_model}, or a list of models for \code{as_model_collection}.
+#' @param corpus If passed perplexity is computed (recommended).
+#' @param num_topics A vector or list indicating number of topics to use for each model.
 #' @param model_function A gensimr model function name to use.
 #' @param ... Any other argument that would normally be passed to \code{model_function}.
+#' 
+#' @details \code{model_collection} object inherits from list.
 #' 
 #' @name map_model
 #' @export
 map_model <- function(num_topics = seq(2, 98, by = 10), model_function = model_lda, ...){
   assert_that(min(num_topics) > 1, msg = "Minimum of `num_topics` must be greater than 1.")
+  
   crps <- .get_corpus(...)
-  models <- purrr::map(num_topics, function(x, func, ...){
+
+  purrr::map(num_topics, function(x, func, ...){
     func(num_topics = as.integer(x), ...)
   }, func = model_function, ...) %>% 
-    purrr::map2(num_topics, function(model, topic, c){
+    purrr::map(function(model, c){
       list(
         model = model,
         perplexity = model$log_perplexity(c) %>% reticulate::py_to_r(),
-        n_topics = topic
+        num_topics = model$num_topics %>% reticulate::py_to_r()
       )
     }, c = crps) %>% 
       .construct_model_collection()
-  
-  invisible(models)
+}
+
+#' @rdname map_model
+#' @export
+as_model_collection <- function(models, corpus = NULL){
+  models %>% 
+    purrr::map(function(x, c){
+      list(
+        model = x,
+        perplexity = ifelse(!is.null(c), x$log_perplexity(c) %>% reticulate::py_to_r(), NA),
+        num_topics = x$num_topics %>% reticulate::py_to_r()
+      )
+    }, c = corpus) %>% 
+    .construct_model_collection()
 }
 
 #' @rdname map_model
@@ -833,7 +850,7 @@ get_perplexity_data <- function(models) UseMethod("get_perplexity_data")
 #' @export
 get_perplexity_data.model_collection <- function(models){
   data <- .get_perplexity_data(models)
-  data$models <- purrr::map(models, "model") %>% unlist()
+  data$model <- purrr::map(models, "model") %>% unlist()
   return(data)
 }
 
