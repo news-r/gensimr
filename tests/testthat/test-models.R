@@ -11,6 +11,7 @@ test_that("models works", {
   corpus_bow <- doc2bow(dictionary, docs)
   corpus_mm <- serialize_mmcorpus(corpus_bow, auto_delete = FALSE)
   mm <- read_serialized_mmcorpus(corpus_mm)
+  expect_type(mm, "environment")
 
   # tfidf
   tfidf_file <- model_tfidf(corpus_mm)
@@ -25,12 +26,14 @@ test_that("models works", {
   # lsi
   k <- 2L
   lsi <- model_lsi(corpus_transformed_file, id2word = dictionary, num_topics = k)
+  expect_type(lsi, "environment")
   wrapped_corpus <- wrap(lsi, corpus_transformed_file)
   wrapped_corpus_docs <- get_docs_topics(wrapped_corpus)
   expect_length(wrapped_corpus_docs, k * 2)
 
   # fasttext
   ft <- model_fasttext(size = 4L, window = 3L, min_count = 1L)
+  expect_type(ft, "environment")
   ft$build_vocab(sentences = docs)
   ft$train(sentences = docs, total_examples = length(docs), epochs = 10L)
   sim <- ft$wv$most_similar(positive = c('computer', 'human'), negative = c('interface')) %>% 
@@ -43,33 +46,39 @@ test_that("models works", {
 
   # random projections
   rp <- model_rp(corpus_transformed_file, id2word = dictionary, num_topics = k)
+  expect_type(rp, "environment")
   wrapped_corpus <- wrap(rp, corpus_transformed_file)
   wrapped_corpus_docs <- get_docs_topics(wrapped_corpus)
   expect_length(wrapped_corpus_docs, k * 2)
 
   # lda
   lda <- model_lda(corpus_transformed_file, id2word = dictionary, num_topics = k)
+  expect_type(lda, "environment")
   wrapped_corpus <- wrap(lda, corpus_transformed_file)
   wrapped_corpus_docs <- get_docs_topics(wrapped_corpus)
   expect_length(wrapped_corpus_docs, k * 2)
 
   # ldamc
   ldamc <- model_ldamc(corpus_mm, id2word = dictionary, num_topics = k)
+  expect_type(ldamc, "environment")
   wrapped_corpus <- wrap(ldamc, corpus_transformed_file)
   wrapped_corpus_docs <- get_docs_topics(wrapped_corpus)
   expect_length(wrapped_corpus_docs, k * 2)
 
   # log entropy
   log_entropy <- model_logentropy(corpus_bow)
+  expect_type(log_entropy, "environment")
   wrapped_corpus <- wrap(log_entropy, corpus_bow)
 
   # hdp
   hdp <- model_hdp(corpus_mm, id2word = dictionary)
+  expect_type(hdp, "environment")
   topics <- reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
   expect_length(topics, 5L)
 
   # word2vec
   word2vec <- model_word2vec(size = 100L, window = 5L, min_count = 1L)
+  expect_type(word2vec, "environment")
   word2vec$build_vocab(docs) 
   word2vec$train(docs, total_examples = word2vec$corpus_count, epochs = 20L)
   word2vec$init_sims(replace = TRUE)
@@ -92,6 +101,7 @@ test_that("models works", {
   data("authors")
 
   auth2doc <- auth2doc(authors, name, document)
+  expect_type(auth2doc, "environment")
 
   # create temp to hold serialized data
   temp <- tempfile("serialized")
@@ -105,6 +115,7 @@ test_that("models works", {
     serialized = TRUE,
     serialization_path = temp
   )
+  expect_type(atmodel, "environment")
 
   # delete temp
   unlink(temp, recursive = TRUE)

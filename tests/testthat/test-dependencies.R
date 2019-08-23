@@ -1,3 +1,3 @@
 test_that("dependencies works", {
-  install_dependencies()
+  expect_output(install_dependencies())
 })
