@@ -8,6 +8,10 @@ before_install:
   - R -e "reticulate::py_install('scikit-learn')"
   - R -e "reticulate::py_install('pyLDAvis')"
 
+after_success:
+  - Rscript -e 'covr::coveralls()'
+  - Rscript -e 'covr::codecov()'
+
 env:
  global:
    - CRAN: http://cran.rstudio.com
