@@ -16,4 +16,12 @@ test_that("multiplication works", {
 
   similarity <- get_similarity(sims)
   expect_length(similarity, 2)
+
+  index2 <- similarity(corpus_mm, num_features = reticulate::py_len(dictionary))
+
+  # query all similarities
+  sims <- wrap(index2, corpus_bow, to_r = TRUE)
+
+  sims_long <- reshape2::melt(sims)
+  expect_length(similarity, 3)
 })
