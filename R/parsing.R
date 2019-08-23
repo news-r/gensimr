@@ -164,11 +164,13 @@ preprocess.data.frame <- function(s, text, ...,
 
   custom_filters <- .custom_filters(filters) 
 
+  s <- s %>% 
+    dplyr::pull(!!dplyr::enquo(text))
+  
   if(to_lower)
     s <- tolower(s)
 
   s %>% 
-    dplyr::pull(!!dplyr::enquo(text)) %>% 
     purrr::map(gensim$parsing$preprocessing$preprocess_string, custom_filters) %>% 
     purrr::map(reticulate::py_to_r)
 }
