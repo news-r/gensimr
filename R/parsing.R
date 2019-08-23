@@ -5,6 +5,12 @@
 #' from words in English. Its main use is as part of a term normalisation 
 #' process that is usually done when setting up Information Retrieval systems.
 #' 
+#' @examples
+#' \dontrun{
+#' stemmer <- porter_stemmer()
+#' stemmer$stem("survey")
+#' }
+#' 
 #' @name porter_stemmer
 #' 
 #' @export
