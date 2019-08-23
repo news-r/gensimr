@@ -151,7 +151,7 @@ test_that("porter_stemmer and stem_words words", {
   expect_equal(stemmed_list, stemmed_df)
 })
 
-test_that("corpora_dictionary works", {
+test_that("dictionary-related funcs work works", {
   # ensure we have correct texts
   texts <- prepare_documents(corpus)
 
@@ -165,6 +165,31 @@ test_that("corpora_dictionary works", {
   dictionary <- corpora_dictionary(texts, file = temp)
   expect_equal(reticulate::py_len(dictionary), 12)
   unlink(temp, force = TRUE)
+
+  # doc2bow
+  doc_bow <- doc2bow(dictionary, texts)
+  expect_equal(reticulate::py_len(doc_bow), 9)
+
+  #' serialie corpus
+  (corpus_mm <- serialize_mmcorpus(doc_bow, auto_delete = FALSE))
+  expect_type(corpus_mm, "list")
+  read <- read_serialized_mmcorpus(corpus_mm)
+  expect_type(read, "environment")
+  delete_mmcorpus(corpus_mm)
+
+  # with file
+  temp <- tempfile()
+  corpus_mm <- serialize_mmcorpus(doc_bow, file = temp)
+  expect_type(corpus_mm, "list")
+  as <- as_serialized_mmcorpus(corpus_mm$file)
+  expect_type(as, "list")
+  unlink(temp, force = TRUE)
+})
+
+test_that("text8 works", {
+  fl <- datapath("testcorpus.txt")
+  t8 <- text8corpus(fl)
+  expect_type(t8, "environment")
 })
 
 test_that("test auth2doc words", {
