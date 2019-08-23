@@ -14,6 +14,7 @@ test_that("models works", {
   expect_type(mm, "environment")
 
   # tfidf
+  tfidf_mm <- model_tfidf(mm)
   tfidf_file <- model_tfidf(corpus_mm)
   tfidf_object <- model_tfidf(corpus_mm)
   expect_equal(tfidf_file, tfidf_object)
@@ -52,6 +53,8 @@ test_that("models works", {
   expect_length(wrapped_corpus_docs, k * 2)
 
   # lda
+  lda <- model_lda(corpus_mm, id2word = dictionary, num_topics = k)
+  expect_type(lda, "environment")
   lda <- model_lda(corpus_transformed_file, id2word = dictionary, num_topics = k)
   expect_type(lda, "environment")
   wrapped_corpus <- wrap(lda, corpus_transformed_file)
@@ -59,6 +62,8 @@ test_that("models works", {
   expect_length(wrapped_corpus_docs, k * 2)
 
   # ldamc
+  ldamc <- model_ldamc(mm, id2word = dictionary, num_topics = k)
+  expect_type(ldamc, "environment")
   ldamc <- model_ldamc(corpus_mm, id2word = dictionary, num_topics = k)
   expect_type(ldamc, "environment")
   wrapped_corpus <- wrap(ldamc, corpus_transformed_file)
@@ -72,6 +77,8 @@ test_that("models works", {
 
   # hdp
   hdp <- model_hdp(corpus_mm, id2word = dictionary)
+  expect_type(hdp, "environment")
+  hdp <- model_hdp(mm, id2word = dictionary)
   expect_type(hdp, "environment")
   topics <- reticulate::py_to_r(hdp$show_topic(topic_id = 1L, topn = 5L))
   expect_length(topics, 5L)
@@ -137,6 +144,9 @@ test_that("models works", {
     coherence = 'u_mass'
   )
 
+  plot(models)
+  print(models)
+
   # coherence
   coh <- get_coherence_data(models)
   expect_length(coh, 3)
@@ -144,6 +154,9 @@ test_that("models works", {
   # perplexity
   p <- get_perplexity_data(models)
   expect_length(p, 3)
+
+  collect <- as_model_collection(list(lda, ldamc))
+  expect_length(collect, 2)
 
   # cleanup
   delete_mmcorpus(corpus_mm)
