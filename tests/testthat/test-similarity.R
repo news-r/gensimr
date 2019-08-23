@@ -23,5 +23,5 @@ test_that("multiplication works", {
   sims <- wrap(index2, corpus_bow, to_r = TRUE)
 
   sims_long <- reshape2::melt(sims)
-  expect_length(similarity, 3)
+  expect_length(similarity, 2)
 })
