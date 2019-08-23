@@ -5,18 +5,41 @@
 #' from words in English. Its main use is as part of a term normalisation 
 #' process that is usually done when setting up Information Retrieval systems.
 #' 
+#' @param stemmer A porter stemmer as returned by \code{\link{porter_stemmer}}.
+#' @param text Text to parse.
+#' 
 #' @examples
 #' \dontrun{
+#' # create model
 #' stemmer <- porter_stemmer()
+#'
+#' # stem
 #' stemmer$stem("survey")
+#' # or convenience method
+#' stem_porter(stemmer, "survey")
 #' }
 #' 
 #' @name porter_stemmer
-#' 
 #' @export
 porter_stemmer <- function() {
   model <- gensim$parsing$porter$PorterStemmer()
+  model <- structure(model, class = c("porter_stemmer_model", class(model)))
   invisible(model)
+}
+
+#' @rdname porter_stemmer
+#' @export
+stem_porter <- function(stemmer, text) UseMethod("stem_porter")
+
+#' @rdname porter_stemmer
+#' @method stem_porter porter_stemmer_model
+#' @export
+stem_porter.porter_stemmer_model <- function(stemmer, text){
+  assert_that(!missing(text), msg = "Missing `text`.")
+
+  purrr::map(text, stemmer$stem) %>% 
+    purrr::map(reticulate::py_to_r) %>% 
+    unlist()
 }
 
 #' Remove stopwords

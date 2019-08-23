@@ -135,6 +135,10 @@ test_that("porter_stemmer and stem_words words", {
     reticulate::py_to_r()
   expect_equal(stemmed_porter, expected)
 
+  # convenienve function
+  stemmed_conv <- stem_porter(stemmer, word)
+  expect_equal(stemmed_porter, stemmed_conv)
+
   # stem
   stemmed <- stem_text(word)
   expect_equal(stemmed, expected)

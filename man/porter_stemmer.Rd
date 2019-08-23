@@ -2,9 +2,20 @@
 % Please edit documentation in R/parsing.R
 \name{porter_stemmer}
 \alias{porter_stemmer}
+\alias{stem_porter}
+\alias{stem_porter.porter_stemmer_model}
 \title{Porter Stemmer}
 \usage{
 porter_stemmer()
+
+stem_porter(stemmer, text)
+
+\method{stem_porter}{porter_stemmer_model}(stemmer, text)
+}
+\arguments{
+\item{stemmer}{A porter stemmer as returned by \code{\link{porter_stemmer}}.}
+
+\item{text}{Text to parse.}
 }
 \description{
 The Porter stemming algorithm (or ‘Porter stemmer’) is a process 
@@ -14,8 +25,13 @@ process that is usually done when setting up Information Retrieval systems.
 }
 \examples{
 \dontrun{
+# create model
 stemmer <- porter_stemmer()
+
+# stem
 stemmer$stem("survey")
+# or convenience method
+stem_porter(stemmer, "survey")
 }
 
 }
