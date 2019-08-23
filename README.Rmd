@@ -21,6 +21,8 @@ knitr::opts_chunk$set(
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/JohnCoene)
 [![code-size](https://img.shields.io/github/languages/code-size/news-r/gensimr.svg)](https://github.com/news-r/gensimr) 
 [![activity](https://img.shields.io/github/last-commit/news-r/gensimr.svg)](https://github.com/news-r/gensimr)
+[![Coveralls test coverage](https://coveralls.io/repos/github/news-r/gensimr/badge.svg)](https://coveralls.io/r/news-r/gensimr?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/news-r/gensimr/branch/master/graph/badge.svg)](https://codecov.io/gh/news-r/gensimr?branch=master)
 <!-- badges: end -->
 
 # gensimr
