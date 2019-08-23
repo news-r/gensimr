@@ -47,51 +47,73 @@ test_that("parsing works", {
 
   # strip short
   stripped <- strip_short(corpus, min_len = 10)
-  stripped_df <- strip_short(corpus, min_len = 10, txt)
+  stripped_list <- strip_short(as.list(corpus), min_len = 10)
+  stripped_df <- strip_short(corpus_df, min_len = 10, txt)
   expect_equal(stripped[[1]], "applications")
   expect_equal(stripped_df[[1]], "applications")
+  expect_equal(stripped_list[[1]], "applications")
 
   # strip multiple spaces
   stripped <- strip_multiple_spaces(c("x  "))
+  stripped_list <- strip_multiple_spaces(list("x  "))
   stripped_df <- strip_multiple_spaces(tibble::tibble(txt = c("x  ")), txt)
   expect_equal(stripped, "x ")
   expect_equal(stripped_df, "x ")
+  expect_equal(stripped_list, "x ")
 
   # strip non alphanumerics
   stripped <- strip_non_alphanum(c("x."))
+  stripped_list <- strip_non_alphanum(list("x."))
   stripped_df <- strip_non_alphanum(tibble::tibble(txt = c("x.")), txt)
   expect_equal(stripped, "x ")
   expect_equal(stripped_df, "x ")
+  expect_equal(stripped_list, "x ")
 
   # strip numeric
   stripped <- strip_numeric(c("x1"))
+  stripped_list <- strip_numeric(list("x1"))
   stripped_df <- strip_numeric(tibble::tibble(txt = c("x1")), txt)
   expect_equal(stripped, "x")
   expect_equal(stripped_df, "x")
+  expect_equal(stripped_list, "x")
 
   # strip punctuation
   stripped <- strip_punctuation(c("x."))
+  stripped_list <- strip_punctuation(list("x."))
   stripped_df <- strip_punctuation(tibble::tibble(txt = c("x.")), txt)
   expect_equal(stripped, "x ")
   expect_equal(stripped_df, "x ")
+  expect_equal(stripped_list, "x ")
 
   # strip tags
   stripped <- strip_tags(c("<span>x</span>"))
+  stripped_list <- strip_tags(list("<span>x</span>"))
   stripped_df <- strip_tags(tibble::tibble(txt = c("<span>x</span>")), txt)
   expect_equal(stripped, "x")
   expect_equal(stripped_df, "x")
+  expect_equal(stripped_list, "x")
 
   # split alphanum
   stripped <- split_alphanum(c("x1"))
+  stripped_list <- split_alphanum(list("x1"))
   stripped_df <- split_alphanum(tibble::tibble(txt = c("x1")), txt)
   expect_equal(stripped, "x 1")
   expect_equal(stripped_df, "x 1")
+  expect_equal(stripped_list, "x 1")
 
   # remove stopwords
   stripped <- remove_stopwords(c("a dog"))
+  stripped_list <- remove_stopwords(list("a dog"))
   stripped_df <- remove_stopwords(tibble::tibble(txt = c("as dog")), txt)
   expect_equal(stripped, "dog")
   expect_equal(stripped_df, "dog")
+  expect_equal(stripped_list, "dog")
+
+  # filter rare
+  docs <- prepare_documents(corpus)
+  stripped <- filter_rare(docs, 2)
+  expect_equal(stripped[[9]], list("graph"))
+  expect_equal(length(docs), length(stripped))
 
   # preprocess
   expected <- c("graph", "minor", "survei")
@@ -99,6 +121,30 @@ test_that("parsing works", {
   stripped_df <- preprocess(corpus_df, txt)
   expect_equal(stripped[[9]], expected)
   expect_equal(stripped_df[[9]], expected)
+})
+
+test_that("porter_stemmer and stem_words words", {
+  
+  # word to stem
+  word <- "survey"
+  expected <- "survei"
+
+  # stemmer
+  stemmer <- porter_stemmer()
+  stemmed_porter <- stemmer$stem(word) %>% 
+    reticulate::py_to_r()
+  expect_equal(stemmed_porter, expected)
+
+  # stem
+  stemmed <- stem_text(word)
+  expect_equal(stemmed, expected)
+  expect_equal(stemmed, stemmed_porter)
+
+  # test other methods
+  corpus_df <- tibble::tibble(txt = corpus)
+  stemmed_list <- stem_text(as.list(corpus))
+  stemmed_df <- stem_text(corpus_df, text = txt)
+  expect_equal(stemmed_list, stemmed_df)
 })
 
 test_that("corpora_dictionary works", {
