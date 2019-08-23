@@ -166,3 +166,10 @@ test_that("corpora_dictionary works", {
   expect_equal(reticulate::py_len(dictionary), 12)
   unlink(temp, force = TRUE)
 })
+
+test_that("test auth2doc words", {
+  data("authors")
+
+  authors_docs <- auth2doc(authors, name, document)
+  expect_equal(reticulate::py_len(authors_docs), 3)
+})
