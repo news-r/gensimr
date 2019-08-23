@@ -19,5 +19,5 @@ test_that("multiplication works", {
   html <- ldavis_as_html(vis)
   expect_type(html, "environment")
 
-  plot_ldavis(model, corpora, dict)
+  # plot_ldavis(model, corpora, dict)
 })
