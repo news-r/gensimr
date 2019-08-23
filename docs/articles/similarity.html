@@ -183,7 +183,7 @@
 <a class="sourceLine" id="cb3-6" data-line-number="6">corpus_bow &lt;-<span class="st"> </span><span class="kw"><a href="../reference/doc2bow.html">doc2bow</a></span>(dictionary, docs)</a></code></pre>
 <p>Then serialise to matrix market format, the function returns the path to the file (this is saved on disk for efficiency), if no path is passed then a temp file is created. Here we set <code>auto_delete</code> to <code>FALSE</code> otherwise the corpus is deleted after first use. Note this means you should manually delete it with <code>delete_mmcorpus</code>.</p>
 <pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">(corpus_mm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mmcorpus_serialize.html">serialize_mmcorpus</a></span>(corpus_bow, <span class="dt">auto_delete =</span> <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//RtmpfuXf6Q/file24f61450ace8.mm </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; ℹ Path: /var/folders/n9/ys9t1h091jq80g4hww24v8g0n7v578/T//Rtmpl238UF/file440237cac478.mm </span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;  ✔ Temp file</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;  ✖ Delete after use</span></a></code></pre>
 <p>Then initialise a model, we’re going to use a Latent Similarity Indexing method later on (<code>model_lsi</code>) which requires td-idf.</p>
@@ -222,7 +222,10 @@
 <a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt; 7     1 -2.39e- 2</span></a>
 <a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt; 8     2 -2.93e- 2</span></a>
 <a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt; 9     4 -3.62e- 2</span></a></code></pre>
-<p>## Matrix</p>
+</div>
+<div id="matrix" class="section level2">
+<h2 class="hasAnchor">
+<a href="#matrix" class="anchor"></a>Matrix</h2>
 <p>You can also compare documents in the corpora with one another. The method is slightly different to improve computational efficiency. Note that we set the number of features to the number of words in the dictionary.</p>
 <p>The visualisation (matrix of cosine similarities) reveals the two clusters of documents again: as stated in table 2 from <a href="http://www.cs.bham.ac.uk/~pxt/IDA/lsa_ind.pdf">this paper</a>, the example corpus (<code><a href="https://www.rdocumentation.org/packages/utils/topics/data">data(corpus)</a></code>) essentially has two classes of documents. First five are about human-computer interaction and the other four are about graphs.</p>
 <pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># build model</span></a>
@@ -261,6 +264,7 @@
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#preprocess">Preprocess</a></li>
       <li><a href="#one-document">One Document</a></li>
+      <li><a href="#matrix">Matrix</a></li>
       </ul>
 </div>
       </div>

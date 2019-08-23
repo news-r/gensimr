@@ -1,4 +1,4 @@
-test_that("multiplication works", {
+test_that("similarity works", {
   lsi <- model_lsi(common_corpus(), id2word = common_dictionary())
 
   mm <- read_serialized_mmcorpus(corpus_mm)

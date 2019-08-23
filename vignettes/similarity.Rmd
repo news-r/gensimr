@@ -95,7 +95,7 @@ sims <- wrap(index, vec_lsi)
 get_similarity(sims)
 ```
 
-## Matrix
+## Matrix
 
 You can also compare documents in the corpora with one another. The method is slightly different to improve computational efficiency. Note that we set the number of features to the number of words in the dictionary.
 
