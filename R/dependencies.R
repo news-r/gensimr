@@ -23,6 +23,7 @@
 #' \dontrun{install_dependencies()}
 #' 
 #' @import assertthat
+#' @importFrom graphics points
 #' 
 #' @name dependencies
 #' @export

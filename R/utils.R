@@ -13,7 +13,8 @@ globalVariables(
     "documents",
     "args",
     "func",
-    "filters"
+    "filters",
+    "coherence"
   )
 )
 
