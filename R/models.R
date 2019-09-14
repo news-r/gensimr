@@ -58,7 +58,6 @@
 #' @export
 model_tfidf <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...) UseMethod("model_tfidf")
 
-#' @rdname model_tfidf
 #' @method model_tfidf mm_file
 #' @export
 model_tfidf.mm_file <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...){
@@ -78,7 +77,6 @@ model_tfidf.mm_file <- function(mm, normalize = FALSE, smart = "nfc", pivot = NU
   invisible(model)
 }
 
-#' @rdname model_tfidf
 #' @method model_tfidf mm
 #' @export
 model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...){
@@ -93,15 +91,8 @@ model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, s
   invisible(model)
 }
 
-#' @rdname model_tfidf
-#' @method model_tfidf python.builtin.list
 #' @export
-model_tfidf.python.builtin.list <- model_tfidf.mm
-
-#' @rdname model_tfidf
-#' @method model_tfidf python.builtin.tuple
-#' @export
-model_tfidf.python.builtin.tuple <- model_tfidf.mm
+model_tfidf.default <- model_tfidf.mm
 
 #' @rdname model_tfidf
 #' @export
@@ -135,29 +126,20 @@ load_tfidf <- function(file){
 #' @export
 model_lsi <- function(corpus, distributed = FALSE, ...) UseMethod("model_lsi")
 
-#' @rdname model_lsi
 #' @method model_lsi wrapped
 #' @export
 model_lsi.wrapped <- function(corpus, distributed = FALSE, ...){
   gensim$models$LsiModel(corpus, distributed = distributed, ...)
 }
 
-#' @rdname model_lsi
 #' @method model_lsi list
 #' @export
 model_lsi.list <- function(corpus, distributed = FALSE, ...){
   gensim$models$LsiModel(corpus, distributed = distributed, ...)
 }
 
-#' @rdname model_lsi
-#' @method model_lsi python.builtin.list
 #' @export
-model_lsi.python.builtin.list <- model_lsi.list
-
-#' @rdname model_lsi
-#' @method model_lsi python.builtin.tuple
-#' @export
-model_lsi.python.builtin.tuple <- model_lsi.list
+model_lsi.default <- model_lsi.list
 
 #' @rdname model_lsi
 #' @export
@@ -189,7 +171,6 @@ load_lsi <- function(file){
 #' @export
 model_norm <- function(corpus, norm = c("l2", "l1")) UseMethod("model_norm")
 
-#' @rdname model_norm
 #' @method model_norm wrapped
 #' @export
 model_norm.wrapped <- function(corpus, norm = c("l2", "l1")){
@@ -198,7 +179,6 @@ model_norm.wrapped <- function(corpus, norm = c("l2", "l1")){
   gensim$models$normmodel$NormModel(corpus, norm)
 }
 
-#' @rdname model_norm
 #' @method model_norm list
 #' @export
 model_norm.list <- function(corpus, norm = c("l2", "l1")){
@@ -207,15 +187,8 @@ model_norm.list <- function(corpus, norm = c("l2", "l1")){
   gensim$models$normmodel$NormModel(corpus, norm)
 }
 
-#' @rdname model_norm
-#' @method model_norm python.builtin.list
 #' @export
-model_norm.python.builtin.list <- model_norm.list
-
-#' @rdname model_norm
-#' @method model_norm python.builtin.tuple
-#' @export
-model_norm.python.builtin.tuple <- model_norm.list
+model_norm.default <- model_norm.list
 
 #' @rdname model_norm
 #' @export
@@ -283,7 +256,6 @@ load_fasttext <- function(file){
 #' @export
 model_rp <- function(corpus, ...) UseMethod("model_rp")
 
-#' @rdname model_rp
 #' @method model_rp wrapped
 #' @export
 model_rp.wrapped <- function(corpus, ...){
@@ -291,10 +263,8 @@ model_rp.wrapped <- function(corpus, ...){
   gensim$models$RpModel(corpus, ...)
 }
 
-#' @rdname model_rp
-#' @method model_rp gensim.interfaces.TransformedCorpus
 #' @export
-model_rp.gensim.interfaces.TransformedCorpus <- model_rp.wrapped
+model_rp.default <- model_rp.wrapped
 
 #' @rdname model_rp
 #' @export
@@ -340,7 +310,6 @@ load_rp <- function(file){
 #' @export
 model_lda <- function(corpus, ...) UseMethod("model_lda")
 
-#' @rdname model_lda
 #' @method model_lda mm_file
 #' @export
 model_lda.mm_file <- function(corpus, ...){
@@ -355,7 +324,6 @@ model_lda.mm_file <- function(corpus, ...){
   invisible(model)
 }
 
-#' @rdname model_lda
 #' @method model_lda mm
 #' @export
 model_lda.mm <- function(corpus, ...){
@@ -364,30 +332,8 @@ model_lda.mm <- function(corpus, ...){
   invisible(model)
 }
 
-#' @rdname model_lda
-#' @method model_lda python.builtin.list
 #' @export
-model_lda.python.builtin.list <- model_lda.mm
-
-#' @rdname model_lda
-#' @method model_lda wrapped
-#' @export
-model_lda.wrapped <- model_lda.mm
-
-#' @rdname model_lda
-#' @method model_lda gensim.interfaces.TransformedCorpus
-#' @export
-model_lda.gensim.interfaces.TransformedCorpus <- model_lda.mm
-
-#' @rdname model_lda
-#' @method model_lda python.builtin.tuple
-#' @export
-model_lda.python.builtin.tuple <- model_lda.mm
-
-#' @rdname model_lda
-#' @method model_lda python.builtin.tuple
-#' @export
-model_lda.python.builtin.tuple <- model_lda.mm
+model_lda.default <- model_lda.mm
 
 #' @rdname model_lda
 #' @export
@@ -400,7 +346,6 @@ load_lda <- function(file){
 #' @export
 model_ldamc <- function(corpus, ...) UseMethod("model_ldamc")
 
-#' @rdname model_lda
 #' @method model_ldamc mm_file
 #' @export
 model_ldamc.mm_file <- function(corpus, ...){
@@ -415,7 +360,6 @@ model_ldamc.mm_file <- function(corpus, ...){
   invisible(model)
 }
 
-#' @rdname model_lda
 #' @method model_ldamc mm
 #' @export
 model_ldamc.mm <- function(corpus,...){
@@ -424,10 +368,8 @@ model_ldamc.mm <- function(corpus,...){
   invisible(model)
 }
 
-#' @rdname model_lda
-#' @method model_ldamc python.builtin.list
 #' @export
-model_ldamc.python.builtin.list <- model_ldamc.mm
+model_ldamc.default <- model_ldamc.mm
 
 #' @rdname model_lda
 #' @export
@@ -461,10 +403,8 @@ load_ldamc <- function(file){
 #' @export
 model_logentropy <- function(corpus, normalize = FALSE) UseMethod("model_logentropy")
 
-#' @rdname model_logentropy
-#' @method model_logentropy python.builtin.tuple
 #' @export
-model_logentropy.python.builtin.tuple <- function(corpus, normalize = FALSE){
+model_logentropy.default <- function(corpus, normalize = FALSE){
   assert_that(!missing(corpus), msg = "Missing `corpus`")
   model <- gensim$models$LogEntropyModel(corpus, normalize = normalize)
   invisible(model)
@@ -513,7 +453,6 @@ load_logentropy <- function(file){
 #' @export
 model_hdp <- function(corpus, id2word, ...) UseMethod("model_hdp")
 
-#' @rdname model_hdp
 #' @method model_hdp mm_file
 #' @export
 model_hdp.mm_file <- function(corpus, id2word, ...){
@@ -529,7 +468,6 @@ model_hdp.mm_file <- function(corpus, id2word, ...){
   invisible(model)
 }
 
-#' @rdname model_hdp
 #' @method model_hdp mm
 #' @export
 model_hdp.mm <- function(corpus, id2word, ...){
@@ -541,10 +479,8 @@ model_hdp.mm <- function(corpus, id2word, ...){
   invisible(model)
 }
 
-#' @rdname model_hdp
-#' @method model_hdp python.builtin.list
 #' @export
-model_hdp.python.builtin.list <- model_hdp.mm
+model_hdp.default <- model_hdp.mm
 
 #' @rdname model_hdp
 #' @export
@@ -688,7 +624,6 @@ get_docs_topics.gensim.interfaces.CorpusABC <- function(corpus){
 #' @export
 model_at <- function(corpus, ...) UseMethod("model_at")
 
-#' @rdname model_at
 #' @method model_at mm_file
 #' @export
 model_at.mm_file <- function(corpus, ...){
@@ -703,7 +638,6 @@ model_at.mm_file <- function(corpus, ...){
   invisible(model)
 }
 
-#' @rdname model_at
 #' @method model_at mm
 #' @export
 model_at.mm <- function(corpus,...){
@@ -758,10 +692,8 @@ load_at <- function(file){
 #' @export
 get_author_topics <- function(auth2doc) UseMethod("get_author_topics")
 
-#' @rdname get_author_topics
-#' @method get_author_topics gensim.models.atmodel.AuthorTopicModel
 #' @export
-get_author_topics.gensim.models.atmodel.AuthorTopicModel <- function(auth2doc){
+get_author_topics.default <- function(auth2doc){
   assert_that(!missing(auth2doc), msg = "Missing `auth2doc`")
 
   authors <- auth2doc$id2author %>% 
@@ -845,7 +777,6 @@ as_model_collection <- function(models, corpus = NULL){
 #' @export
 get_perplexity_data <- function(models) UseMethod("get_perplexity_data")
 
-#' @rdname map_model
 #' @method get_perplexity_data model_collection
 #' @export
 get_perplexity_data.model_collection <- function(models){

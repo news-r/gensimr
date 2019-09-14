@@ -7,7 +7,6 @@
 \alias{show_ldavis.pyLDAvis._prepare.PreparedData}
 \alias{plot_ldavis}
 \alias{ldavis_as_html}
-\alias{ldavis_as_html.pyLDAvis._prepare.PreparedData}
 \title{Visualise Latent Dirichlet Allocation Models}
 \usage{
 prepare_ldavis(model, corpus, dictionary, ...)
@@ -19,8 +18,6 @@ show_ldavis(prepared_vis)
 plot_ldavis(model, corpus, dictionary)
 
 ldavis_as_html(prepared_vis)
-
-\method{ldavis_as_html}{pyLDAvis._prepare.PreparedData}(prepared_vis)
 }
 \arguments{
 \item{model}{A model as returned by \code{\link{model_lda}}.}

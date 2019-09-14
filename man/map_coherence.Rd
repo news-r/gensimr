@@ -2,18 +2,12 @@
 % Please edit documentation in R/coherence.R
 \name{map_coherence}
 \alias{map_coherence}
-\alias{map_coherence.model_collection}
 \alias{get_coherence_data}
-\alias{get_coherence_data.model_collection}
 \title{Map Coherence}
 \usage{
 map_coherence(models, ...)
 
-\method{map_coherence}{model_collection}(models, ...)
-
 get_coherence_data(models)
-
-\method{get_coherence_data}{model_collection}(models)
 }
 \arguments{
 \item{models}{An object of class \code{model_collection} as returned by

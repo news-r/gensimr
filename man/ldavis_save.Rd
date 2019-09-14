@@ -3,20 +3,12 @@
 \name{ldavis_save}
 \alias{ldavis_save}
 \alias{save_ldavis_html}
-\alias{save_ldavis_html.pyLDAvis._prepare.PreparedData}
 \alias{save_ldavis_json}
-\alias{save_ldavis_json.pyLDAvis._prepare.PreparedData}
 \title{Save Visualisation}
 \usage{
 save_ldavis_html(prepared_vis, file, ...)
 
-\method{save_ldavis_html}{pyLDAvis._prepare.PreparedData}(prepared_vis,
-  file, ...)
-
 save_ldavis_json(prepared_vis, file)
-
-\method{save_ldavis_json}{pyLDAvis._prepare.PreparedData}(prepared_vis,
-  file)
 }
 \arguments{
 \item{prepared_vis}{Prepapred vis as returned by \code{\link{ldavis}}.}

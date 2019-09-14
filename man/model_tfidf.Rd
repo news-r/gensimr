@@ -2,27 +2,11 @@
 % Please edit documentation in R/models.R
 \name{model_tfidf}
 \alias{model_tfidf}
-\alias{model_tfidf.mm_file}
-\alias{model_tfidf.mm}
-\alias{model_tfidf.python.builtin.list}
-\alias{model_tfidf.python.builtin.tuple}
 \alias{load_tfidf}
 \title{Tf-idf Model}
 \usage{
 model_tfidf(mm, normalize = FALSE, smart = "nfc", pivot = NULL,
   slope = 0.25, ...)
-
-\method{model_tfidf}{mm_file}(mm, normalize = FALSE, smart = "nfc",
-  pivot = NULL, slope = 0.25, ...)
-
-\method{model_tfidf}{mm}(mm, normalize = FALSE, smart = "nfc",
-  pivot = NULL, slope = 0.25, ...)
-
-\method{model_tfidf}{python.builtin.list}(mm, normalize = FALSE,
-  smart = "nfc", pivot = NULL, slope = 0.25, ...)
-
-\method{model_tfidf}{python.builtin.tuple}(mm, normalize = FALSE,
-  smart = "nfc", pivot = NULL, slope = 0.25, ...)
 
 load_tfidf(file)
 }

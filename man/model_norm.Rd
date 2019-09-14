@@ -2,22 +2,10 @@
 % Please edit documentation in R/models.R
 \name{model_norm}
 \alias{model_norm}
-\alias{model_norm.wrapped}
-\alias{model_norm.list}
-\alias{model_norm.python.builtin.list}
-\alias{model_norm.python.builtin.tuple}
 \alias{load_norm}
 \title{Normalization Model}
 \usage{
 model_norm(corpus, norm = c("l2", "l1"))
-
-\method{model_norm}{wrapped}(corpus, norm = c("l2", "l1"))
-
-\method{model_norm}{list}(corpus, norm = c("l2", "l1"))
-
-\method{model_norm}{python.builtin.list}(corpus, norm = c("l2", "l1"))
-
-\method{model_norm}{python.builtin.tuple}(corpus, norm = c("l2", "l1"))
 
 load_norm(file)
 }

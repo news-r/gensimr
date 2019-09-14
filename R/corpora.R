@@ -163,7 +163,6 @@ print.mm_file <- function(x, ...){
 #' @export
 read_serialized_mmcorpus <- function(file) UseMethod("read_serialized_mmcorpus")
 
-#' @rdname read_serialized_mmcorpus
 #' @method read_serialized_mmcorpus mm_file
 #' @export
 read_serialized_mmcorpus.mm_file <- function(file){
@@ -174,7 +173,6 @@ read_serialized_mmcorpus.mm_file <- function(file){
   invisible(mm)
 }
 
-#' @rdname read_serialized_mmcorpus
 #' @method read_serialized_mmcorpus character
 #' @export
 read_serialized_mmcorpus.character <- function(file){

@@ -2,14 +2,10 @@
 % Please edit documentation in R/models.R
 \name{model_logentropy}
 \alias{model_logentropy}
-\alias{model_logentropy.python.builtin.tuple}
 \alias{load_logentropy}
 \title{Log Entropy Model}
 \usage{
 model_logentropy(corpus, normalize = FALSE)
-
-\method{model_logentropy}{python.builtin.tuple}(corpus,
-  normalize = FALSE)
 
 load_logentropy(file)
 }

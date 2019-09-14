@@ -1,4 +1,4 @@
-test_that("multiplication works", {
+test_that("lda works", {
   docs <- prepare_documents(corpus)
   dict <- corpora_dictionary(docs)
   corpora <- doc2bow(dict, docs)

@@ -49,17 +49,14 @@
 #' @export
 model_coherence <- function(models, ...) UseMethod("model_coherence")
 
-#' @rdname topics
 #' @method model_coherence gensim.models.basemodel.BaseTopicModel
 #' @export
 model_coherence.gensim.models.basemodel.BaseTopicModel <- function(models, ...){
   gensim$models$CoherenceModel(model = models, ...)
 }
 
-#' @rdname topics
-#' @method model_coherence list
 #' @export
-model_coherence.list <- function(models, ...){
+model_coherence.default <- function(models, ...){
   gensim$models$CoherenceModel$for_models(models = models, ...)
 }
 
@@ -76,7 +73,6 @@ model_coherence.list <- function(models, ...){
 #' @export
 map_coherence <- function(models, ...) UseMethod("map_coherence")
 
-#' @rdname map_coherence
 #' @method map_coherence model_collection
 #' @export
 map_coherence.model_collection <- function(models, ...){
@@ -101,7 +97,6 @@ map_coherence.model_collection <- function(models, ...){
 #' @export
 get_coherence_data <- function(models) UseMethod("get_coherence_data")
 
-#' @rdname map_coherence
 #' @method get_coherence_data model_collection
 #' @export
 get_coherence_data.model_collection <- function(models){

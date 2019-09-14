@@ -2,16 +2,10 @@
 % Please edit documentation in R/models.R
 \name{model_at}
 \alias{model_at}
-\alias{model_at.mm_file}
-\alias{model_at.mm}
 \alias{load_at}
 \title{Author-topic Model}
 \usage{
 model_at(corpus, ...)
-
-\method{model_at}{mm_file}(corpus, ...)
-
-\method{model_at}{mm}(corpus, ...)
 
 load_at(file)
 }

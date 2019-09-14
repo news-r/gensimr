@@ -2,16 +2,10 @@
 % Please edit documentation in R/models.R
 \name{model_rp}
 \alias{model_rp}
-\alias{model_rp.wrapped}
-\alias{model_rp.gensim.interfaces.TransformedCorpus}
 \alias{load_rp}
 \title{Random Projections Model}
 \usage{
 model_rp(corpus, ...)
-
-\method{model_rp}{wrapped}(corpus, ...)
-
-\method{model_rp}{gensim.interfaces.TransformedCorpus}(corpus, ...)
 
 load_rp(file)
 }

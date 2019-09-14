@@ -3,16 +3,9 @@
 \name{topics}
 \alias{topics}
 \alias{model_coherence}
-\alias{model_coherence.gensim.models.basemodel.BaseTopicModel}
-\alias{model_coherence.list}
 \title{Topic Coherence}
 \usage{
 model_coherence(models, ...)
-
-\method{model_coherence}{gensim.models.basemodel.BaseTopicModel}(models,
-  ...)
-
-\method{model_coherence}{list}(models, ...)
 }
 \arguments{
 \item{models}{A model, i.e.: LDA or LSI, or a \code{list} of the latter.}

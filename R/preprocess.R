@@ -71,7 +71,7 @@ prepare_documents.character <- function(data, doc_id = NULL, min_freq = 1,
 #' @export
 prepare_documents.factor <- prepare_documents.character
 
-.get_tokens <- function(tokens, min_freq = 1, lexicon = c("SMART", "snowball", "onix"), return_doc_id = return_doc_id){
+.get_tokens <- function(tokens, min_freq = 1, lexicon = c("SMART", "snowball", "onix"), return_doc_id = FALSE){
 
   assert_that(min_freq >= 0)
   lexicon <- match.arg(lexicon)
@@ -87,19 +87,15 @@ prepare_documents.factor <- prepare_documents.character
 
   filtered <- tokens %>% 
     dplyr::inner_join(token_count, by = "word") %>% 
-    dplyr::group_by(id) %>% 
-    tidyr::nest(word)
-
-  filtered$data <- filtered$data %>% 
-    purrr::map(unlist) %>% 
-    purrr::map(unname)
+    dplyr::group_split(id) 
   
   if(return_doc_id)
-    ids <- dplyr::pull(filtered, id) %>% unique()
+    ids <- purrr::map(filtered, dplyr::pull, id) %>% 
+      purrr::map(unique)
 
   filtered <- filtered %>% 
-    dplyr::pull(data) %>% 
-    lapply(as.list)
+    purrr::map(dplyr::pull, word) %>% 
+    purrr::map(as.list)
 
   if(return_doc_id)
     filtered <- purrr::set_names(filtered, ids)
@@ -134,7 +130,7 @@ auth2doc <- function(data, author, doc){
       documents = !!doc_enquo
     ) %>% 
     dplyr::mutate(documents = as.integer(documents)) %>% 
-    tidyr::nest(documents)
+    tidyr::nest(data = c(documents))
 
   data$data <- data$data %>% 
     purrr::map(unlist) %>% 

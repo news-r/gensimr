@@ -2,19 +2,10 @@
 % Please edit documentation in R/models.R
 \name{model_hdp}
 \alias{model_hdp}
-\alias{model_hdp.mm_file}
-\alias{model_hdp.mm}
-\alias{model_hdp.python.builtin.list}
 \alias{load_hdp}
 \title{Hierarchical Dirichlet Process Model}
 \usage{
 model_hdp(corpus, id2word, ...)
-
-\method{model_hdp}{mm_file}(corpus, id2word, ...)
-
-\method{model_hdp}{mm}(corpus, id2word, ...)
-
-\method{model_hdp}{python.builtin.list}(corpus, id2word, ...)
 
 load_hdp(file)
 }

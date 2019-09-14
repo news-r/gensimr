@@ -68,7 +68,6 @@ plot.pyLDAvis._prepare.PreparedData <- function(x, ...){
 #' @export
 ldavis_as_html <- function(prepared_vis) UseMethod("ldavis_as_html")
 
-#' @rdname ldavis
 #' @method ldavis_as_html pyLDAvis._prepare.PreparedData
 #' @export
 ldavis_as_html.pyLDAvis._prepare.PreparedData <- function(prepared_vis){
@@ -106,7 +105,6 @@ ldavis_as_html.pyLDAvis._prepare.PreparedData <- function(prepared_vis){
 #' @export
 save_ldavis_html <- function(prepared_vis, file, ...) UseMethod("save_ldavis_html")
 
-#' @rdname ldavis_save
 #' @method save_ldavis_html pyLDAvis._prepare.PreparedData
 #' @export
 save_ldavis_html.pyLDAvis._prepare.PreparedData <- function(prepared_vis, file, ...){
@@ -119,7 +117,6 @@ save_ldavis_html.pyLDAvis._prepare.PreparedData <- function(prepared_vis, file, 
 #' @export
 save_ldavis_json <- function(prepared_vis, file) UseMethod("save_ldavis_json")
 
-#' @rdname ldavis_save
 #' @method save_ldavis_json pyLDAvis._prepare.PreparedData
 #' @export
 save_ldavis_json.pyLDAvis._prepare.PreparedData <- function(prepared_vis, file){

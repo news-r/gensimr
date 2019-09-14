@@ -2,23 +2,10 @@
 % Please edit documentation in R/models.R
 \name{model_lsi}
 \alias{model_lsi}
-\alias{model_lsi.wrapped}
-\alias{model_lsi.list}
-\alias{model_lsi.python.builtin.list}
-\alias{model_lsi.python.builtin.tuple}
 \alias{load_lsi}
 \title{Latent Semantic Indexing Model}
 \usage{
 model_lsi(corpus, distributed = FALSE, ...)
-
-\method{model_lsi}{wrapped}(corpus, distributed = FALSE, ...)
-
-\method{model_lsi}{list}(corpus, distributed = FALSE, ...)
-
-\method{model_lsi}{python.builtin.list}(corpus, distributed = FALSE, ...)
-
-\method{model_lsi}{python.builtin.tuple}(corpus, distributed = FALSE,
-  ...)
 
 load_lsi(file)
 }
