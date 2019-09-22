@@ -77,9 +77,8 @@ model_tfidf.mm_file <- function(mm, normalize = FALSE, smart = "nfc", pivot = NU
   invisible(model)
 }
 
-#' @method model_tfidf mm
 #' @export
-model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...){
+model_tfidf.default <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, slope = .25, ...){
   model <- gensim$models$TfidfModel(
     mm, 
     pivot = pivot,
@@ -91,8 +90,6 @@ model_tfidf.mm <- function(mm, normalize = FALSE, smart = "nfc", pivot = NULL, s
   invisible(model)
 }
 
-#' @export
-model_tfidf.default <- model_tfidf.mm
 
 #' @rdname model_tfidf
 #' @export
